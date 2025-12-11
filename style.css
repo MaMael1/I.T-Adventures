@@ -1,0 +1,145 @@
+body {
+    background: #ffffff;
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+.tela {
+    display: flex;
+    padding: 20px;
+    gap: 20px;
+    align-items: flex-start;
+}
+
+.left {
+    flex: 1;
+    border: 4px solid black;
+    border-radius: 25px;
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.top-row {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.caixa {
+    border: 4px solid black;
+    border-radius: 20px;
+    padding: 20px;
+    font-size: 28px;
+    text-align: center;
+    flex: 1;
+}
+
+.linguagens {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.col {
+    display: flex;
+    flex-direction: column;
+    gap: 35px;
+    width: 48%;
+}
+
+.ling {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.ling img {
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+    transition: transform 0.1s;
+}
+
+.ling img:active {
+    transform: scale(0.92);
+}
+
+.barra {
+    flex: 1;
+    height: 50px;
+    border: 4px solid black;
+    border-radius: 10px;
+    overflow: hidden;
+    position: relative;
+    background: #ffffff;
+}
+
+/* Preenchimento da barra */
+.barra-fill {
+    position: absolute;
+    height: 100%;
+    width: 0%;
+    background: #4caf50;
+    left: 0;
+    top: 0;
+    transition: width linear;
+}
+
+/* Timer dentro da barra */
+.barra-timer {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 24px;
+    font-weight: bold;
+    color: black;
+
+    pointer-events: none;  /* clicável apenas pela imagem */
+}
+
+
+.hud {
+    width: 260px;
+    border: 4px solid black;
+    border-radius: 25px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    flex-shrink: 0;
+}
+
+.claudinho {
+    border: 4px solid black;
+    border-radius: 20px;
+    height: 220px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.claudinho img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.upgrades {
+    border: 4px solid black;
+    border-radius: 20px;
+    height: 360px;
+    font-size: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
