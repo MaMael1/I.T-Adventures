@@ -2022,3 +2022,53 @@ document.addEventListener('DOMContentLoaded', () => {
         mostrarFeedback('❌ Erro ao carregar o jogo!', 'error');
     }
 });
+// =======================
+// NOVO: SISTEMA DE ESCALA PROPORCIONAL 
+// =======================
+
+function ajustarProporcao() {
+    // Dimensões base de design (1920x1080)
+    const LARGURA_BASE = 1920;
+    const ALTURA_BASE = 1080;
+    
+    // Dimensões reais da janela
+    const larguraAtual = window.innerWidth;
+    const alturaAtual = window.innerHeight;
+    
+    // Calcula o fator de escala que faz o site caber perfeitamente
+    // Escolhemos o MENOR fator para que TODO o conteúdo fique visível sem rolagem
+    let fatorEscala = Math.min(
+        larguraAtual / LARGURA_BASE,
+        alturaAtual / ALTURA_BASE
+    );
+    
+    // Limites para não ficar minúsculo nem gigante
+    fatorEscala = Math.min(Math.max(fatorEscala, 0.4), 2.0);
+    
+    // Aplica a variável CSS --scale
+    document.documentElement.style.setProperty('--scale', fatorEscala);
+}
+
+// Executa na inicialização e a cada redimensionamento (com throttling)
+let resizeTimer;
+window.addEventListener('resize', () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(ajustarProporcao, 50);
+});
+window.addEventListener('load', ajustarProporcao);
+// Também ajusta quando o jogo for resetado (chamado no resetarJogo)
+// Adicione a linha abaixo dentro da função resetarJogo, após as outras atualizações:
+// ajustarProporcao();
+
+// Para garantir que a escala seja recalculada após reset, podemos sobrescrever a função resetarJogo
+// ou simplesmente chamar ajustarProporcao() no final dela.
+// Como o código original é grande, recomendo COLAR a chamada dentro de resetarJogo:
+// (Encontre a função resetarJogo() e insira `ajustarProporcao();` antes do último `}`)
+
+// Se preferir não modificar o código original, descomente a linha abaixo:
+// const resetarJogoOriginal = resetarJogo;
+// resetarJogo = function() { resetarJogoOriginal(); ajustarProporcao(); };
+
+// =======================
+// FIM DO SISTEMA DE ESCALA
+// =======================
