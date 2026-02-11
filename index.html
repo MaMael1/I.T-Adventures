@@ -1,89 +1,350 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>I.T Adventure</title>
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="style.css" />
 </head>
-
 <body>
 
 <div class="tela">
 
-    <!-- CONTAINER ESQUERDO PRINCIPAL -->
     <div class="left">
 
-        <!-- Linha superior -->
         <div class="top-row">
             <div class="caixa dinheiro">
-                Dinheiro/pontuação: $ <span id="money">0</span>
+                <span id="money">0.00</span>
             </div>
-            <div class="caixa menus">Menus</div>
+            <button class="caixa menus-btn" id="open-menu">Menus</button>
         </div>
 
-        <!-- Grade de linguagens -->
         <div class="linguagens">
 
-            <!-- Coluna esquerda -->
             <div class="col">
-                <div class="ling">
-                    <img class="clickable" data-id="html" src="img/html5.png">
-                    <div class="barra" id="barra-html"></div>
+                <!-- HTML desbloqueado e com 1 unidade inicial -->
+                <div class="ling" data-id="html" data-locked="false">
+                    <div class="ling-img-container">
+                        <img class="clickable" data-id="html" src="img/ling/Html5.png" alt="HTML">
+                        <div class="compra-count">1</div>
+                    </div>
+                    <div class="ling-info">
+                        <div class="barra" id="barra-html">
+                            <div class="progress-fill"></div>
+                            <span class="timer-text">00:00</span>
+                        </div>
+                        <button class="buy-btn" data-id="html">Comprar (15.00)</button>
+                    </div>
                 </div>
-                <div class="ling">
-                    <img class="clickable" data-id="python" src="img/python.png">
-                    <div class="barra" id="barra-python"></div>
+
+                <!-- Outras linguagens começam bloqueadas -->
+                <div class="ling" data-id="python" data-locked="true">
+                    <div class="ling-img-container">
+                        <img class="clickable" data-id="python" src="img/ling/python.png" alt="Python">
+                        <div class="compra-count">0</div>
+                    </div>
+                    <div class="ling-info">
+                        <div class="barra" id="barra-python">
+                            <div class="progress-fill"></div>
+                            <span class="timer-text">00:00</span>
+                        </div>
+                        <button class="buy-btn" data-id="python">Comprar (50.00)</button>
+                    </div>
                 </div>
-                <div class="ling">
-                    <img class="clickable" data-id="java" src="img/java.png">
-                    <div class="barra" id="barra-java"></div>
+
+                <div class="ling" data-id="java" data-locked="true">
+                    <div class="ling-img-container">
+                        <img class="clickable" data-id="java" src="img/ling/java.png" alt="Java">
+                        <div class="compra-count">0</div>
+                    </div>
+                    <div class="ling-info">
+                        <div class="barra" id="barra-java">
+                            <div class="progress-fill"></div>
+                            <span class="timer-text">00:00</span>
+                        </div>
+                        <button class="buy-btn" data-id="java">Comprar (100.00)</button>
+                    </div>
                 </div>
-                <div class="ling">
-                    <img class="clickable" data-id="c" src="img/c.png">
-                    <div class="barra" id="barra-c"></div>
+
+                <div class="ling" data-id="c" data-locked="true">
+                    <div class="ling-img-container">
+                        <img class="clickable" data-id="c" src="img/ling/c.png" alt="C">
+                        <div class="compra-count">0</div>
+                    </div>
+                    <div class="ling-info">
+                        <div class="barra" id="barra-c">
+                            <div class="progress-fill"></div>
+                            <span class="timer-text">00:00</span>
+                        </div>
+                        <button class="buy-btn" data-id="c">Comprar (500.00)</button>
+                    </div>
                 </div>
-                <div class="ling">
-                    <img class="clickable" data-id="ts" src="img/TypeScript.png">
-                    <div class="barra" id="barra-ts"></div>
+
+                <div class="ling" data-id="ts" data-locked="true">
+                    <div class="ling-img-container">
+                        <img class="clickable" data-id="ts" src="img/ling/TypeScript.png" alt="TypeScript">
+                        <div class="compra-count">0</div>
+                    </div>
+                    <div class="ling-info">
+                        <div class="barra" id="barra-ts">
+                            <div class="progress-fill"></div>
+                            <span class="timer-text">00:00</span>
+                        </div>
+                        <button class="buy-btn" data-id="ts">Comprar (1000.00)</button>
+                    </div>
                 </div>
             </div>
 
-            <!-- Coluna direita -->
             <div class="col">
-                <div class="ling">
-                    <img class="clickable" data-id="flutter" src="img/flutter.png">
-                    <div class="barra" id="barra-flutter"></div>
+                <div class="ling" data-id="flutter" data-locked="true">
+                    <div class="ling-img-container">
+                        <img class="clickable" data-id="flutter" src="img/ling/flutter.png" alt="Flutter">
+                        <div class="compra-count">0</div>
+                    </div>
+                    <div class="ling-info">
+                        <div class="barra" id="barra-flutter">
+                            <div class="progress-fill"></div>
+                            <span class="timer-text">00:00</span>
+                        </div>
+                        <button class="buy-btn" data-id="flutter">Comprar (5000.00)</button>
+                    </div>
                 </div>
-                <div class="ling">
-                    <img class="clickable" data-id="rust" src="img/rust.png">
-                    <div class="barra" id="barra-rust"></div>
+
+                <div class="ling" data-id="rust" data-locked="true">
+                    <div class="ling-img-container">
+                        <img class="clickable" data-id="rust" src="img/ling/rust.png" alt="Rust">
+                        <div class="compra-count">0</div>
+                    </div>
+                    <div class="ling-info">
+                        <div class="barra" id="barra-rust">
+                            <div class="progress-fill"></div>
+                            <span class="timer-text">00:00</span>
+                        </div>
+                        <button class="buy-btn" data-id="rust">Comprar (10000.00)</button>
+                    </div>
                 </div>
-                <div class="ling">
-                    <img class="clickable" data-id="cobol" src="img/cobol.png">
-                    <div class="barra" id="barra-cobol"></div>
+
+                <div class="ling" data-id="cobol" data-locked="true">
+                    <div class="ling-img-container">
+                        <img class="clickable" data-id="cobol" src="img/ling/cobol.png" alt="COBOL">
+                        <div class="compra-count">0</div>
+                    </div>
+                    <div class="ling-info">
+                        <div class="barra" id="barra-cobol">
+                            <div class="progress-fill"></div>
+                            <span class="timer-text">00:00</span>
+                        </div>
+                        <button class="buy-btn" data-id="cobol">Comprar (50000.00)</button>
+                    </div>
                 </div>
-                <div class="ling">
-                    <img class="clickable" data-id="asm" src="img/assembly.png">
-                    <div class="barra" id="barra-asm"></div>
+
+                <div class="ling" data-id="assembly" data-locked="true">
+                    <div class="ling-img-container">
+                        <img class="clickable" data-id="assembly" src="img/ling/assembly.png" alt="Assembly">
+                        <div class="compra-count">0</div>
+                    </div>
+                    <div class="ling-info">
+                        <div class="barra" id="barra-assembly">
+                            <div class="progress-fill"></div>
+                            <span class="timer-text">00:00</span>
+                        </div>
+                        <button class="buy-btn" data-id="assembly">Comprar (100000.00)</button>
+                    </div>
                 </div>
-                <div class="ling">
-                    <img class="clickable" data-id="temple" src="img/TempleOS.jpg">
-                    <div class="barra" id="barra-temple"></div>
+
+                <div class="ling" data-id="templeos" data-locked="true">
+                    <div class="ling-img-container">
+                        <img class="clickable" data-id="templeos" src="img/ling/TempleOS.jpg" alt="TempleOS">
+                        <div class="compra-count">0</div>
+                    </div>
+                    <div class="ling-info">
+                        <div class="barra" id="barra-templeos">
+                            <div class="progress-fill"></div>
+                            <span class="timer-text">00:00</span>
+                        </div>
+                        <button class="buy-btn" data-id="templeos">Comprar (500000.00)</button>
+                    </div>
                 </div>
             </div>
 
         </div>
     </div>
 
-    <!-- HUD DIREITA -->
     <div class="hud">
         <div class="claudinho">
-            <img src="claudinho.jpg">
+            <img src="img/ling/claudinho.jpg" alt="Claudinho">
         </div>
-        <div class="upgrades caixa">Upgrades</div>
+        
+        <!-- NOVA DIV DE CONTROLES DE COMPRA SIMPLIFICADA -->
+        <div class="controles-container caixa">
+            <div class="multiplicador-opcoes">
+                <div class="multiplicador-botoes">
+                    <button class="multiplicador-btn active" data-mult="1">x1</button>
+                    <button class="multiplicador-btn" data-mult="5">x5</button>
+                    <button class="multiplicador-btn" data-mult="10">x10</button>
+                    <button class="multiplicador-btn" data-mult="25">x25</button>
+                    <button class="multiplicador-btn" data-mult="100">x100</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="upgrades-container caixa">
+            <!-- Lista única de upgrades (globais e de linguagem) -->
+            <div class="upgrades-list" id="all-upgrades">
+                <!-- Upgrades serão inseridos dinamicamente aqui -->
+            </div>
+            
+            <!-- Mensagem quando não houver upgrades disponíveis -->
+            <div id="no-upgrades-message" class="no-upgrades-message" style="display: none;">
+                <p>Nenhum upgrade disponível no momento.</p>
+                <p>Continue jogando para desbloquear novos upgrades!</p>
+            </div>
+        </div>
     </div>
 
+</div>
+
+<!-- Menu Modal -->
+<div id="menu-modal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Menu do Jogo</h2>
+            <button class="close-menu">&times;</button>
+        </div>
+        
+        <div class="modal-tabs">
+            <button class="tab-btn active" data-tab="stats">📊 Estatísticas</button>
+            <button class="tab-btn" data-tab="debug">🛠️ Debug</button>
+        </div>
+        
+        <div class="tab-content active" id="stats-tab">
+            <div class="stats-container">
+                <h3>📈 Estatísticas do Jogo</h3>
+                <div class="stats-info">
+                    <div class="stat-item">
+                        <span class="stat-label">🏦 Dinheiro Total Adquirido:</span>
+                        <span class="stat-value" id="stat-total-earned">$0.00</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">🏆 Linguagens Desbloqueadas:</span>
+                        <span class="stat-value" id="stat-unlocked">1/10</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">📦 Total de Unidades:</span>
+                        <span class="stat-value" id="stat-total-units">1</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">🎮 Tempo de Jogo:</span>
+                        <span class="stat-value" id="stat-playtime">00:00:00</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">⚡ Upgrades Comprados:</span>
+                        <span class="stat-value" id="stat-upgrades">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">⭐ Upgrades Ativos:</span>
+                        <span class="stat-value" id="stat-active-upgrades">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">🔄 Auto-Produções:</span>
+                        <span class="stat-value" id="stat-autoproducoes">0</span>
+                    </div>
+                </div>
+                
+                <div class="linguagens-stats">
+                    <h4>📊 Estatísticas por Linguagem:</h4>
+                    <div id="linguagens-stats-list" class="stats-list">
+                        <!-- Será preenchido dinamicamente -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="tab-content" id="debug-tab">
+            <div class="debug-container">
+                <h3>🛠️ Ferramentas de Debug</h3>
+                <p class="debug-warning">⚠️ ATENÇÃO: Estas ferramentas são para desenvolvimento e teste!</p>
+                
+                <div class="debug-actions">
+                    <button class="debug-action-btn" id="add-100k-btn">
+                        <span class="debug-icon">💰</span>
+                        <span class="debug-text">Adicionar $100,000</span>
+                    </button>
+                    
+                    <button class="debug-action-btn reset-btn" id="reset-game-btn">
+                        <span class="debug-icon">🔄</span>
+                        <span class="debug-text">Resetar Jogo</button>
+                    </button>
+                </div>
+                
+                <div class="debug-info">
+                    <h4>📋 Informações de Sistema:</h4>
+                    <div class="system-info">
+                        <div class="info-item">
+                            <span class="info-label">Versão do Jogo:</span>
+                            <span class="info-value">2.1.0</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Modo Debug:</span>
+                            <span class="info-value" id="debug-status">Ativo</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Teclas de Atalho:</span>
+                            <span class="info-value">M = Menu, R = Reset</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de Confirmação de Reset -->
+<div id="confirm-reset-modal" class="modal confirm-modal">
+    <div class="modal-content confirm-content">
+        <div class="confirm-header">
+            <h3>⚠️ Confirmar Reset</h3>
+        </div>
+        <div class="confirm-body">
+            <p>Tem certeza que deseja resetar TODO o progresso do jogo?</p>
+            <p class="warning-text">Esta ação não pode ser desfeita!</p>
+            <div class="confirm-stats">
+                <p><strong>Você perderá:</strong></p>
+                <ul>
+                    <li>TODO o dinheiro acumulado</li>
+                    <li>TODAS as linguagens compradas</li>
+                    <li>TODO o progresso das barras</li>
+                    <li>TODAS as estatísticas</li>
+                    <li>TODOS os upgrades comprados</li>
+                </ul>
+            </div>
+        </div>
+        <div class="confirm-footer">
+            <button class="confirm-btn cancel-btn">Cancelar</button>
+            <button class="confirm-btn reset-confirm-btn">Sim, Resetar Tudo</button>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de Confirmação de Dinheiro -->
+<div id="confirm-money-modal" class="modal confirm-modal">
+    <div class="modal-content confirm-content">
+        <div class="confirm-header">
+            <h3>💰 Adicionar Dinheiro</h3>
+        </div>
+        <div class="confirm-body">
+            <p>Tem certeza que deseja adicionar $100,000 ao seu saldo?</p>
+            <p class="info-text">Esta ação é para fins de teste e desenvolvimento.</p>
+            <div class="money-preview">
+                <p><strong>Saldo Atual:</strong> <span id="current-balance">$0.00</span></p>
+                <p><strong>Novo Saldo:</strong> <span id="new-balance">$100,000.00</span></p>
+            </div>
+        </div>
+        <div class="confirm-footer">
+            <button class="confirm-btn cancel-btn">Cancelar</button>
+            <button class="confirm-btn add-money-confirm-btn">Sim, Adicionar</button>
+        </div>
+    </div>
 </div>
 
 <script src="script.js"></script>
