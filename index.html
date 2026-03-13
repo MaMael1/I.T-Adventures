@@ -1,12 +1,33 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>I.T Adventure</title>
-<link rel="stylesheet" href="style.css" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>I.T Adventure</title>
+    <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+
+<!-- ===================== BOTÃO HAMBURGER ===================== -->
+<button class="hamburger-btn" id="hamburger-btn">
+    <span></span>
+    <span></span>
+    <span></span>
+</button>
+
+<!-- ===================== SIDEBAR ===================== -->
+<div class="sidebar" id="sidebar">
+    <button class="close-sidebar" id="close-sidebar">&times;</button>
+    <div class="sidebar-content">
+        <div class="sidebar-section">
+            <h3>Menu Principal</h3>
+            <button class="sidebar-menu-btn" id="open-menu-from-sidebar">📊 Estatísticas & Debug</button>
+        </div>
+    </div>
+</div>
+
+<!-- ===================== OVERLAY (atrás da sidebar) ===================== -->
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
 
 <div class="tela">
 
@@ -16,7 +37,11 @@
             <div class="caixa dinheiro">
                 <span id="money">0.00</span>
             </div>
-            <button class="caixa menus-btn" id="open-menu">Menus</button>
+            <!-- ===================== CONTAINER DE ASCENSÃO (barra de progresso) ===================== -->
+            <div class="ascension-progress-bar" id="ascensionButtonContainer" style="display: none;">
+                <div class="ascension-bar-fill"></div>
+                <span class="ascension-points-overlay" id="prestigePointsTop">0 ⭐</span>
+            </div>
         </div>
 
         <div class="linguagens">
@@ -33,14 +58,14 @@
                             <div class="progress-fill"></div>
                             <span class="timer-text">00:00</span>
                         </div>
-                        <button class="buy-btn" data-id="html">Comprar (15.00)</button>
+                        <button class="buy-btn" data-id="html">Comprar (10.00)</button>
                     </div>
                 </div>
 
                 <!-- Outras linguagens começam bloqueadas -->
                 <div class="ling" data-id="python" data-locked="true">
                     <div class="ling-img-container">
-                        <img class="clickable" data-id="python" src="img/ling/Python.png" alt="Python">
+                        <img class="clickable" data-id="python" src="img/ling/python.png" alt="Python">
                         <div class="compra-count">0</div>
                     </div>
                     <div class="ling-info">
@@ -48,13 +73,13 @@
                             <div class="progress-fill"></div>
                             <span class="timer-text">00:00</span>
                         </div>
-                        <button class="buy-btn" data-id="python">Comprar (50.00)</button>
+                        <button class="buy-btn" data-id="python">Comprar (25.00)</button>
                     </div>
                 </div>
 
                 <div class="ling" data-id="java" data-locked="true">
                     <div class="ling-img-container">
-                        <img class="clickable" data-id="java" src="img/ling/Java.png" alt="Java">
+                        <img class="clickable" data-id="java" src="img/ling/java.png" alt="Java">
                         <div class="compra-count">0</div>
                     </div>
                     <div class="ling-info">
@@ -62,13 +87,13 @@
                             <div class="progress-fill"></div>
                             <span class="timer-text">00:00</span>
                         </div>
-                        <button class="buy-btn" data-id="java">Comprar (100.00)</button>
+                        <button class="buy-btn" data-id="java">Comprar (50.00)</button>
                     </div>
                 </div>
 
                 <div class="ling" data-id="c" data-locked="true">
                     <div class="ling-img-container">
-                        <img class="clickable" data-id="c" src="img/ling/C.png" alt="C">
+                        <img class="clickable" data-id="c" src="img/ling/c.png" alt="C">
                         <div class="compra-count">0</div>
                     </div>
                     <div class="ling-info">
@@ -76,7 +101,7 @@
                             <div class="progress-fill"></div>
                             <span class="timer-text">00:00</span>
                         </div>
-                        <button class="buy-btn" data-id="c">Comprar (500.00)</button>
+                        <button class="buy-btn" data-id="c">Comprar (250.00)</button>
                     </div>
                 </div>
 
@@ -90,7 +115,7 @@
                             <div class="progress-fill"></div>
                             <span class="timer-text">00:00</span>
                         </div>
-                        <button class="buy-btn" data-id="ts">Comprar (1000.00)</button>
+                        <button class="buy-btn" data-id="ts">Comprar (750.00)</button>
                     </div>
                 </div>
             </div>
@@ -98,7 +123,7 @@
             <div class="col">
                 <div class="ling" data-id="flutter" data-locked="true">
                     <div class="ling-img-container">
-                        <img class="clickable" data-id="flutter" src="img/ling/Flutter.png" alt="Flutter">
+                        <img class="clickable" data-id="flutter" src="img/ling/flutter.png" alt="Flutter">
                         <div class="compra-count">0</div>
                     </div>
                     <div class="ling-info">
@@ -106,13 +131,13 @@
                             <div class="progress-fill"></div>
                             <span class="timer-text">00:00</span>
                         </div>
-                        <button class="buy-btn" data-id="flutter">Comprar (5000.00)</button>
+                        <button class="buy-btn" data-id="flutter">Comprar (2500.00)</button>
                     </div>
                 </div>
 
                 <div class="ling" data-id="rust" data-locked="true">
                     <div class="ling-img-container">
-                        <img class="clickable" data-id="rust" src="img/ling/Rust.png" alt="Rust">
+                        <img class="clickable" data-id="rust" src="img/ling/rust.png" alt="Rust">
                         <div class="compra-count">0</div>
                     </div>
                     <div class="ling-info">
@@ -126,7 +151,7 @@
 
                 <div class="ling" data-id="cobol" data-locked="true">
                     <div class="ling-img-container">
-                        <img class="clickable" data-id="cobol" src="img/ling/Cobol.png" alt="COBOL">
+                        <img class="clickable" data-id="cobol" src="img/ling/cobol.png" alt="COBOL">
                         <div class="compra-count">0</div>
                     </div>
                     <div class="ling-info">
@@ -140,7 +165,7 @@
 
                 <div class="ling" data-id="assembly" data-locked="true">
                     <div class="ling-img-container">
-                        <img class="clickable" data-id="assembly" src="img/ling/Assembly.png" alt="Assembly">
+                        <img class="clickable" data-id="assembly" src="img/ling/assembly.png" alt="Assembly">
                         <div class="compra-count">0</div>
                     </div>
                     <div class="ling-info">
@@ -162,7 +187,7 @@
                             <div class="progress-fill"></div>
                             <span class="timer-text">00:00</span>
                         </div>
-                        <button class="buy-btn" data-id="templeos">Comprar (500000.00)</button>
+                        <button class="buy-btn" data-id="templeos">Comprar (250000.00)</button>
                     </div>
                 </div>
             </div>
@@ -171,11 +196,10 @@
     </div>
 
     <div class="hud">
-        <div class="claudinho">
+        <div class="claudinho" id="claudinho-click">
             <img src="img/ling/claudinho.jpg" alt="Claudinho">
         </div>
         
-        <!-- NOVA DIV DE CONTROLES DE COMPRA SIMPLIFICADA -->
         <div class="controles-container">
             <div class="multiplicador-opcoes">
                 <div class="multiplicador-botoes">
@@ -187,14 +211,12 @@
                 </div>
             </div>
         </div>
+
         
         <div class="upgrades-container caixa">
-            <!-- Lista única de upgrades (globais e de linguagem) -->
             <div class="upgrades-list" id="all-upgrades">
-                <!-- Upgrades serão inseridos dinamicamente aqui -->
+                <!-- Upgrades inseridos dinamicamente -->
             </div>
-            
-            <!-- Mensagem quando não houver upgrades disponíveis -->
             <div id="no-upgrades-message" class="no-upgrades-message" style="display: none;">
                 <p>Nenhum upgrade disponível no momento.</p>
                 <p>Continue jogando para desbloquear novos upgrades!</p>
@@ -203,6 +225,12 @@
     </div>
 
 </div>
+
+<!-- ===================== ÍCONE DE BÔNUS FLUTUANTE ===================== -->
+<div id="bonus-icon" class="bonus-icon">⭐</div>
+
+<!-- ===================== INDICADOR DE BÔNUS ATIVO ===================== -->
+<div id="bonus-indicator" class="bonus-indicator" style="display: none;"></div>
 
 <!-- Menu Modal -->
 <div id="menu-modal" class="modal">
@@ -219,43 +247,62 @@
         
         <div class="tab-content active" id="stats-tab">
             <div class="stats-container">
-                <h3>📈 Estatísticas do Jogo</h3>
-                <div class="stats-info">
-                    <div class="stat-item">
-                        <span class="stat-label">🏦 Dinheiro Total Adquirido:</span>
-                        <span class="stat-value" id="stat-total-earned">$0.00</span>
+                <h3>📈 Visão Geral</h3>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <span class="stat-icon">🏦</span>
+                        <div class="stat-info">
+                            <span class="stat-label">Total Adquirido</span>
+                            <span class="stat-value" id="stat-total-earned">$0.00</span>
+                        </div>
                     </div>
-                    <div class="stat-item">
-                        <span class="stat-label">🏆 Linguagens Desbloqueadas:</span>
-                        <span class="stat-value" id="stat-unlocked">1/10</span>
+                    <div class="stat-card">
+                        <span class="stat-icon">🏆</span>
+                        <div class="stat-info">
+                            <span class="stat-label">Linguagens</span>
+                            <span class="stat-value" id="stat-unlocked">1/10</span>
+                        </div>
                     </div>
-                    <div class="stat-item">
-                        <span class="stat-label">📦 Total de Unidades:</span>
-                        <span class="stat-value" id="stat-total-units">1</span>
+                    <div class="stat-card">
+                        <span class="stat-icon">📦</span>
+                        <div class="stat-info">
+                            <span class="stat-label">Total Unidades</span>
+                            <span class="stat-value" id="stat-total-units">1</span>
+                        </div>
                     </div>
-                    <div class="stat-item">
-                        <span class="stat-label">🎮 Tempo de Jogo:</span>
-                        <span class="stat-value" id="stat-playtime">00:00:00</span>
+                    <div class="stat-card">
+                        <span class="stat-icon">⏱️</span>
+                        <div class="stat-info">
+                            <span class="stat-label">Tempo de Jogo</span>
+                            <span class="stat-value" id="stat-playtime">00:00:00</span>
+                        </div>
                     </div>
-                    <div class="stat-item">
-                        <span class="stat-label">⚡ Upgrades Comprados:</span>
-                        <span class="stat-value" id="stat-upgrades">0</span>
+                    <div class="stat-card">
+                        <span class="stat-icon">⚡</span>
+                        <div class="stat-info">
+                            <span class="stat-label">Upgrades Comprados</span>
+                            <span class="stat-value" id="stat-upgrades">0</span>
+                        </div>
                     </div>
-                    <div class="stat-item">
-                        <span class="stat-label">⭐ Upgrades Ativos:</span>
-                        <span class="stat-value" id="stat-active-upgrades">0</span>
+                    <div class="stat-card">
+                        <span class="stat-icon">⭐</span>
+                        <div class="stat-info">
+                            <span class="stat-label">Upgrades Ativos</span>
+                            <span class="stat-value" id="stat-active-upgrades">0</span>
+                        </div>
                     </div>
-                    <div class="stat-item">
-                        <span class="stat-label">🔄 Auto-Produções:</span>
-                        <span class="stat-value" id="stat-autoproducoes">0</span>
+                    <div class="stat-card">
+                        <span class="stat-icon">🔄</span>
+                        <div class="stat-info">
+                            <span class="stat-label">Auto-Produções</span>
+                            <span class="stat-value" id="stat-autoproducoes">0</span>
+                        </div>
                     </div>
                 </div>
                 
                 <div class="linguagens-stats">
-                    <h4>📊 Estatísticas por Linguagem:</h4>
-                    <div id="linguagens-stats-list" class="stats-list">
-                        <!-- Será preenchido dinamicamente -->
-                    </div>
+                    <h4>📊 Estatísticas por Linguagem</h4>
+                    <div id="linguagens-stats-list" class="stats-list-grid"></div>
                 </div>
             </div>
         </div>
@@ -263,34 +310,31 @@
         <div class="tab-content" id="debug-tab">
             <div class="debug-container">
                 <h3>🛠️ Ferramentas de Debug</h3>
-                <p class="debug-warning">⚠️ ATENÇÃO: Estas ferramentas são para desenvolvimento e teste!</p>
-                
-                <div class="debug-actions">
+                <p class="debug-warning">⚠️ Estas ferramentas são para desenvolvimento e teste!</p>
+                <div class="debug-actions-grid">
                     <button class="debug-action-btn" id="add-100k-btn">
                         <span class="debug-icon">💰</span>
-                        <span class="debug-text">Adicionar $100,000</span>
+                        <span class="debug-text">Adicionar $100k</span>
                     </button>
-                    
                     <button class="debug-action-btn reset-btn" id="reset-game-btn">
                         <span class="debug-icon">🔄</span>
                         <span class="debug-text">Resetar Jogo</span>
                     </button>
                 </div>
-                
                 <div class="debug-info">
-                    <h4>📋 Informações de Sistema:</h4>
-                    <div class="system-info">
+                    <h4>📋 Informações de Sistema</h4>
+                    <div class="system-info-grid">
                         <div class="info-item">
-                            <span class="info-label">Versão do Jogo:</span>
-                            <span class="info-value">2.1.0</span>
+                            <span class="info-label">Versão:</span>
+                            <span class="info-value">3.0.0</span>
                         </div>
                         <div class="info-item">
                             <span class="info-label">Modo Debug:</span>
                             <span class="info-value" id="debug-status">Ativo</span>
                         </div>
                         <div class="info-item">
-                            <span class="info-label">Teclas de Atalho:</span>
-                            <span class="info-value">M = Menu, R = Reset</span>
+                            <span class="info-label">Atalhos:</span>
+                            <span class="info-value">M, R, U, G</span>
                         </div>
                     </div>
                 </div>
@@ -302,7 +346,7 @@
 <!-- Modal de Confirmação de Reset -->
 <div id="confirm-reset-modal" class="modal confirm-modal">
     <div class="modal-content confirm-content">
-        <div class="confirm-header">
+        <div class="confirm-header reset-header">
             <h3>⚠️ Confirmar Reset</h3>
         </div>
         <div class="confirm-body">
@@ -316,6 +360,7 @@
                     <li>TODO o progresso das barras</li>
                     <li>TODAS as estatísticas</li>
                     <li>TODOS os upgrades comprados</li>
+                    <li>TODOS os pontos de ascensão e upgrades permanentes</li>
                 </ul>
             </div>
         </div>
@@ -329,11 +374,11 @@
 <!-- Modal de Confirmação de Dinheiro -->
 <div id="confirm-money-modal" class="modal confirm-modal">
     <div class="modal-content confirm-content">
-        <div class="confirm-header">
+        <div class="confirm-header money-header">
             <h3>💰 Adicionar Dinheiro</h3>
         </div>
         <div class="confirm-body">
-            <p>Tem certeza que deseja adicionar $100,000 ao seu saldo?</p>
+            <p>Tem certeza que deseja adicionar <strong>$100,000</strong> ao seu saldo?</p>
             <p class="info-text">Esta ação é para fins de teste e desenvolvimento.</p>
             <div class="money-preview">
                 <p><strong>Saldo Atual:</strong> <span id="current-balance">$0.00</span></p>
@@ -347,9 +392,48 @@
     </div>
 </div>
 
-<!-- ===================== -->
-<!-- POP-UP FLUTUANTE DE DESCRIÇÃO -->
-<!-- ===================== -->
+<!-- Modal de Confirmação de Ascensão -->
+<div id="confirm-ascension-modal" class="modal confirm-modal">
+    <div class="modal-content confirm-content">
+        <div class="confirm-header ascension-header">
+            <h3>⭐ Confirmar Ascensão</h3>
+        </div>
+        <div class="confirm-body">
+            <p>Tem certeza que deseja ascender?</p>
+            <p class="info-text">Você reiniciará o jogo, mas manterá seus pontos de ascensão e poderá comprar upgrades permanentes.</p>
+            <div class="ascension-preview">
+                <p><strong>Pontos de Ascensão a Ganhar:</strong> <span id="ascension-points-gain">0</span></p>
+                <p><strong>Total de Pontos:</strong> <span id="ascension-points-total">0</span></p>
+            </div>
+        </div>
+        <div class="confirm-footer">
+            <button class="confirm-btn cancel-btn" id="cancel-ascension-btn">Cancelar</button>
+            <button class="confirm-btn ascension-confirm-btn" id="proceed-ascension-btn">Sim, Ascender</button>
+        </div>
+    </div>
+</div>
+<!-- Modal da Árvore de Skills de Ascensão -->
+<div id="skill-tree-modal" class="modal">
+    <div class="modal-content skill-tree-content">
+        <div class="modal-header">
+            <h2>🌟 Árvore de Skills de Ascensão</h2>
+            <button class="close-skill-tree">&times;</button>
+        </div>
+        <div class="skill-tree-container">
+            <div class="skill-tree-canvas" id="skill-tree-canvas">
+                <!-- Skills serão renderizadas aqui -->
+            </div>
+        </div>
+        <div class="skill-tree-actions">
+            <div class="skill-points-display">
+                <h3>⭐ Pontos de Ascensão: <span id="skill-tree-points">0</span></h3>
+            </div>
+            <button class="skill-tree-ascend-btn" id="skill-tree-ascend-btn">Ascender Agora</button>
+        </div>
+    </div>
+</div>
+
+<!-- Pop-up flutuante de descrição -->
 <div id="custom-tooltip" class="custom-tooltip"></div>
 
 <script src="script.js"></script>
