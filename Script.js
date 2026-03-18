@@ -81,8 +81,26 @@ function formatarGrandeNumero(valor) {
     return sinal + numeroFormatado + sufixoEscolhido;
 }
 
+// ⚡ OTIMIZAÇÃO: Cache para formatação de números (evita recálculo)
+const formatCache = new Map();
+const CACHE_THRESHOLD = 0.01; // só recomputa se mudou 1% o valor
+
 function formatarDinheiro(valor) {
-    return formatarGrandeNumero(valor);
+    const cacheKey = Math.floor(valor * 100); // limita a granularidade do cache
+    if (formatCache.has(cacheKey)) {
+        return formatCache.get(cacheKey);
+    }
+    
+    const resultado = formatarGrandeNumero(valor);
+    
+    // Manter cache limitado (máx 1000 entradas)
+    if (formatCache.size > 1000) {
+        const firstKey = formatCache.keys().next().value;
+        formatCache.delete(firstKey);
+    }
+    
+    formatCache.set(cacheKey, resultado);
+    return resultado;
 }
 
 function arredondar(valor) {
@@ -106,11 +124,19 @@ function aplicarBonusComArredondamento(valor, bonus) {
 // =======================
 let money = 0.00;
 let totalMoneyEarned = 0.00;
+let gamePaused = false; // pausa o jogo durante menu de ascensão
 const moneyEl = document.getElementById("money");
 if (moneyEl) moneyEl.textContent = "$" + formatarDinheiro(money);
 
 let startTime = Date.now();
 let playtimeInterval = null;
+
+// Controle de pausa para ascensão
+let pauseState = {
+    active: false,
+    pausedAt: 0,
+    productionRemains: {} // { linguagemId: remainSeconds }
+};
 
 // Mapa de produções ativas
 let activeProductions = {};
@@ -131,6 +157,20 @@ let multiplicadorCompra = 1;
 // POP-UP DE DESCRIÇÃO (SEGUE O MOUSE)
 // =======================
 let tooltipEl = null;
+
+// =======================
+// SISTEMA DE OTIMIZAÇÃO - THROTTLE/DEBOUNCE
+// =======================
+let lastUpgradeUpdate = 0;
+let lastStatsUpdate = 0;
+let lastMoneyUpdate = 0;
+let pendingUpgradeUpdate = false;
+let pendingStatsUpdate = false;
+const UPGRADE_UPDATE_INTERVAL = 100; // atualizar upgrades a cada 100ms
+const STATS_UPDATE_INTERVAL = 150;   // atualizar stats a cada 150ms
+const MONEY_UPDATE_INTERVAL = 50;    // atualizar dinheiro a cada 50ms
+let cachedMoney = 0;
+let cachedTotalMoneyEarned = 0;
 
 // =======================
 // DADOS DAS LINGUAGENS
@@ -1540,7 +1580,6 @@ const upgradesDataTemplate = {
         limiteAparecimento: 400
     }
 };
-
 
 let upgradesData = JSON.parse(JSON.stringify(upgradesDataTemplate));
 
@@ -3104,8 +3143,26 @@ let prestigeProgress = 0;              // Dinheiro acumulado na era atual para p
 let nextPrestigeThreshold = 1e9;       // Primeiro marco: 1 bilhão
 let prestigePointsGainedThisRun = 0;    // Quantos pontos já foram ganhos nesta era (para calcular próximo marco)
 
+// Nível de ascensão (para bônus passivo)
+let ascensionLevel = 0;
+
 // Upgrades permanentes comprados com pontos de ascensão
 let prestigeUpgradesData = {
+    // ===== CENTRO: RAIZ DA ÁRVORE =====
+    prodGlobal1: {
+        nome: "Produção Global +10%",
+        descricao: "Aumenta a produção de todas as linguagens em 10%.",
+        icone: "🌍",
+        preco: 1,
+        nivel: 0,
+        nivelMax: 10,
+        efeito: 0.10,
+        tipo: "global",
+        subtipo: "rendimento",
+        requisito: null,
+        x: 1450, y: 750 // Centro do canvas
+    },
+
     // ===== CENTRO: RAIZ DA ÁRVORE =====
     prodGlobal1: {
         nome: "Produção Global +10%",
@@ -3678,7 +3735,23 @@ function aplicarBonusAscensao(valorBase, tipo, linguagemId = null) {
 // =======================
 // CÁLCULOS DE PREÇOS E RECOMPENSAS (COM UPGRADES)
 // =======================
+// ⚡ OTIMIZAÇÃO: Cache para cálculos de recompensa e tempo
+const calculoCache = {
+    recompensa: new Map(),
+    tempo: new Map()
+};
+
+function invalidarCacheCalculos() {
+    calculoCache.recompensa.clear();
+    calculoCache.tempo.clear();
+}
+
 function calcularRecompensaAtual(id) {
+    // ⚡ Verificar cache
+    if (calculoCache.recompensa.has(id)) {
+        return calculoCache.recompensa.get(id);
+    }
+    
     const data = linguagensData[id];
     if (!data) return 0;
     
@@ -3734,10 +3807,17 @@ function calcularRecompensaAtual(id) {
     
     recompensaAtual = arredondar(recompensaAtual);
     
+    // ⚡ Guardar em cache
+    calculoCache.recompensa.set(id, recompensaAtual);
     return recompensaAtual;
 }
 
 function calcularTempoAtual(id) {
+    // ⚡ Verificar cache
+    if (calculoCache.tempo.has(id)) {
+        return calculoCache.tempo.get(id);
+    }
+    
     const data = linguagensData[id];
     if (!data) return data.tempo;
     
@@ -3788,6 +3868,8 @@ function calcularTempoAtual(id) {
     tempoAtual = Math.max(0.1, tempoAtual);
     tempoAtual = Math.round(tempoAtual * 10) / 10;
     
+    // ⚡ Guardar em cache
+    calculoCache.tempo.set(id, tempoAtual);
     return tempoAtual;
 }
 
@@ -3873,9 +3955,20 @@ function criarPopUpDinheiro(valor, elementoReferencia, raio = 50) {
     popUp.style.border = '2px solid #27ae60';
     popUp.style.whiteSpace = 'nowrap';
 
-    const rect = elementoReferencia.getBoundingClientRect();
-    const centroX = rect.left + rect.width / 2;
-    const centroY = rect.top + rect.height / 2;
+    // ⚡ OTIMIZAÇÃO: Usar getClientRects para evitar reflow quando possível, caso falhe usar fallback
+    let centroX = window.innerWidth / 2;
+    let centroY = window.innerHeight / 2;
+    
+    // Tentar usar getBoundingClientRect apenas se necessário
+    try {
+        const rect = elementoReferencia.getBoundingClientRect();
+        if (rect.width > 0 && rect.height > 0) {
+            centroX = rect.left + rect.width / 2;
+            centroY = rect.top + rect.height / 2;
+        }
+    } catch (e) {
+        // Fallback para valores padrão
+    }
 
     const angulo = Math.random() * 2 * Math.PI;
     const distancia = Math.random() * raio;
@@ -3899,8 +3992,13 @@ function criarPopUpDinheiro(valor, elementoReferencia, raio = 50) {
 // SISTEMA DE ANIMAÇÃO CONTÍNUA DA BARRA
 // =======================
 function iniciarAnimacaoBarras() {
-    if (animationFrameId) return;
+    if (animationFrameId || gamePaused) return;
     function loop() {
+        if (gamePaused) {
+            animationFrameId = null;
+            return;
+        }
+
         const agora = Date.now();
         let algumaAtiva = false;
 
@@ -3939,6 +4037,78 @@ function iniciarAnimacaoBarras() {
 }
 
 // =======================
+// PAUSA / RETOMA DO JOGO (ASCENSÃO)
+// =======================
+function pausarJogo() {
+    if (pauseState.active) return;
+    pauseState.active = true;
+    gamePaused = true;
+    pauseState.pausedAt = Date.now();
+
+    // Calcula o tempo restante de cada produção ativa
+    for (const [id, prod] of Object.entries(activeProductions)) {
+        const elapsed = (Date.now() - prod.startTime) / 1000;
+        const remain = Math.max(0, prod.totalDuration - elapsed);
+        pauseState.productionRemains[id] = remain;
+    }
+
+    // Limpa animação para não continuar rodando
+    if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId);
+        animationFrameId = null;
+    }
+
+    // Bloqueia interação geral (exceto modais)
+    document.body.style.pointerEvents = 'none';
+    const modals = document.querySelectorAll('.modal');
+    modals.forEach(m => { m.style.pointerEvents = 'auto'; });
+
+    // Esconde tooltips para não interferir
+    const tooltip = document.getElementById('custom-tooltip');
+    if (tooltip) {
+        tooltip.classList.remove('visible');
+        tooltip.textContent = '';
+    }
+
+    // Exibe overlay de pausa para indicar que o jogo está parado
+    const overlay = document.getElementById('pause-overlay');
+    if (overlay) {
+        overlay.style.display = 'block';
+    }
+}
+
+function desbloquearInteracao() {
+    document.body.style.pointerEvents = '';
+}
+
+function retomarJogo() {
+    if (!pauseState.active) return;
+    pauseState.active = false;
+    gamePaused = false;
+
+    // Restaura produções com o tempo restando
+    for (const [id, remain] of Object.entries(pauseState.productionRemains)) {
+        activeProductions[id] = {
+            startTime: Date.now(),
+            totalDuration: remain
+        };
+    }
+    pauseState.productionRemains = {};
+
+    // Reativa animação
+    iniciarAnimacaoBarras();
+
+    // Esconde overlay de pausa
+    const overlay = document.getElementById('pause-overlay');
+    if (overlay) {
+        overlay.style.display = 'none';
+    }
+
+    // Reativa interação normal
+    desbloquearInteracao();
+}
+
+// =======================
 // AJUSTE DE TIMER QUANDO UPGRADE MUDA O TEMPO
 // =======================
 function ajustarTimerParaUpgrade(id) {
@@ -3961,6 +4131,8 @@ function ajustarTimerParaUpgrade(id) {
 
 // Helper para iniciar produção sem depender de evento de clique
 function iniciarProducao(id) {
+    if (gamePaused) return;
+
     const ling = document.querySelector(`.ling[data-id="${id}"]`);
     const data = linguagensData[id];
     if (!ling || !data) return;
@@ -3999,10 +4171,18 @@ function completarProducao(id) {
     prestigeProgress += recompensaTotal;
     verificarProgressoAscensao();
     
-    if (moneyEl) moneyEl.textContent = "$" + formatarDinheiro(money);
+    // ⚡ OTIMIZAÇÃO: Throttle de atualização de dinheiro
+    const agora = Date.now();
+    if (agora - lastMoneyUpdate > MONEY_UPDATE_INTERVAL) {
+        if (moneyEl) moneyEl.textContent = "$" + formatarDinheiro(money);
+        lastMoneyUpdate = agora;
+    }
     
-    atualizarEstatisticas();
-    atualizarTodosUpgrades();
+    // ⚡ OTIMIZAÇÃO: Agendar atualização de upgrades com throttle
+    agendarAtualizacaoUpgrades(agora);
+    
+    // ⚡ OTIMIZAÇÃO: Agendar atualização de estatísticas com throttle
+    agendarAtualizacaoEstatisticas(agora);
     
     const barra = document.getElementById(`barra-${id}`);
     const icon = document.querySelector(`.clickable[data-id="${id}"]`);
@@ -4068,9 +4248,12 @@ function verificarProgressoAscensao() {
     // Se atingiu ou passou do marco, ganha ponto(s) (pode ganhar múltiplos de uma vez)
     while (prestigeProgress >= proximoMarco) {
         prestigePoints++;
-        prestigeBonus = prestigePoints; // cada ponto = 1%
+        // prestigeBonus agora baseado no nível, não nos pontos
         prestigePointsGainedThisRun++;
         prestigeProgress -= proximoMarco;
+        
+        // ⚡ Invalidar cache sempre que o bônus de ascensão muda
+        invalidarCacheCalculos();
         
         mostrarFeedback(`⭐ +1 Ponto de Ascensão! Total: ${prestigePoints}`, 'success');
         
@@ -4079,6 +4262,43 @@ function verificarProgressoAscensao() {
         
         // Recalcula próximo marco (crescimento linear)
         // o próximo marco já é baseado no novo prestigePointsGainedThisRun
+    }
+}
+
+// =======================
+// FUNÇÕES DE THROTTLE PARA OTIMIZAÇÃO
+// =======================
+function agendarAtualizacaoUpgrades(agora) {
+    if (agora - lastUpgradeUpdate > UPGRADE_UPDATE_INTERVAL) {
+        atualizarTodosUpgrades();
+        lastUpgradeUpdate = agora;
+        pendingUpgradeUpdate = false;
+    } else if (!pendingUpgradeUpdate) {
+        pendingUpgradeUpdate = true;
+        setTimeout(() => {
+            if (pendingUpgradeUpdate) {
+                atualizarTodosUpgrades();
+                lastUpgradeUpdate = Date.now();
+                pendingUpgradeUpdate = false;
+            }
+        }, UPGRADE_UPDATE_INTERVAL - (agora - lastUpgradeUpdate));
+    }
+}
+
+function agendarAtualizacaoEstatisticas(agora) {
+    if (agora - lastStatsUpdate > STATS_UPDATE_INTERVAL) {
+        atualizarEstatisticas();
+        lastStatsUpdate = agora;
+        pendingStatsUpdate = false;
+    } else if (!pendingStatsUpdate) {
+        pendingStatsUpdate = true;
+        setTimeout(() => {
+            if (pendingStatsUpdate) {
+                atualizarEstatisticas();
+                lastStatsUpdate = Date.now();
+                pendingStatsUpdate = false;
+            }
+        }, STATS_UPDATE_INTERVAL - (agora - lastStatsUpdate));
     }
 }
 
@@ -4419,6 +4639,9 @@ function comprarUpgrade(id) {
     
     upgrade.nivel = 1; // comprou, agora nível 1
     
+    // ⚡ OTIMIZAÇÃO: Invalidar cache de cálculos
+    invalidarCacheCalculos();
+    
     // Se for upgrade de tempo, ajustar produções ativas
     if (upgrade.subtipo === 'tempo' || upgrade.subtipo === 'ambos' || upgrade.subtipo === 'gambiarra' || upgrade.subtipo === 'vibe') {
         for (const linguagemId in activeProductions) {
@@ -4460,6 +4683,9 @@ function comprarLingUpgrade(id) {
     if (moneyEl) moneyEl.textContent = "$" + formatarDinheiro(money);
     
     upgrade.nivel = 1;
+    
+    // ⚡ OTIMIZAÇÃO: Invalidar cache de cálculos
+    invalidarCacheCalculos();
     
     if (upgrade.subtipo === 'tempo' || upgrade.subtipo === 'ambos') {
         if (activeProductions[linguagemId]) ajustarTimerParaUpgrade(linguagemId);
@@ -4527,6 +4753,9 @@ function comprarLinguagemMultipla(id, quantidade) {
             data.compras++;
             data.precoAtual = arredondar(data.precoAtual * data.multiplicadorPreco);
         }
+        
+        // ⚡ OTIMIZAÇÃO: Invalidar cache de cálculos
+        invalidarCacheCalculos();
         
         const countEl = ling.querySelector(".compra-count");
         if (countEl) countEl.textContent = data.compras;
@@ -4645,6 +4874,7 @@ function inicializarInterface() {
         document.querySelectorAll(".buy-btn").forEach(btn => {
             btn.addEventListener("click", (event) => {
                 event.stopPropagation();
+                if (gamePaused) return;
                 const id = btn.dataset.id;
                 if (!comprarLinguagemMultipla(id, multiplicadorCompra)) {
                     btn.classList.add("shake");
@@ -4657,6 +4887,10 @@ function inicializarInterface() {
         ajustarAlturaListaUpgrades();
         // configura autoclick caso seja ativo
         setupAutoClick();
+        
+        // Inicializar referências dos botões de ascensão
+        atualizarReferenciasBotoesAscensao();
+        
         console.log('✅ Interface do jogo inicializada com sucesso');
     } catch (error) {
         console.error('Erro ao inicializar interface:', error);
@@ -4707,6 +4941,11 @@ function contarLinguagensAutomaticas() {
 // =======================
 function atualizarEstatisticas() {
     try {
+        // ⚡ OTIMIZAÇÃO: Verificar se a modal está visível antes de atualizar
+        const modal = document.getElementById('menu-modal');
+        const isModalVisible = modal && modal.style.display !== 'none';
+        
+        // Sempre atualizar valores principais (mudam frequentemente)
         const statTotalEarned = document.getElementById('stat-total-earned');
         const statUnlocked = document.getElementById('stat-unlocked');
         const statTotalUnits = document.getElementById('stat-total-units');
@@ -4714,6 +4953,8 @@ function atualizarEstatisticas() {
         const statUpgrades = document.getElementById('stat-upgrades');
         const statActiveUpgrades = document.getElementById('stat-active-upgrades');
         const statAutoProducoes = document.getElementById('stat-autoproducoes');
+        const statPrestigeBonus = document.getElementById('stat-prestige-bonus');
+        const statAscensionLevel = document.getElementById('stat-ascension-level');
         
         if (statTotalEarned) statTotalEarned.textContent = `$${formatarDinheiro(totalMoneyEarned)}`;
         if (statUnlocked) statUnlocked.textContent = `${contarLinguagensDesbloqueadas()}/10`;
@@ -4722,6 +4963,11 @@ function atualizarEstatisticas() {
         if (statUpgrades) statUpgrades.textContent = contarUpgradesComprados();
         if (statActiveUpgrades) statActiveUpgrades.textContent = contarUpgradesAtivos();
         if (statAutoProducoes) statAutoProducoes.textContent = contarLinguagensAutomaticas();
+        if (statPrestigeBonus) statPrestigeBonus.textContent = `${prestigePoints} ⭐ (${prestigeBonus}% bônus passivo)`;
+        if (statAscensionLevel) statAscensionLevel.textContent = `Nível ${ascensionLevel} (${ascensionLevel}% bônus passivo)`;
+        
+        // ⚡ OTIMIZAÇÃO: Só atualizar lista de linguagens se modal estiver visível
+        if (!isModalVisible) return;
         
         const lista = document.getElementById('linguagens-stats-list');
         if (lista) {
@@ -4771,6 +5017,8 @@ document.querySelectorAll(".clickable").forEach(img => {
 // NOVO: CLIQUE NO CLAUDINHO (gera dinheiro)
 // =======================
 document.getElementById('claudinho-click').addEventListener('click', function() {
+    if (gamePaused) return;
+
     // Valor base do clique
     let ganhoBase = 0.10; // 10 centavos
     // Aplica bônus de clique dos upgrades
@@ -4800,6 +5048,8 @@ document.getElementById('claudinho-click').addEventListener('click', function() 
 // COMPRA DE UPGRADES (EVENT LISTENER)
 // =======================
 document.addEventListener('click', (event) => {
+    if (gamePaused) return;
+
     const btn = event.target.closest('.upgrade-btn-row');
     if (!btn) return;
     event.stopPropagation();
@@ -5050,26 +5300,48 @@ function resetarJogo() {
 function abrirModalConfirmacaoAscensao() {
     const modal = document.getElementById('confirm-ascension-modal');
     if (!modal) return;
-    
+
+    // Pausa o jogo e bloqueia interações enquanto o modal estiver aberto
+    pausarJogo();
+
     // Calcular pontos a ganhar
     const pontosAGanhar = prestigePointsGainedThisRun;
-    const totalPontos = prestigePoints; // Já inclui os pontos desta run
-    
-    document.getElementById('ascension-points-gain').textContent = pontosAGanhar;
-    document.getElementById('ascension-points-total').textContent = totalPontos;
-    
+    const totalPontos = prestigePoints; // Pontos já confirmados
+
+    const gainEl = document.getElementById('ascension-points-gain');
+    const totalEl = document.getElementById('ascension-points-total');
+    if (gainEl) gainEl.textContent = pontosAGanhar;
+    if (totalEl) totalEl.textContent = totalPontos;
+
     modal.style.display = 'block';
     
-    // Adicionar event listeners diretamente
+    // Impede fechar clicando fora do modal
+    modal.onclick = (event) => {
+        event.stopPropagation();
+    };
+
+    // Desabilitar botão de cancelar para forçar confirmação
     const cancelBtn = document.getElementById('cancel-ascension-btn');
-    const proceedBtn = document.getElementById('proceed-ascension-btn');
-    
     if (cancelBtn) {
-        cancelBtn.addEventListener('click', fecharModalConfirmacaoAscensao);
+        cancelBtn.disabled = true;
+        cancelBtn.style.opacity = '0.5';
+        cancelBtn.style.cursor = 'not-allowed';
     }
-    
+
+    const proceedBtn = document.getElementById('proceed-ascension-btn');
     if (proceedBtn) {
+        proceedBtn.disabled = false;
         proceedBtn.addEventListener('click', function() {
+            // Resetar jogo imediatamente após confirmação
+            const pontosAtuais = prestigePointsGainedThisRun; // Apenas os pontos ganhos nesta run
+            const upgradesComprados = JSON.parse(JSON.stringify(prestigeUpgradesData));
+
+            resetarJogoPreservandoAscensao(pontosAtuais, upgradesComprados);
+
+            // Limpar pontos pendentes
+            prestigePointsGainedThisRun = 0;
+
+            // Fecha modal de confirmação e abre árvore de skills para escolher upgrades
             fecharModalConfirmacaoAscensao();
             abrirModalArvoreSkills();
         });
@@ -5079,7 +5351,12 @@ function abrirModalConfirmacaoAscensao() {
 }
 
 function fecharModalConfirmacaoAscensao() {
-    document.getElementById('confirm-ascension-modal').style.display = 'none';
+    const modal = document.getElementById('confirm-ascension-modal');
+    if (modal) modal.style.display = 'none';
+
+    // Reativa interações e retoma o jogo caso não esteja em ascensão confirmada
+    desbloquearInteracao();
+    retomarJogo();
 }
 
 function abrirModalArvoreSkills() {
@@ -5093,6 +5370,14 @@ function abrirModalArvoreSkills() {
     const pontosElement = document.getElementById('skill-tree-points');
     if (pontosElement) {
         pontosElement.textContent = prestigePoints;
+    }
+    
+    // Desabilitar botão de fechar para forçar ascensão
+    const closeBtn = document.querySelector('.close-skill-tree');
+    if (closeBtn) {
+        closeBtn.disabled = true;
+        closeBtn.style.opacity = '0.5';
+        closeBtn.style.cursor = 'not-allowed';
     }
     
     // Garantir que os event listeners estejam configurados
@@ -5136,10 +5421,67 @@ function renderizarArvoreSkills() {
         
         // Implementar arrastar da tela
         implementarArrastarCanvas(canvas);
+        // Implementar zoom na árvore
+        implementarZoomCanvas();
     } catch (error) {
         alert('ERRO na renderização: ' + error.message);
         console.error('Erro na renderização da árvore de skills:', error);
     }
+}
+
+// Variáveis globais para zoom
+let currentScale = 1.0;
+const MIN_SCALE = 0.5;
+const MAX_SCALE = 3.0;
+
+function implementarZoomCanvas() {
+    const container = document.getElementById('skill-tree-container');
+    const canvas = document.getElementById('skill-tree-canvas');
+    const zoomIndicator = document.getElementById('zoom-indicator');
+
+    container.addEventListener('wheel', (e) => {
+        if (!e.ctrlKey) return; // Zoom apenas com Ctrl pressionado
+        e.preventDefault();
+
+        const rect = container.getBoundingClientRect();
+        const mouseX = e.clientX - rect.left;
+        const mouseY = e.clientY - rect.top;
+
+        // Posição do mouse relativa ao conteúdo antes do zoom
+        const scrollLeft = container.scrollLeft;
+        const scrollTop = container.scrollTop;
+        const contentX = scrollLeft + mouseX;
+        const contentY = scrollTop + mouseY;
+
+        // Aplicar zoom
+        const delta = e.deltaY > 0 ? -0.1 : 0.1;
+        let newScale = currentScale + delta;
+        newScale = Math.min(MAX_SCALE, Math.max(MIN_SCALE, newScale));
+
+        if (newScale === currentScale) return;
+
+        // Ajustar scroll para manter o ponto sob o mouse
+        const scaleRatio = newScale / currentScale;
+        const newScrollLeft = contentX * scaleRatio - mouseX;
+        const newScrollTop = contentY * scaleRatio - mouseY;
+
+        currentScale = newScale;
+        canvas.style.transform = `scale(${currentScale})`;
+
+        container.scrollLeft = newScrollLeft;
+        container.scrollTop = newScrollTop;
+
+        // Atualizar indicador de zoom
+        if (zoomIndicator) {
+            zoomIndicator.style.display = 'block';
+            zoomIndicator.textContent = `Zoom: ${currentScale.toFixed(1)}x`;
+            // Esconder após 1.5 segundos
+            clearTimeout(window.zoomTimeout);
+            window.zoomTimeout = setTimeout(() => {
+                zoomIndicator.style.display = 'none';
+            }, 1500);
+        }
+    });
 }
 
 function criarConexao(fromUpgrade, toUpgrade) {
@@ -5163,7 +5505,7 @@ function criarConexao(fromUpgrade, toUpgrade) {
     connection.style.transform = `rotate(${angle}deg)`;
     
     // Verificar se a conexão está desbloqueada
-    if (!fromUpgrade.requisito || prestigeUpgradesData[fromUpgrade.requisito].nivel > 0) {
+    if (!fromUpgrade.requisito || prestigeUpgradesData[fromUpgrade.requisito].nivel >= prestigeUpgradesData[fromUpgrade.requisito].nivelMax) {
         connection.classList.add('unlocked');
     }
     
@@ -5179,7 +5521,7 @@ function criarNoSkill(id, upgrade) {
     node.style.top = upgrade.y + 'px';
     
     // Verificar se está desbloqueado
-    const isUnlocked = !upgrade.requisito || prestigeUpgradesData[upgrade.requisito].nivel > 0;
+    const isUnlocked = !upgrade.requisito || prestigeUpgradesData[upgrade.requisito].nivel >= prestigeUpgradesData[upgrade.requisito].nivelMax;
     if (isUnlocked) {
         node.classList.add('unlocked');
     }
@@ -5206,11 +5548,11 @@ function criarNoSkill(id, upgrade) {
     node.addEventListener('click', (e) => {
         e.stopPropagation();
         const upgradeData = prestigeUpgradesData[id];
-        const isUnlocked = !upgradeData.requisito || prestigeUpgradesData[upgradeData.requisito].nivel > 0;
+        const isUnlocked = !upgradeData.requisito || prestigeUpgradesData[upgradeData.requisito].nivel >= prestigeUpgradesData[upgradeData.requisito].nivelMax;
         const canAfford = prestigePoints >= upgradeData.preco;
         
         if (isUnlocked && upgradeData.nivel < upgradeData.nivelMax && canAfford) {
-            comprarUpgradeSkill(id);
+            comprarPrestigeUpgrade(id);
         }
     });
     
@@ -5283,6 +5625,9 @@ function comprarUpgradeSkill(id) {
     
     // Recalcular bônus
     prestigeBonus = prestigePoints;
+
+    // ⚡ Invalidar cache para aplicar imediatamente os efeitos dos upgrades de ascensão
+    invalidarCacheCalculos();
     
     // Atualizar exibição dos pontos
     const pontosElement = document.getElementById('skill-tree-points');
@@ -5291,7 +5636,7 @@ function comprarUpgradeSkill(id) {
     }
     
     // Atualizar interface
-    atualizarInterfaceAscensao();
+    atualizarDisplayAscensao();
     renderizarArvoreSkills();
     
     mostrarFeedback(`⭐ Upgrade "${upgrade.nome}" adquirido!`, 'success');
@@ -5418,13 +5763,18 @@ function comprarPrestigeUpgrade(id) {
     // prestigeBonus continua sendo = prestigePoints (cada ponto = 1%)
     // Mas os efeitos dos upgrades são aplicados separadamente em aplicarBonusAscensao
     
-    // Atualiza interface
-    document.getElementById('ascensionPointsModal').textContent = prestigePoints;
+    // Atualiza displays de pontos
+    const ascensionPointsModal = document.getElementById('ascensionPointsModal');
+    if (ascensionPointsModal) ascensionPointsModal.textContent = prestigePoints;
+    
+    const skillTreePoints = document.getElementById('skill-tree-points');
+    if (skillTreePoints) skillTreePoints.textContent = prestigePoints;
     
     mostrarFeedback(`✅ Upgrade ${up.nome} adquirido!`, 'success');
     
-    // Re-renderiza upgrades e recalcula bônus
+    // Re-renderiza upgrades e árvore de skills
     renderizarPrestigeUpgrades();
+    renderizarArvoreSkills();
     
     // Se for upgrade que afeta tempo, ajustar produções ativas
     if (up.subtipo === 'tempo' || up.subtipo === 'ambos') {
@@ -5485,7 +5835,10 @@ function resetarJogoPreservandoAscensao(pontos, upgrades) {
     // Restaura dados de ascensão
     prestigePoints = pontos;
     prestigeUpgradesData = upgrades; // substitui pelos níveis salvos
-    prestigeBonus = prestigePoints; // recalcula (cada ponto = 1%)
+    
+    // Aumenta nível de ascensão e calcula bônus passivo
+    ascensionLevel++;
+    prestigeBonus = ascensionLevel; // cada nível = 1% bônus passivo
     
     // configura autoclick caso esteja ativo
     setupAutoClick();
@@ -5537,7 +5890,20 @@ function initTooltip() {
 // =======================
 // FUNÇÃO PARA AJUSTAR ALTURA DA LISTA DE UPGRADES (IGUAL À DAS LINGUAGENS)
 // =======================
+// ⚡ OTIMIZAÇÃO: Throttle para ajuste de altura
+let lastAlturaAjuste = 0;
+const ALTURA_AJUSTE_INTERVAL = 50; // ajustar altura a cada 50ms no máximo
+
 function ajustarAlturaListaUpgrades() {
+    const agora = Date.now();
+    
+    // ⚡ Não ajustar altura muito frequentemente
+    if (agora - lastAlturaAjuste < ALTURA_AJUSTE_INTERVAL) {
+        return;
+    }
+    
+    lastAlturaAjuste = agora;
+    
     requestAnimationFrame(() => {
         const linguagens = document.querySelector('.linguagens');
         const upgradesContainer = document.querySelector('.upgrades-container');
@@ -5706,6 +6072,9 @@ function aplicarBonus() {
     bonusSpeedMultiplier = speedOptions[Math.floor(Math.random() * speedOptions.length)];
     bonusRewardMultiplier = rewardOptions[Math.floor(Math.random() * rewardOptions.length)];
 
+    // ⚡ Invalidar cache pra garantir que o bônus seja aplicado imediatamente
+    invalidarCacheCalculos();
+
     let bonusMoney = somaRecompensasLinguagens() * 0.15;
     // aplica upgrade de bonusicon se existir
     for (const up of Object.values(prestigeUpgradesData)) {
@@ -5740,6 +6109,10 @@ function aplicarBonus() {
     bonusTimeout = setTimeout(() => {
         bonusSpeedMultiplier = 1;
         bonusRewardMultiplier = 1;
+        
+        // ⚡ Invalidar cache ao terminar o bônus
+        invalidarCacheCalculos();
+        
         if (bonusIndicator) {
             bonusIndicator.style.display = 'none';
             bonusIndicator.innerHTML = ''; // remove a barra junto
@@ -5889,6 +6262,9 @@ function verificarProgressoAscensaoComUI() {
             document.getElementById('ascensionButtonContainer').style.display = 'flex';
             document.getElementById('ascensionButtonContainer').classList.add('unlocked');
             mostrarFeedback('⭐ Ascensão desbloqueada! Uma nova era te aguarda!', 'success');
+            
+            // Atualizar referências dos botões após desbloquear
+            atualizarReferenciasBotoesAscensao();
         } else {
             return;
         }
@@ -5907,29 +6283,38 @@ function atualizarReferenciasBotoesAscensao() {
     const ascensionBar = document.getElementById('ascensionButtonContainer');
     
     if (ascensionBar) {
-        ascensionBar.addEventListener('click', abrirModalConfirmacaoAscensao);
+        ascensionBar.addEventListener('click', () => {
+            if (gamePaused) return;
+            abrirModalConfirmacaoAscensao();
+        });
     }
     
     // Event listeners para modal da árvore de skills
     const closeSkillTreeBtn = document.querySelector('.close-skill-tree');
     if (closeSkillTreeBtn) {
-        closeSkillTreeBtn.addEventListener('click', fecharModalArvoreSkills);
+        closeSkillTreeBtn.addEventListener('click', () => {
+            if (pauseState.active) return;
+            fecharModalArvoreSkills();
+        });
     }
     
     const skillTreeAscendBtn = document.getElementById('skill-tree-ascend-btn');
     if (skillTreeAscendBtn) {
         skillTreeAscendBtn.addEventListener('click', () => {
-            // Fecha o modal da árvore de skills primeiro
+            if (pauseState.active) return;
+            // Fechar modal e retomar jogo (efeitos já aplicados ao comprar upgrades)
             fecharModalArvoreSkills();
-            // Depois executa a ascensão
-            ascender();
+            retomarJogo();
+
+            mostrarFeedback('⭐ Upgrades aplicados! Continue progredindo.', 'success');
         });
     }
     
-    // Fechar modais ao clicar fora
+    // Fechar modais ao clicar fora (só quando o jogo não estiver pausado)
     const confirmAscensionModal = document.getElementById('confirm-ascension-modal');
     if (confirmAscensionModal) {
         confirmAscensionModal.addEventListener('click', (event) => {
+            if (pauseState.active) return;
             if (event.target === confirmAscensionModal) {
                 fecharModalConfirmacaoAscensao();
             }
@@ -5939,6 +6324,7 @@ function atualizarReferenciasBotoesAscensao() {
     const skillTreeModal = document.getElementById('skill-tree-modal');
     if (skillTreeModal) {
         skillTreeModal.addEventListener('click', (event) => {
+            if (pauseState.active) return;
             if (event.target === skillTreeModal) {
                 fecharModalArvoreSkills();
             }

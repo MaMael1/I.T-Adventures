@@ -8,14 +8,14 @@
 </head>
 <body>
 
-<!-- ===================== BOTÃO HAMBURGER ===================== -->
+<!-- Botão Hamburger -->
 <button class="hamburger-btn" id="hamburger-btn">
     <span></span>
     <span></span>
     <span></span>
 </button>
 
-<!-- ===================== SIDEBAR ===================== -->
+<!-- Sidebar -->
 <div class="sidebar" id="sidebar">
     <button class="close-sidebar" id="close-sidebar">&times;</button>
     <div class="sidebar-content">
@@ -26,7 +26,7 @@
     </div>
 </div>
 
-<!-- ===================== OVERLAY (atrás da sidebar) ===================== -->
+<!-- Overlay da sidebar -->
 <div class="sidebar-overlay" id="sidebar-overlay"></div>
 
 <div class="tela">
@@ -37,7 +37,7 @@
             <div class="caixa dinheiro">
                 <span id="money">0.00</span>
             </div>
-            <!-- ===================== CONTAINER DE ASCENSÃO (barra de progresso) ===================== -->
+            <!-- Container de Ascensão (barra de progresso) -->
             <div class="ascension-progress-bar" id="ascensionButtonContainer" style="display: none;">
                 <div class="ascension-bar-fill"></div>
                 <span class="ascension-points-overlay" id="prestigePointsTop">0 ⭐</span>
@@ -212,7 +212,6 @@
             </div>
         </div>
 
-        
         <div class="upgrades-container caixa">
             <div class="upgrades-list" id="all-upgrades">
                 <!-- Upgrades inseridos dinamicamente -->
@@ -226,10 +225,10 @@
 
 </div>
 
-<!-- ===================== ÍCONE DE BÔNUS FLUTUANTE ===================== -->
+<!-- Ícone de bônus flutuante -->
 <div id="bonus-icon" class="bonus-icon">⭐</div>
 
-<!-- ===================== INDICADOR DE BÔNUS ATIVO ===================== -->
+<!-- Indicador de bônus ativo -->
 <div id="bonus-indicator" class="bonus-indicator" style="display: none;"></div>
 
 <!-- Menu Modal -->
@@ -296,6 +295,20 @@
                         <div class="stat-info">
                             <span class="stat-label">Auto-Produções</span>
                             <span class="stat-value" id="stat-autoproducoes">0</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-icon">⭐</span>
+                        <div class="stat-info">
+                            <span class="stat-label">Bônus de Ascensão</span>
+                            <span class="stat-value" id="stat-prestige-bonus">0 ⭐ (0% bônus passivo)</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-icon">🏔️</span>
+                        <div class="stat-info">
+                            <span class="stat-label">Nível de Ascensão</span>
+                            <span class="stat-value" id="stat-ascension-level">Nível 0 (0% bônus passivo)</span>
                         </div>
                     </div>
                 </div>
@@ -412,6 +425,7 @@
         </div>
     </div>
 </div>
+
 <!-- Modal da Árvore de Skills de Ascensão -->
 <div id="skill-tree-modal" class="modal">
     <div class="modal-content skill-tree-content">
@@ -419,10 +433,12 @@
             <h2>🌟 Árvore de Skills de Ascensão</h2>
             <button class="close-skill-tree">&times;</button>
         </div>
-        <div class="skill-tree-container">
+        <div class="skill-tree-container" id="skill-tree-container">
             <div class="skill-tree-canvas" id="skill-tree-canvas">
                 <!-- Skills serão renderizadas aqui -->
             </div>
+            <!-- Indicador de zoom -->
+            <div class="zoom-indicator" id="zoom-indicator" style="display: none;">Zoom: 1.0x</div>
         </div>
         <div class="skill-tree-actions">
             <div class="skill-points-display">
@@ -435,6 +451,9 @@
 
 <!-- Pop-up flutuante de descrição -->
 <div id="custom-tooltip" class="custom-tooltip"></div>
+
+<!-- Overlay de pausa (bloqueia interações enquanto o jogo está pausado) -->
+<div id="pause-overlay" class="pause-overlay" style="display: none;"></div>
 
 <script src="script.js"></script>
 </body>
