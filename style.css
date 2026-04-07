@@ -449,11 +449,20 @@ body {
     pointer-events: auto;
     filter: drop-shadow(0 0 10px gold);
     animation: float 3s ease-in-out infinite;
-    transition: transform 0.2s;
+    opacity: 0;  /* começa invisível */
+    transition: opacity 0.5s ease-in-out; /* transição suave */
 }
 
 .bonus-icon:hover {
     transform: scale(1.2);
+}
+
+.bonus-icon.visible {
+    opacity: 1;
+}
+
+.bonus-icon.hiding {
+    opacity: 0;
 }
 
 @keyframes float {
@@ -1024,6 +1033,7 @@ body {
 }
 
 .custom-tooltip.visible {
+    z-index: 20000 !important;  /* Força ficar acima de tudo */
     opacity: 1;
     visibility: visible;
 }
@@ -1649,8 +1659,10 @@ body {
 /* ===================== ASCENSION PROGRESS BAR (INVISIBLE BUTTON) ===================== */
 .ascension-progress-bar {
     position: relative;
-    min-width: 20rem;
-    flex: 1 1 auto;
+    min-width: 280px;
+    width: auto;
+    max-width: 100%;
+    flex: 0 1 auto;
     height: 3.5rem;
     background: linear-gradient(135deg, #8b3a2f, #6b2c24);
     border-radius: 0.6rem;
@@ -1704,6 +1716,9 @@ body {
     font-size: 1.2rem;
     text-align: center;
     white-space: nowrap;
+    overflow: hidden;
+    overflow: hidden;
+    padding: 0 0.5rem;
     text-shadow: 0 0.2rem 0.5rem rgba(0,0,0,0.5);
     animation: ascensionPulse 1s ease-in-out infinite;
 }
@@ -1711,5 +1726,15 @@ body {
 @keyframes ascensionPulse {
     0% { transform: scale(1); }
     50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+.ascension-progress-bar.pode-ascender {
+    box-shadow: 0 0 20px gold;
+    animation: pulse 1s infinite;
+}
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.02); }
     100% { transform: scale(1); }
 }

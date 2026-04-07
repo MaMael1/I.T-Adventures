@@ -294,1291 +294,96 @@ let linguagensData = JSON.parse(JSON.stringify(linguagensDataTemplate));
 // UPGRADES GLOBAIS (GERAIS) - Compra única
 // =======================
 const upgradesDataTemplate = {
-    // Hardware
-    ram: {
-        nome: "Memória RAM",
-        descricao: "Aumenta a velocidade de todas as linguagens em 5%",
-        icone: "🧠",
-        precoBase: 500,
-        precoAtual: 500,
-        multiplicadorPreco: 1.0, // não usado, pois é compra única
-        nivel: 0,
-        nivelMax: 1,
-        efeito: 0.05,
-        tipo: "global",
-        subtipo: "tempo",
-        limiteAparecimento: 200
-    },
-    gpu: {
-        nome: "Placa de Vídeo",
-        descricao: "Aumenta o ganho de todas as linguagens em 10%",
-        icone: "🎮",
-        precoBase: 800,
-        precoAtual: 800,
-        multiplicadorPreco: 1.0,
-        nivel: 0,
-        nivelMax: 1,
-        efeito: 0.10,
-        tipo: "global",
-        subtipo: "rendimento",
-        limiteAparecimento: 300
-    },
-    cpu: {
-        nome: "Processador",
-        descricao: "Reduz o tempo de todas as linguagens em 10%",
-        icone: "⚙️",
-        precoBase: 1000,
-        precoAtual: 1000,
-        multiplicadorPreco: 1.0,
-        nivel: 0,
-        nivelMax: 1,
-        efeito: 0.07,
-        tipo: "global",
-        subtipo: "tempo",
-        limiteAparecimento: 400
-    },
-    monitor: {
-        nome: "Monitor Ultrawide",
-        descricao: "Aumenta o ganho de todas as linguagens em 10%",
-        icone: "🖥️",
-        precoBase: 600,
-        precoAtual: 600,
-        multiplicadorPreco: 1.0,
-        nivel: 0,
-        nivelMax: 1,
-        efeito: 0.08,
-        tipo: "global",
-        subtipo: "rendimento",
-        limiteAparecimento: 250
-    },
-    teclado: {
-        nome: "Teclado Mecânico RGB",
-        descricao: "Aumenta o poder de clique em 15%",
-        icone: "⌨️",
-        precoBase: 400,
-        precoAtual: 400,
-        multiplicadorPreco: 1.0,
-        nivel: 0,
-        nivelMax: 1,
-        efeito: 0.15,
-        tipo: "global",
-        subtipo: "clique",
-        limiteAparecimento: 150
-    },
-    cadeira: {
-        nome: "Cadeira Gamer Ergonométrica",
-        descricao: "Reduz o tempo de todas as linguagens em 5%",
-        icone: "💺",
-        precoBase: 300,
-        precoAtual: 300,
-        multiplicadorPreco: 1.0,
-        nivel: 0,
-        nivelMax: 1,
-        efeito: 0.03,
-        tipo: "global",
-        subtipo: "tempo",
-        limiteAparecimento: 100
-    },
-    cafeteira: {
-        nome: "Cafeteira Acoplada no PC",
-        descricao: "Aumenta o ganho de todas as linguagens em 5%",
-        icone: "☕",
-        precoBase: 200,
-        precoAtual: 200,
-        multiplicadorPreco: 1.0,
-        nivel: 0,
-        nivelMax: 1,
-        efeito: 0.05,
-        tipo: "global",
-        subtipo: "rendimento",
-        limiteAparecimento: 80
-    },
-
-    // Sistemas Operacionais
-    linux: {
-        nome: "Linux",
-        descricao: "Reduz o tempo de todas as linguagens em 5%",
-        icone: "🐧",
-        precoBase: 700,
-        precoAtual: 700,
-        multiplicadorPreco: 1.0,
-        nivel: 0,
-        nivelMax: 1,
-        efeito: 0.04,
-        tipo: "global",
-        subtipo: "tempo",
-        limiteAparecimento: 500
-    },
-    windows: {
-        nome: "Windows Otimizado",
-        descricao: "Aumenta o ganho de todas as linguagens em 10%",
-        icone: "🪟",
-        precoBase: 650,
-        precoAtual: 650,
-        multiplicadorPreco: 1.0,
-        nivel: 0,
-        nivelMax: 1,
-        efeito: 0.06,
-        tipo: "global",
-        subtipo: "rendimento",
-        limiteAparecimento: 450
-    },
-    macos: {
-        nome: "MacOS Dev Kit",
-        descricao: "Aumenta o ganho e reduz o tempo em 5% cada",
-        icone: "🍏",
-        precoBase: 1200,
-        precoAtual: 1200,
-        multiplicadorPreco: 1.0,
-        nivel: 0,
-        nivelMax: 1,
-        efeito: 0.03,
-        tipo: "global",
-        subtipo: "ambos",
-        limiteAparecimento: 800
-    },
-
-    // Cursos e Certificações
-    udemy: {
-        nome: "Curso Udemy",
-        descricao: "Aumenta o ganho de todas as linguagens em 10%",
-        icone: "📚",
-        precoBase: 300,
-        precoAtual: 300,
-        multiplicadorPreco: 1.0,
-        nivel: 0,
-        nivelMax: 1,
-        efeito: 0.07,
-        tipo: "global",
-        subtipo: "rendimento",
-        limiteAparecimento: 200
-    },
-    alura: {
-        nome: "Curso Alura",
-        descricao: "Reduz o tempo de todas as linguagens em 5%",
-        icone: "🎓",
-        precoBase: 350,
-        precoAtual: 350,
-        multiplicadorPreco: 1.0,
-        nivel: 0,
-        nivelMax: 1,
-        efeito: 0.05,
-        tipo: "global",
-        subtipo: "tempo",
-        limiteAparecimento: 220
-    },
-    ebac: {
-        nome: "Curso EBAC",
-        descricao: "Aumenta o ganho em 10% e reduz tempo em 5%",
-        icone: "🏫",
-        precoBase: 500,
-        precoAtual: 500,
-        multiplicadorPreco: 1.0,
-        nivel: 0,
-        nivelMax: 1,
-        efeito: 0.08,
-        tipo: "global",
-        subtipo: "ambos",
-        limiteAparecimento: 300
-    },
-    certJava: {
-        nome: "Certificação Java Gold",
-        descricao: "Aumenta o ganho de Java em 20% adicional",
-        icone: "☕",
-        precoBase: 800,
-        precoAtual: 800,
-        multiplicadorPreco: 1.0,
-        nivel: 0,
-        nivelMax: 1,
-        efeito: 0.20,
-        tipo: "linguagem-especifica",
-        linguagem: "java",
-        subtipo: "rendimento",
-        limiteAparecimento: 600
-    },
-    certPython: {
-        nome: "Certificado Python Ninja",
-        descricao: "Aumenta o ganho de Python em 15%",
-        icone: "🐍",
-        precoBase: 750,
-        precoAtual: 750,
-        multiplicadorPreco: 1.0,
-        nivel: 0,
-        nivelMax: 1,
-        efeito: 0.15,
-        tipo: "linguagem-especifica",
-        linguagem: "python",
-        subtipo: "rendimento",
-        limiteAparecimento: 550
-    },
-    aws: {
-        nome: "AWS Solutions Architect",
-        descricao: "Aumenta o ganho de todas as linguagens em 10%",
-        icone: "☁️",
-        precoBase: 1500,
-        precoAtual: 1500,
-        multiplicadorPreco: 1.0,
-        nivel: 0,
-        nivelMax: 1,
-        efeito: 0.10,
-        tipo: "global",
-        subtipo: "rendimento",
-        limiteAparecimento: 1000
-    },
-
-    // Ferramentas e Serviços
-    cloud: {
-        nome: "Cloud Computing",
-        descricao: "Aumenta o ganho de todas as linguagens em 15%",
-        icone: "🌩️",
-        precoBase: 2000,
-        precoAtual: 2000,
-        multiplicadorPreco: 1.0,
-        nivel: 0,
-        nivelMax: 1,
-        efeito: 0.12,
-        tipo: "global",
-        subtipo: "rendimento",
-        limiteAparecimento: 1200
-    },
-    banco: {
-        nome: "Banco de Dados",
-        descricao: "Reduz o tempo de todas as linguagens em 10%",
-        icone: "🗄️",
-        precoBase: 1800,
-        precoAtual: 1800,
-        multiplicadorPreco: 1.0,
-        nivel: 0,
-        nivelMax: 1,
-        efeito: 0.08,
-        tipo: "global",
-        subtipo: "tempo",
-        limiteAparecimento: 1100
-    },
-    gambiarra: {
-        nome: "Gambiarra",
-        descricao: "Aumenta o ganho em 20% mas aumenta o tempo em 5%",
-        icone: "🛠️",
-        precoBase: 100,
-        precoAtual: 100,
-        multiplicadorPreco: 1.0,
-        nivel: 0,
-        nivelMax: 1,
-        efeito: 0.20,
-        efeitoNegativo: 0.05,
-        tipo: "global",
-        subtipo: "gambiarra",
-        limiteAparecimento: 50
-    },
-    vibe: {
-        nome: "Vibe Coding",
-        descricao: "Aumenta o ganho em 30% mas reduz a velocidade em 10%",
-        icone: "🎵",
-        precoBase: 200,
-        precoAtual: 200,
-        multiplicadorPreco: 1.0,
-        nivel: 0,
-        nivelMax: 1,
-        efeito: 0.30,
-        efeitoNegativo: 0.10,
-        tipo: "global",
-        subtipo: "vibe",
-        limiteAparecimento: 100
-    },
-    github: {
-        nome: "GitHub",
-        descricao: "Aumenta o ganho de todas as linguagens em 5% e reduz tempo em 5%",
-        icone: "🐙",
-        precoBase: 400,
-        precoAtual: 400,
-        multiplicadorPreco: 1.0,
-        nivel: 0,
-        nivelMax: 1,
-        efeito: 0.05,
-        tipo: "global",
-        subtipo: "ambos",
-        limiteAparecimento: 250
-    },
-    docker: {
-        nome: "Docker",
-        descricao: "Reduz o tempo de todas as linguagens em 10%",
-        icone: "🐳",
-        precoBase: 900,
-        precoAtual: 900,
-        multiplicadorPreco: 1.0,
-        nivel: 0,
-        nivelMax: 1,
-        efeito: 0.06,
-        tipo: "global",
-        subtipo: "tempo",
-        limiteAparecimento: 600
-    },
-    kubernetes: {
-        nome: "Kubernetes",
-        descricao: "Aumenta o ganho de todas as linguagens em 10%",
-        icone: "⚓",
-        precoBase: 1500,
-        precoAtual: 1500,
-        multiplicadorPreco: 1.0,
-        nivel: 0,
-        nivelMax: 1,
-        efeito: 0.09,
-        tipo: "global",
-        subtipo: "rendimento",
-        limiteAparecimento: 900
-    },
-    gitflow: {
-        nome: "Gitflow Pro",
-        descricao: "Aumenta o ganho em 10% e reduz tempo em 5%",
-        icone: "🌿",
-        precoBase: 600,
-        precoAtual: 600,
-        multiplicadorPreco: 1.0,
-        nivel: 0,
-        nivelMax: 1,
-        efeito: 0.07,
-        tipo: "global",
-        subtipo: "ambos",
-        limiteAparecimento: 350
-    },
-    cicd: {
-        nome: "CI/CD Automatizado",
-        descricao: "Reduz o tempo de todas as linguagens em 10%",
-        icone: "🔄",
-        precoBase: 2000,
-        precoAtual: 2000,
-        multiplicadorPreco: 1.0,
-        nivel: 0,
-        nivelMax: 1,
-        efeito: 0.10,
-        tipo: "global",
-        subtipo: "tempo",
-        limiteAparecimento: 1300
-    },
-    ssd: {
-        nome: "SSD NVMe",
-        descricao: "Aumenta a velocidade de todas as linguagens em 10%",
-        icone: "💾",
-        precoBase: 1200,
-        precoAtual: 1200,
-        multiplicadorPreco: 1.0,
-        nivel: 0,
-        nivelMax: 1,
-        efeito: 0.06,
-        tipo: "global",
-        subtipo: "tempo",
-        limiteAparecimento: 800
-    },
-    hdd: {
-        nome: "HDD 7200rpm",
-        descricao: "Aumenta o ganho de todas as linguagens em 5%",
-        icone: "💿",
-        precoBase: 600,
-        precoAtual: 600,
-        multiplicadorPreco: 1.0,
-        nivel: 0,
-        nivelMax: 1,
-        efeito: 0.04,
-        tipo: "global",
-        subtipo: "rendimento",
-        limiteAparecimento: 400
-    },
-    placaMae: {
-        nome: "Placa‑Mãe X570",
-        descricao: "Reduz o tempo de todas as linguagens em 5%",
-        icone: "🔌",
-        precoBase: 1500,
-        precoAtual: 1500,
-        multiplicadorPreco: 1.0,
-        nivel: 0,
-        nivelMax: 1,
-        efeito: 0.05,
-        tipo: "global",
-        subtipo: "tempo",
-        limiteAparecimento: 1000
-    },
-    fonte: {
-        nome: "Fonte 80 Plus Gold",
-        descricao: "Aumenta o ganho de todas as linguagens em 5%",
-        icone: "⚡",
-        precoBase: 800,
-        precoAtual: 800,
-        multiplicadorPreco: 1.0,
-        nivel: 0,
-        nivelMax: 1,
-        efeito: 0.03,
-        tipo: "global",
-        subtipo: "rendimento",
-        limiteAparecimento: 500
-    },
-    gabinete: {
-        nome: "Gabinete com Fluxo de Ar",
-        descricao: "Reduz o tempo de todas as linguagens em 5%",
-        icone: "📦",
-        precoBase: 400,
-        precoAtual: 400,
-        multiplicadorPreco: 1.0,
-        nivel: 0,
-        nivelMax: 1,
-        efeito: 0.02,
-        tipo: "global",
-        subtipo: "tempo",
-        limiteAparecimento: 300
-    },
-    cooler: {
-        nome: "Cooler Master Hyper",
-        descricao: "Aumenta o ganho de todas as linguagens em 5%",
-        icone: "❄️",
-        precoBase: 300,
-        precoAtual: 300,
-        multiplicadorPreco: 1.0,
-        nivel: 0,
-        nivelMax: 1,
-        efeito: 0.02,
-        tipo: "global",
-        subtipo: "rendimento",
-        limiteAparecimento: 200
-    },
-    waterCooler: {
-        nome: "Water Cooler 360mm",
-        descricao: "Reduz o tempo de todas as linguagens em 10%",
-        icone: "💧",
-        precoBase: 2000,
-        precoAtual: 2000,
-        multiplicadorPreco: 1.0,
-        nivel: 0,
-        nivelMax: 1,
-        efeito: 0.07,
-        tipo: "global",
-        subtipo: "tempo",
-        limiteAparecimento: 1500
-    },
-    placaRede: {
-        nome: "Placa de Rede 10Gb",
-        descricao: "Aumenta o ganho de todas as linguagens em 5%",
-        icone: "🌐",
-        precoBase: 900,
-        precoAtual: 900,
-        multiplicadorPreco: 1.0,
-        nivel: 0,
-        nivelMax: 1,
-        efeito: 0.05,
-        tipo: "global",
-        subtipo: "rendimento",
-        limiteAparecimento: 600
-    },
-    placaSom: {
-        nome: "Placa de Som DAC",
-        descricao: "Aumenta o poder de clique em 10%",
-        icone: "🎧",
-        precoBase: 700,
-        precoAtual: 700,
-        multiplicadorPreco: 1.0,
-        nivel: 0,
-        nivelMax: 1,
-        efeito: 0.10,
-        tipo: "global",
-        subtipo: "clique",
-        limiteAparecimento: 500
-    },
-    monitor4k: {
-        nome: "Monitor 4K HDR",
-        descricao: "Aumenta o ganho de todas as linguagens em 10%",
-        icone: "🖥️",
-        precoBase: 2500,
-        precoAtual: 2500,
-        multiplicadorPreco: 1.0,
-        nivel: 0,
-        nivelMax: 1,
-        efeito: 0.08,
-        tipo: "global",
-        subtipo: "rendimento",
-        limiteAparecimento: 2000
-    },
-
-    // Software (10)
-    vscode: {
-        nome: "VS Code Ultimate",
-        descricao: "Aumenta o ganho de todas as linguagens em 10%",
-        icone: "📝",
-        precoBase: 500,
-        precoAtual: 500,
-        multiplicadorPreco: 1.0,
-        nivel: 0,
-        nivelMax: 1,
-        efeito: 0.06,
-        tipo: "global",
-        subtipo: "rendimento",
-        limiteAparecimento: 350
-    },
-    intellij: {
-        nome: "IntelliJ IDEA Ultimate",
-        descricao: "Reduz o tempo de todas as linguagens em 5%",
-        icone: "☕",
-        precoBase: 800,
-        precoAtual: 800,
-        multiplicadorPreco: 1.0,
-        nivel: 0,
-        nivelMax: 1,
-        efeito: 0.05,
-        tipo: "global",
-        subtipo: "tempo",
-        limiteAparecimento: 600
-    },
-    vim: {
-        nome: "Vim + Plugins",
-        descricao: "Aumenta o ganho de todas as linguagens em 10% (mas requer aprendizado)",
-        icone: "🔧",
-        precoBase: 300,
-        precoAtual: 300,
-        multiplicadorPreco: 1.0,
-        nivel: 0,
-        nivelMax: 1,
-        efeito: 0.10,
-        tipo: "global",
-        subtipo: "rendimento",
-        limiteAparecimento: 200
-    },
-    emacs: {
-        nome: "Emacs Doom",
-        descricao: "Reduz o tempo de todas as linguagens em 10% (após configuração)",
-        icone: "⚙️",
-        precoBase: 400,
-        precoAtual: 400,
-        multiplicadorPreco: 1.0,
-        nivel: 0,
-        nivelMax: 1,
-        efeito: 0.08,
-        tipo: "global",
-        subtipo: "tempo",
-        limiteAparecimento: 300
-    },
-    sublime: {
-        nome: "Sublime Text 4",
-        descricao: "Aumenta o ganho de todas as linguagens em 5%",
-        icone: "✨",
-        precoBase: 250,
-        precoAtual: 250,
-        multiplicadorPreco: 1.0,
-        nivel: 0,
-        nivelMax: 1,
-        efeito: 0.04,
-        tipo: "global",
-        subtipo: "rendimento",
-        limiteAparecimento: 180
-    },
-    notepadpp: {
-        nome: "Notepad++",
-        descricao: "Aumenta o ganho de todas as linguagens em 5%",
-        icone: "📄",
-        precoBase: 100,
-        precoAtual: 100,
-        multiplicadorPreco: 1.0,
-        nivel: 0,
-        nivelMax: 1,
-        efeito: 0.03,
-        tipo: "global",
-        subtipo: "rendimento",
-        limiteAparecimento: 80
-    },
-    postman: {
-        nome: "Postman Pro",
-        descricao: "Aumenta o ganho de todas as linguagens em 10%",
-        icone: "📮",
-        precoBase: 600,
-        precoAtual: 600,
-        multiplicadorPreco: 1.0,
-        nivel: 0,
-        nivelMax: 1,
-        efeito: 0.07,
-        tipo: "global",
-        subtipo: "rendimento",
-        limiteAparecimento: 400
-    },
-    insomnia: {
-        nome: "Insomnia",
-        descricao: "Reduz o tempo de todas as linguagens em 5%",
-        icone: "😴",
-        precoBase: 500,
-        precoAtual: 500,
-        multiplicadorPreco: 1.0,
-        nivel: 0,
-        nivelMax: 1,
-        efeito: 0.04,
-        tipo: "global",
-        subtipo: "tempo",
-        limiteAparecimento: 350
-    },
-    dbeaver: {
-        nome: "DBeaver",
-        descricao: "Aumenta o ganho de todas as linguagens em 5%",
-        icone: "🐘",
-        precoBase: 550,
-        precoAtual: 550,
-        multiplicadorPreco: 1.0,
-        nivel: 0,
-        nivelMax: 1,
-        efeito: 0.05,
-        tipo: "global",
-        subtipo: "rendimento",
-        limiteAparecimento: 400
-    },
-    figma: {
-        nome: "Figma",
-        descricao: "Aumenta o ganho de todas as linguagens em 10% (design importa)",
-        icone: "🎨",
-        precoBase: 700,
-        precoAtual: 700,
-        multiplicadorPreco: 1.0,
-        nivel: 0,
-        nivelMax: 1,
-        efeito: 0.06,
-        tipo: "global",
-        subtipo: "rendimento",
-        limiteAparecimento: 500
-    },
-
-    // Certificações (10)
-    comptiaA: {
-        nome: "CompTIA A+",
-        descricao: "Aumenta o ganho de todas as linguagens em 4%",
-        icone: "🔧",
-        precoBase: 800,
-        precoAtual: 800,
-        multiplicadorPreco: 1.0,
-        nivel: 0,
-        nivelMax: 1,
-        efeito: 0.04,
-        tipo: "global",
-        subtipo: "rendimento",
-        limiteAparecimento: 600
-    },
-    comptiaNet: {
-        nome: "CompTIA Network+",
-        descricao: "Reduz o tempo de todas as linguagens em 5%",
-        icone: "🌐",
-        precoBase: 1000,
-        precoAtual: 1000,
-        multiplicadorPreco: 1.0,
-        nivel: 0,
-        nivelMax: 1,
-        efeito: 0.05,
-        tipo: "global",
-        subtipo: "tempo",
-        limiteAparecimento: 800
-    },
-    comptiaSec: {
-        nome: "CompTIA Security+",
-        descricao: "Aumenta o ganho de todas as linguagens em 6%",
-        icone: "🔒",
-        precoBase: 1200,
-        precoAtual: 1200,
-        multiplicadorPreco: 1.0,
-        nivel: 0,
-        nivelMax: 1,
-        efeito: 0.06,
-        tipo: "global",
-        subtipo: "rendimento",
-        limiteAparecimento: 900
-    },
-    ccna: {
-        nome: "Cisco CCNA",
-        descricao: "Reduz o tempo de todas as linguagens em 7%",
-        icone: "📡",
-        precoBase: 1500,
-        precoAtual: 1500,
-        multiplicadorPreco: 1.0,
-        nivel: 0,
-        nivelMax: 1,
-        efeito: 0.07,
-        tipo: "global",
-        subtipo: "tempo",
-        limiteAparecimento: 1200
-    },
-    ccnp: {
-        nome: "Cisco CCNP",
-        descricao: "Aumenta o ganho de todas as linguagens em 10%",
-        icone: "🛜",
-        precoBase: 2500,
-        precoAtual: 2500,
-        multiplicadorPreco: 1.0,
-        nivel: 0,
-        nivelMax: 1,
-        efeito: 0.10,
-        tipo: "global",
-        subtipo: "rendimento",
-        limiteAparecimento: 2000
-    },
-    oracleDba: {
-        nome: "Oracle DBA",
-        descricao: "Aumenta o ganho de todas as linguagens em 8%",
-        icone: "🗄️",
-        precoBase: 1800,
-        precoAtual: 1800,
-        multiplicadorPreco: 1.0,
-        nivel: 0,
-        nivelMax: 1,
-        efeito: 0.08,
-        tipo: "global",
-        subtipo: "rendimento",
-        limiteAparecimento: 1500
-    },
-    mcsa: {
-        nome: "MCSA: Windows Server",
-        descricao: "Reduz o tempo de todas as linguagens em 6%",
-        icone: "🪟",
-        precoBase: 1400,
-        precoAtual: 1400,
-        multiplicadorPreco: 1.0,
-        nivel: 0,
-        nivelMax: 1,
-        efeito: 0.06,
-        tipo: "global",
-        subtipo: "tempo",
-        limiteAparecimento: 1100
-    },
-    mcse: {
-        nome: "MCSE: Core Infrastructure",
-        descricao: "Aumenta o ganho de todas as linguagens em 9%",
-        icone: "🏢",
-        precoBase: 2200,
-        precoAtual: 2200,
-        multiplicadorPreco: 1.0,
-        nivel: 0,
-        nivelMax: 1,
-        efeito: 0.09,
-        tipo: "global",
-        subtipo: "rendimento",
-        limiteAparecimento: 1800
-    },
-    pmp: {
-        nome: "PMP",
-        descricao: "Aumenta o ganho de todas as linguagens em 12% (gerenciamento)",
-        icone: "📊",
-        precoBase: 3000,
-        precoAtual: 3000,
-        multiplicadorPreco: 1.0,
-        nivel: 0,
-        nivelMax: 1,
-        efeito: 0.12,
-        tipo: "global",
-        subtipo: "rendimento",
-        limiteAparecimento: 2500
-    },
-    itil: {
-        nome: "ITIL Foundation",
-        descricao: "Reduz o tempo de todas as linguagens em 8%",
-        icone: "🔄",
-        precoBase: 1600,
-        precoAtual: 1600,
-        multiplicadorPreco: 1.0,
-        nivel: 0,
-        nivelMax: 1,
-        efeito: 0.08,
-        tipo: "global",
-        subtipo: "tempo",
-        limiteAparecimento: 1300
-    },
-
-    // Serviços Cloud (10)
-    netlify: {
-        nome: "Netlify",
-        descricao: "Aumenta o ganho de todas as linguagens em 5%",
-        icone: "🌍",
-        precoBase: 900,
-        precoAtual: 900,
-        multiplicadorPreco: 1.0,
-        nivel: 0,
-        nivelMax: 1,
-        efeito: 0.05,
-        tipo: "global",
-        subtipo: "rendimento",
-        limiteAparecimento: 700
-    },
-    vercel: {
-        nome: "Vercel",
-        descricao: "Reduz o tempo de todas as linguagens em 4%",
-        icone: "▲",
-        precoBase: 850,
-        precoAtual: 850,
-        multiplicadorPreco: 1.0,
-        nivel: 0,
-        nivelMax: 1,
-        efeito: 0.04,
-        tipo: "global",
-        subtipo: "tempo",
-        limiteAparecimento: 650
-    },
-    heroku: {
-        nome: "Heroku",
-        descricao: "Aumenta o ganho de todas as linguagens em 6%",
-        icone: "⚙️",
-        precoBase: 1000,
-        precoAtual: 1000,
-        multiplicadorPreco: 1.0,
-        nivel: 0,
-        nivelMax: 1,
-        efeito: 0.06,
-        tipo: "global",
-        subtipo: "rendimento",
-        limiteAparecimento: 800
-    },
-    digitalOcean: {
-        nome: "DigitalOcean",
-        descricao: "Reduz o tempo de todas as linguagens em 5%",
-        icone: "🐳",
-        precoBase: 1100,
-        precoAtual: 1100,
-        multiplicadorPreco: 1.0,
-        nivel: 0,
-        nivelMax: 1,
-        efeito: 0.05,
-        tipo: "global",
-        subtipo: "tempo",
-        limiteAparecimento: 900
-    },
-    linode: {
-        nome: "Linode",
-        descricao: "Aumenta o ganho de todas as linguagens em 7%",
-        icone: "🌱",
-        precoBase: 1200,
-        precoAtual: 1200,
-        multiplicadorPreco: 1.0,
-        nivel: 0,
-        nivelMax: 1,
-        efeito: 0.07,
-        tipo: "global",
-        subtipo: "rendimento",
-        limiteAparecimento: 1000
-    },
-    vultr: {
-        nome: "Vultr",
-        descricao: "Reduz o tempo de todas as linguagens em 6%",
-        icone: "🦅",
-        precoBase: 1300,
-        precoAtual: 1300,
-        multiplicadorPreco: 1.0,
-        nivel: 0,
-        nivelMax: 1,
-        efeito: 0.06,
-        tipo: "global",
-        subtipo: "tempo",
-        limiteAparecimento: 1100
-    },
-    azure: {
-        nome: "Microsoft Azure",
-        descricao: "Aumenta o ganho de todas as linguagens em 10%",
-        icone: "☁️",
-        precoBase: 3000,
-        precoAtual: 3000,
-        multiplicadorPreco: 1.0,
-        nivel: 0,
-        nivelMax: 1,
-        efeito: 0.10,
-        tipo: "global",
-        subtipo: "rendimento",
-        limiteAparecimento: 2500
-    },
-    googleCloud: {
-        nome: "Google Cloud",
-        descricao: "Reduz o tempo de todas as linguagens em 9%",
-        icone: "☁️",
-        precoBase: 2800,
-        precoAtual: 2800,
-        multiplicadorPreco: 1.0,
-        nivel: 0,
-        nivelMax: 1,
-        efeito: 0.09,
-        tipo: "global",
-        subtipo: "tempo",
-        limiteAparecimento: 2300
-    },
-    ibmCloud: {
-        nome: "IBM Cloud",
-        descricao: "Aumenta o ganho de todas as linguagens em 8%",
-        icone: "🧊",
-        precoBase: 2600,
-        precoAtual: 2600,
-        multiplicadorPreco: 1.0,
-        nivel: 0,
-        nivelMax: 1,
-        efeito: 0.08,
-        tipo: "global",
-        subtipo: "rendimento",
-        limiteAparecimento: 2100
-    },
-    oracleCloud: {
-        nome: "Oracle Cloud",
-        descricao: "Reduz o tempo de todas as linguagens em 7%",
-        icone: "🔮",
-        precoBase: 2400,
-        precoAtual: 2400,
-        multiplicadorPreco: 1.0,
-        nivel: 0,
-        nivelMax: 1,
-        efeito: 0.07,
-        tipo: "global",
-        subtipo: "tempo",
-        limiteAparecimento: 1900
-    },
-
-    // Ferramentas de produtividade (10)
-    jira: {
-        nome: "Jira",
-        descricao: "Aumenta o ganho de todas as linguagens em 5%",
-        icone: "📋",
-        precoBase: 600,
-        precoAtual: 600,
-        multiplicadorPreco: 1.0,
-        nivel: 0,
-        nivelMax: 1,
-        efeito: 0.05,
-        tipo: "global",
-        subtipo: "rendimento",
-        limiteAparecimento: 450
-    },
-    trello: {
-        nome: "Trello",
-        descricao: "Reduz o tempo de todas as linguagens em 4%",
-        icone: "📌",
-        precoBase: 500,
-        precoAtual: 500,
-        multiplicadorPreco: 1.0,
-        nivel: 0,
-        nivelMax: 1,
-        efeito: 0.04,
-        tipo: "global",
-        subtipo: "tempo",
-        limiteAparecimento: 400
-    },
-    slack: {
-        nome: "Slack",
-        descricao: "Aumenta o ganho de todas as linguagens em 6%",
-        icone: "💬",
-        precoBase: 700,
-        precoAtual: 700,
-        multiplicadorPreco: 1.0,
-        nivel: 0,
-        nivelMax: 1,
-        efeito: 0.06,
-        tipo: "global",
-        subtipo: "rendimento",
-        limiteAparecimento: 550
-    },
-    discord: {
-        nome: "Discord",
-        descricao: "Reduz o tempo de todas as linguagens em 5%",
-        icone: "🎮",
-        precoBase: 650,
-        precoAtual: 650,
-        multiplicadorPreco: 1.0,
-        nivel: 0,
-        nivelMax: 1,
-        efeito: 0.05,
-        tipo: "global",
-        subtipo: "tempo",
-        limiteAparecimento: 500
-    },
-    zoom: {
-        nome: "Zoom",
-        descricao: "Aumenta o ganho de todas as linguagens em 3%",
-        icone: "📹",
-        precoBase: 400,
-        precoAtual: 400,
-        multiplicadorPreco: 1.0,
-        nivel: 0,
-        nivelMax: 1,
-        efeito: 0.03,
-        tipo: "global",
-        subtipo: "rendimento",
-        limiteAparecimento: 300
-    },
-    teams: {
-        nome: "Microsoft Teams",
-        descricao: "Reduz o tempo de todas as linguagens em 4%",
-        icone: "👥",
-        precoBase: 550,
-        precoAtual: 550,
-        multiplicadorPreco: 1.0,
-        nivel: 0,
-        nivelMax: 1,
-        efeito: 0.04,
-        tipo: "global",
-        subtipo: "tempo",
-        limiteAparecimento: 450
-    },
-    notion: {
-        nome: "Notion",
-        descricao: "Aumenta o ganho de todas as linguagens em 7%",
-        icone: "📒",
-        precoBase: 750,
-        precoAtual: 750,
-        multiplicadorPreco: 1.0,
-        nivel: 0,
-        nivelMax: 1,
-        efeito: 0.07,
-        tipo: "global",
-        subtipo: "rendimento",
-        limiteAparecimento: 600
-    },
-    evernote: {
-        nome: "Evernote",
-        descricao: "Reduz o tempo de todas as linguagens em 5%",
-        icone: "🐘",
-        precoBase: 680,
-        precoAtual: 680,
-        multiplicadorPreco: 1.0,
-        nivel: 0,
-        nivelMax: 1,
-        efeito: 0.05,
-        tipo: "global",
-        subtipo: "tempo",
-        limiteAparecimento: 530
-    },
-    obsidian: {
-        nome: "Obsidian",
-        descricao: "Aumenta o ganho de todas as linguagens em 8%",
-        icone: "🔮",
-        precoBase: 900,
-        precoAtual: 900,
-        multiplicadorPreco: 1.0,
-        nivel: 0,
-        nivelMax: 1,
-        efeito: 0.08,
-        tipo: "global",
-        subtipo: "rendimento",
-        limiteAparecimento: 700
-    },
-    confluence: {
-        nome: "Confluence",
-        descricao: "Reduz o tempo de todas as linguagens em 6%",
-        icone: "📚",
-        precoBase: 850,
-        precoAtual: 850,
-        multiplicadorPreco: 1.0,
-        nivel: 0,
-        nivelMax: 1,
-        efeito: 0.06,
-        tipo: "global",
-        subtipo: "tempo",
-        limiteAparecimento: 650
-    },
-
-    // Internet (5)
-    fibra: {
-        nome: "Fibra Óptica 1Gbps",
-        descricao: "Aumenta o ganho de todas as linguagens em 10%",
-        icone: "🌐",
-        precoBase: 2000,
-        precoAtual: 2000,
-        multiplicadorPreco: 1.0,
-        nivel: 0,
-        nivelMax: 1,
-        efeito: 0.10,
-        tipo: "global",
-        subtipo: "rendimento",
-        limiteAparecimento: 1500
-    },
-    cincoG: {
-        nome: "5G Móvel",
-        descricao: "Reduz o tempo de todas as linguagens em 8%",
-        icone: "📶",
-        precoBase: 1800,
-        precoAtual: 1800,
-        multiplicadorPreco: 1.0,
-        nivel: 0,
-        nivelMax: 1,
-        efeito: 0.08,
-        tipo: "global",
-        subtipo: "tempo",
-        limiteAparecimento: 1400
-    },
-    starlink: {
-        nome: "Starlink",
-        descricao: "Aumenta o ganho de todas as linguagens em 15%",
-        icone: "🛰️",
-        precoBase: 5000,
-        precoAtual: 5000,
-        multiplicadorPreco: 1.0,
-        nivel: 0,
-        nivelMax: 1,
-        efeito: 0.15,
-        tipo: "global",
-        subtipo: "rendimento",
-        limiteAparecimento: 4000
-    },
-    proxy: {
-        nome: "Proxy Empresarial",
-        descricao: "Aumenta a segurança e o ganho em 7%",
-        icone: "🔒",
-        precoBase: 1200,
-        precoAtual: 1200,
-        multiplicadorPreco: 1.0,
-        nivel: 0,
-        nivelMax: 1,
-        efeito: 0.07,
-        tipo: "global",
-        subtipo: "rendimento",
-        limiteAparecimento: 900
-    },
-    vpn: {
-        nome: "VPN Corporativa",
-        descricao: "Reduz o tempo de todas as linguagens em 5%",
-        icone: "🔐",
-        precoBase: 1000,
-        precoAtual: 1000,
-        multiplicadorPreco: 1.0,
-        nivel: 0,
-        nivelMax: 1,
-        efeito: 0.05,
-        tipo: "global",
-        subtipo: "tempo",
-        limiteAparecimento: 800
-    },
-
-    // Escritório (5)
-    cadeiraErgo: {
-        nome: "Cadeira Ergonômica Herman Miller",
-        descricao: "Aumenta o ganho de todas as linguagens em 12%",
-        icone: "🪑",
-        precoBase: 3500,
-        precoAtual: 3500,
-        multiplicadorPreco: 1.0,
-        nivel: 0,
-        nivelMax: 1,
-        efeito: 0.12,
-        tipo: "global",
-        subtipo: "rendimento",
-        limiteAparecimento: 2800
-    },
-    mesaAjustavel: {
-        nome: "Mesa Ajustável em Altura",
-        descricao: "Reduz o tempo de todas as linguagens em 8%",
-        icone: "📐",
-        precoBase: 2200,
-        precoAtual: 2200,
-        multiplicadorPreco: 1.0,
-        nivel: 0,
-        nivelMax: 1,
-        efeito: 0.08,
-        tipo: "global",
-        subtipo: "tempo",
-        limiteAparecimento: 1800
-    },
-    luzLed: {
-        nome: "Luz LED RGB",
-        descricao: "Aumenta o ganho de todas as linguagens em 5%",
-        icone: "💡",
-        precoBase: 400,
-        precoAtual: 400,
-        multiplicadorPreco: 1.0,
-        nivel: 0,
-        nivelMax: 1,
-        efeito: 0.05,
-        tipo: "global",
-        subtipo: "rendimento",
-        limiteAparecimento: 300
-    },
-    headset: {
-        nome: "Headset Gamer 7.1",
-        descricao: "Aumenta o poder de clique em 20%",
-        icone: "🎧",
-        precoBase: 600,
-        precoAtual: 600,
-        multiplicadorPreco: 1.0,
-        nivel: 0,
-        nivelMax: 1,
-        efeito: 0.20,
-        tipo: "global",
-        subtipo: "clique",
-        limiteAparecimento: 500
-    },
-    microfone: {
-        nome: "Microfone Condensador",
-        descricao: "Aumenta o ganho de todas as linguagens em 4%",
-        icone: "🎙️",
-        precoBase: 450,
-        precoAtual: 450,
-        multiplicadorPreco: 1.0,
-        nivel: 0,
-        nivelMax: 1,
-        efeito: 0.04,
-        tipo: "global",
-        subtipo: "rendimento",
-        limiteAparecimento: 350
-    },
-
-    // Miscelânea (5)
-    cafeExtra: {
-        nome: "Café Extra Forte",
-        descricao: "Aumenta o ganho de todas as linguagens em 8% por 30s (passivo)",
-        icone: "☕",
-        precoBase: 150,
-        precoAtual: 150,
-        multiplicadorPreco: 1.0,
-        nivel: 0,
-        nivelMax: 1,
-        efeito: 0.08,
-        tipo: "global",
-        subtipo: "rendimento",
-        limiteAparecimento: 100
-    },
-    redBull: {
-        nome: "Red Bull",
-        descricao: "Reduz o tempo de todas as linguagens em 10% (energia)",
-        icone: "🥤",
-        precoBase: 200,
-        precoAtual: 200,
-        multiplicadorPreco: 1.0,
-        nivel: 0,
-        nivelMax: 1,
-        efeito: 0.10,
-        tipo: "global",
-        subtipo: "tempo",
-        limiteAparecimento: 150
-    },
-    energetico: {
-        nome: "Energético Genérico",
-        descricao: "Aumenta o ganho de todas as linguagens em 6%",
-        icone: "⚡",
-        precoBase: 180,
-        precoAtual: 180,
-        multiplicadorPreco: 1.0,
-        nivel: 0,
-        nivelMax: 1,
-        efeito: 0.06,
-        tipo: "global",
-        subtipo: "rendimento",
-        limiteAparecimento: 120
-    },
-    pizzaSexta: {
-        nome: "Pizza na Sexta",
-        descricao: "Aumenta o ganho de todas as linguagens em 15% na sexta-feira (sempre ativo)",
-        icone: "🍕",
-        precoBase: 300,
-        precoAtual: 300,
-        multiplicadorPreco: 1.0,
-        nivel: 0,
-        nivelMax: 1,
-        efeito: 0.15,
-        tipo: "global",
-        subtipo: "rendimento",
-        limiteAparecimento: 250
-    },
-    diaFolga: {
-        nome: "Dia de Folga",
-        descricao: "Reduz o tempo de todas as linguagens em 12% (descanso)",
-        icone: "😎",
-        precoBase: 500,
-        precoAtual: 500,
-        multiplicadorPreco: 1.0,
-        nivel: 0,
-        nivelMax: 1,
-        efeito: 0.12,
-        tipo: "global",
-        subtipo: "tempo",
-        limiteAparecimento: 400
-    }
+    ram: { nome: "Memória RAM", descricao: "Aumenta a velocidade de todas as linguagens em 5%", icone: "🧠", precoBase: 500, precoAtual: 500, multiplicadorPreco: 1.0, nivel: 0, nivelMax: 1, efeito: 0.05, tipo: "global", subtipo: "tempo", limiteAparecimento: 200 },
+    gpu: { nome: "Placa de Vídeo", descricao: "Aumenta o ganho de todas as linguagens em 10%", icone: "🎮", precoBase: 800, precoAtual: 800, multiplicadorPreco: 1.0, nivel: 0, nivelMax: 1, efeito: 0.10, tipo: "global", subtipo: "rendimento", limiteAparecimento: 300 },
+    cpu: { nome: "Processador", descricao: "Reduz o tempo de todas as linguagens em 10%", icone: "⚙️", precoBase: 1000, precoAtual: 1000, multiplicadorPreco: 1.0, nivel: 0, nivelMax: 1, efeito: 0.07, tipo: "global", subtipo: "tempo", limiteAparecimento: 400 },
+    monitor: { nome: "Monitor Ultrawide", descricao: "Aumenta o ganho de todas as linguagens em 10%", icone: "🖥️", precoBase: 600, precoAtual: 600, multiplicadorPreco: 1.0, nivel: 0, nivelMax: 1, efeito: 0.08, tipo: "global", subtipo: "rendimento", limiteAparecimento: 250 },
+    teclado: { nome: "Teclado Mecânico RGB", descricao: "Aumenta o poder de clique em 15%", icone: "⌨️", precoBase: 400, precoAtual: 400, multiplicadorPreco: 1.0, nivel: 0, nivelMax: 1, efeito: 0.15, tipo: "global", subtipo: "clique", limiteAparecimento: 150 },
+    cadeira: { nome: "Cadeira Gamer Ergonométrica", descricao: "Reduz o tempo de todas as linguagens em 5%", icone: "💺", precoBase: 300, precoAtual: 300, multiplicadorPreco: 1.0, nivel: 0, nivelMax: 1, efeito: 0.03, tipo: "global", subtipo: "tempo", limiteAparecimento: 100 },
+    cafeteira: { nome: "Cafeteira Acoplada no PC", descricao: "Aumenta o ganho de todas as linguagens em 5%", icone: "☕", precoBase: 200, precoAtual: 200, multiplicadorPreco: 1.0, nivel: 0, nivelMax: 1, efeito: 0.05, tipo: "global", subtipo: "rendimento", limiteAparecimento: 80 },
+    linux: { nome: "Linux", descricao: "Reduz o tempo de todas as linguagens em 5%", icone: "🐧", precoBase: 700, precoAtual: 700, multiplicadorPreco: 1.0, nivel: 0, nivelMax: 1, efeito: 0.04, tipo: "global", subtipo: "tempo", limiteAparecimento: 500 },
+    windows: { nome: "Windows Otimizado", descricao: "Aumenta o ganho de todas as linguagens em 10%", icone: "🪟", precoBase: 650, precoAtual: 650, multiplicadorPreco: 1.0, nivel: 0, nivelMax: 1, efeito: 0.06, tipo: "global", subtipo: "rendimento", limiteAparecimento: 450 },
+    macos: { nome: "MacOS Dev Kit", descricao: "Aumenta o ganho e reduz o tempo em 5% cada", icone: "🍏", precoBase: 1200, precoAtual: 1200, multiplicadorPreco: 1.0, nivel: 0, nivelMax: 1, efeito: 0.03, tipo: "global", subtipo: "ambos", limiteAparecimento: 800 },
+    udemy: { nome: "Curso Udemy", descricao: "Aumenta o ganho de todas as linguagens em 10%", icone: "📚", precoBase: 300, precoAtual: 300, multiplicadorPreco: 1.0, nivel: 0, nivelMax: 1, efeito: 0.07, tipo: "global", subtipo: "rendimento", limiteAparecimento: 200 },
+    alura: { nome: "Curso Alura", descricao: "Reduz o tempo de todas as linguagens em 5%", icone: "🎓", precoBase: 350, precoAtual: 350, multiplicadorPreco: 1.0, nivel: 0, nivelMax: 1, efeito: 0.05, tipo: "global", subtipo: "tempo", limiteAparecimento: 220 },
+    ebac: { nome: "Curso EBAC", descricao: "Aumenta o ganho em 10% e reduz tempo em 5%", icone: "🏫", precoBase: 500, precoAtual: 500, multiplicadorPreco: 1.0, nivel: 0, nivelMax: 1, efeito: 0.08, tipo: "global", subtipo: "ambos", limiteAparecimento: 300 },
+    certJava: { nome: "Certificação Java Gold", descricao: "Aumenta o ganho de Java em 20% adicional", icone: "☕", precoBase: 800, precoAtual: 800, multiplicadorPreco: 1.0, nivel: 0, nivelMax: 1, efeito: 0.20, tipo: "linguagem-especifica", linguagem: "java", subtipo: "rendimento", limiteAparecimento: 600 },
+    certPython: { nome: "Certificado Python Ninja", descricao: "Aumenta o ganho de Python em 15%", icone: "🐍", precoBase: 750, precoAtual: 750, multiplicadorPreco: 1.0, nivel: 0, nivelMax: 1, efeito: 0.15, tipo: "linguagem-especifica", linguagem: "python", subtipo: "rendimento", limiteAparecimento: 550 },
+    aws: { nome: "AWS Solutions Architect", descricao: "Aumenta o ganho de todas as linguagens em 10%", icone: "☁️", precoBase: 1500, precoAtual: 1500, multiplicadorPreco: 1.0, nivel: 0, nivelMax: 1, efeito: 0.10, tipo: "global", subtipo: "rendimento", limiteAparecimento: 1000 },
+    cloud: { nome: "Cloud Computing", descricao: "Aumenta o ganho de todas as linguagens em 15%", icone: "🌩️", precoBase: 2000, precoAtual: 2000, multiplicadorPreco: 1.0, nivel: 0, nivelMax: 1, efeito: 0.12, tipo: "global", subtipo: "rendimento", limiteAparecimento: 1200 },
+    banco: { nome: "Banco de Dados", descricao: "Reduz o tempo de todas as linguagens em 10%", icone: "🗄️", precoBase: 1800, precoAtual: 1800, multiplicadorPreco: 1.0, nivel: 0, nivelMax: 1, efeito: 0.08, tipo: "global", subtipo: "tempo", limiteAparecimento: 1100 },
+    gambiarra: { nome: "Gambiarra", descricao: "Aumenta o ganho em 20% mas aumenta o tempo em 5%", icone: "🛠️", precoBase: 100, precoAtual: 100, multiplicadorPreco: 1.0, nivel: 0, nivelMax: 1, efeito: 0.20, efeitoNegativo: 0.05, tipo: "global", subtipo: "gambiarra", limiteAparecimento: 50 },
+    vibe: { nome: "Vibe Coding", descricao: "Aumenta o ganho em 30% mas reduz a velocidade em 10%", icone: "🎵", precoBase: 200, precoAtual: 200, multiplicadorPreco: 1.0, nivel: 0, nivelMax: 1, efeito: 0.30, efeitoNegativo: 0.10, tipo: "global", subtipo: "vibe", limiteAparecimento: 100 },
+    github: { nome: "GitHub", descricao: "Aumenta o ganho de todas as linguagens em 5% e reduz tempo em 5%", icone: "🐙", precoBase: 400, precoAtual: 400, multiplicadorPreco: 1.0, nivel: 0, nivelMax: 1, efeito: 0.05, tipo: "global", subtipo: "ambos", limiteAparecimento: 250 },
+    docker: { nome: "Docker", descricao: "Reduz o tempo de todas as linguagens em 10%", icone: "🐳", precoBase: 900, precoAtual: 900, multiplicadorPreco: 1.0, nivel: 0, nivelMax: 1, efeito: 0.06, tipo: "global", subtipo: "tempo", limiteAparecimento: 600 },
+    kubernetes: { nome: "Kubernetes", descricao: "Aumenta o ganho de todas as linguagens em 10%", icone: "⚓", precoBase: 1500, precoAtual: 1500, multiplicadorPreco: 1.0, nivel: 0, nivelMax: 1, efeito: 0.09, tipo: "global", subtipo: "rendimento", limiteAparecimento: 900 },
+    gitflow: { nome: "Gitflow Pro", descricao: "Aumenta o ganho em 10% e reduz tempo em 5%", icone: "🌿", precoBase: 600, precoAtual: 600, multiplicadorPreco: 1.0, nivel: 0, nivelMax: 1, efeito: 0.07, tipo: "global", subtipo: "ambos", limiteAparecimento: 350 },
+    cicd: { nome: "CI/CD Automatizado", descricao: "Reduz o tempo de todas as linguagens em 10%", icone: "🔄", precoBase: 2000, precoAtual: 2000, multiplicadorPreco: 1.0, nivel: 0, nivelMax: 1, efeito: 0.10, tipo: "global", subtipo: "tempo", limiteAparecimento: 1300 },
+    ssd: { nome: "SSD NVMe", descricao: "Aumenta a velocidade de todas as linguagens em 10%", icone: "💾", precoBase: 1200, precoAtual: 1200, multiplicadorPreco: 1.0, nivel: 0, nivelMax: 1, efeito: 0.06, tipo: "global", subtipo: "tempo", limiteAparecimento: 800 },
+    hdd: { nome: "HDD 7200rpm", descricao: "Aumenta o ganho de todas as linguagens em 5%", icone: "💿", precoBase: 600, precoAtual: 600, multiplicadorPreco: 1.0, nivel: 0, nivelMax: 1, efeito: 0.04, tipo: "global", subtipo: "rendimento", limiteAparecimento: 400 },
+    placaMae: { nome: "Placa‑Mãe X570", descricao: "Reduz o tempo de todas as linguagens em 5%", icone: "🔌", precoBase: 1500, precoAtual: 1500, multiplicadorPreco: 1.0, nivel: 0, nivelMax: 1, efeito: 0.05, tipo: "global", subtipo: "tempo", limiteAparecimento: 1000 },
+    fonte: { nome: "Fonte 80 Plus Gold", descricao: "Aumenta o ganho de todas as linguagens em 5%", icone: "⚡", precoBase: 800, precoAtual: 800, multiplicadorPreco: 1.0, nivel: 0, nivelMax: 1, efeito: 0.03, tipo: "global", subtipo: "rendimento", limiteAparecimento: 500 },
+    gabinete: { nome: "Gabinete com Fluxo de Ar", descricao: "Reduz o tempo de todas as linguagens em 5%", icone: "📦", precoBase: 400, precoAtual: 400, multiplicadorPreco: 1.0, nivel: 0, nivelMax: 1, efeito: 0.02, tipo: "global", subtipo: "tempo", limiteAparecimento: 300 },
+    cooler: { nome: "Cooler Master Hyper", descricao: "Aumenta o ganho de todas as linguagens em 5%", icone: "❄️", precoBase: 300, precoAtual: 300, multiplicadorPreco: 1.0, nivel: 0, nivelMax: 1, efeito: 0.02, tipo: "global", subtipo: "rendimento", limiteAparecimento: 200 },
+    waterCooler: { nome: "Water Cooler 360mm", descricao: "Reduz o tempo de todas as linguagens em 10%", icone: "💧", precoBase: 2000, precoAtual: 2000, multiplicadorPreco: 1.0, nivel: 0, nivelMax: 1, efeito: 0.07, tipo: "global", subtipo: "tempo", limiteAparecimento: 1500 },
+    placaRede: { nome: "Placa de Rede 10Gb", descricao: "Aumenta o ganho de todas as linguagens em 5%", icone: "🌐", precoBase: 900, precoAtual: 900, multiplicadorPreco: 1.0, nivel: 0, nivelMax: 1, efeito: 0.05, tipo: "global", subtipo: "rendimento", limiteAparecimento: 600 },
+    placaSom: { nome: "Placa de Som DAC", descricao: "Aumenta o poder de clique em 10%", icone: "🎧", precoBase: 700, precoAtual: 700, multiplicadorPreco: 1.0, nivel: 0, nivelMax: 1, efeito: 0.10, tipo: "global", subtipo: "clique", limiteAparecimento: 500 },
+    monitor4k: { nome: "Monitor 4K HDR", descricao: "Aumenta o ganho de todas as linguagens em 10%", icone: "🖥️", precoBase: 2500, precoAtual: 2500, multiplicadorPreco: 1.0, nivel: 0, nivelMax: 1, efeito: 0.08, tipo: "global", subtipo: "rendimento", limiteAparecimento: 2000 },
+    vscode: { nome: "VS Code Ultimate", descricao: "Aumenta o ganho de todas as linguagens em 10%", icone: "📝", precoBase: 500, precoAtual: 500, multiplicadorPreco: 1.0, nivel: 0, nivelMax: 1, efeito: 0.06, tipo: "global", subtipo: "rendimento", limiteAparecimento: 350 },
+    intellij: { nome: "IntelliJ IDEA Ultimate", descricao: "Reduz o tempo de todas as linguagens em 5%", icone: "☕", precoBase: 800, precoAtual: 800, multiplicadorPreco: 1.0, nivel: 0, nivelMax: 1, efeito: 0.05, tipo: "global", subtipo: "tempo", limiteAparecimento: 600 },
+    vim: { nome: "Vim + Plugins", descricao: "Aumenta o ganho de todas as linguagens em 10% (mas requer aprendizado)", icone: "🔧", precoBase: 300, precoAtual: 300, multiplicadorPreco: 1.0, nivel: 0, nivelMax: 1, efeito: 0.10, tipo: "global", subtipo: "rendimento", limiteAparecimento: 200 },
+    emacs: { nome: "Emacs Doom", descricao: "Reduz o tempo de todas as linguagens em 10% (após configuração)", icone: "⚙️", precoBase: 400, precoAtual: 400, multiplicadorPreco: 1.0, nivel: 0, nivelMax: 1, efeito: 0.08, tipo: "global", subtipo: "tempo", limiteAparecimento: 300 },
+    sublime: { nome: "Sublime Text 4", descricao: "Aumenta o ganho de todas as linguagens em 5%", icone: "✨", precoBase: 250, precoAtual: 250, multiplicadorPreco: 1.0, nivel: 0, nivelMax: 1, efeito: 0.04, tipo: "global", subtipo: "rendimento", limiteAparecimento: 180 },
+    notepadpp: { nome: "Notepad++", descricao: "Aumenta o ganho de todas as linguagens em 5%", icone: "📄", precoBase: 100, precoAtual: 100, multiplicadorPreco: 1.0, nivel: 0, nivelMax: 1, efeito: 0.03, tipo: "global", subtipo: "rendimento", limiteAparecimento: 80 },
+    postman: { nome: "Postman Pro", descricao: "Aumenta o ganho de todas as linguagens em 10%", icone: "📮", precoBase: 600, precoAtual: 600, multiplicadorPreco: 1.0, nivel: 0, nivelMax: 1, efeito: 0.07, tipo: "global", subtipo: "rendimento", limiteAparecimento: 400 },
+    insomnia: { nome: "Insomnia", descricao: "Reduz o tempo de todas as linguagens em 5%", icone: "😴", precoBase: 500, precoAtual: 500, multiplicadorPreco: 1.0, nivel: 0, nivelMax: 1, efeito: 0.04, tipo: "global", subtipo: "tempo", limiteAparecimento: 350 },
+    dbeaver: { nome: "DBeaver", descricao: "Aumenta o ganho de todas as linguagens em 5%", icone: "🐘", precoBase: 550, precoAtual: 550, multiplicadorPreco: 1.0, nivel: 0, nivelMax: 1, efeito: 0.05, tipo: "global", subtipo: "rendimento", limiteAparecimento: 400 },
+    figma: { nome: "Figma", descricao: "Aumenta o ganho de todas as linguagens em 10% (design importa)", icone: "🎨", precoBase: 700, precoAtual: 700, multiplicadorPreco: 1.0, nivel: 0, nivelMax: 1, efeito: 0.06, tipo: "global", subtipo: "rendimento", limiteAparecimento: 500 },
+    comptiaA: { nome: "CompTIA A+", descricao: "Aumenta o ganho de todas as linguagens em 4%", icone: "🔧", precoBase: 800, precoAtual: 800, multiplicadorPreco: 1.0, nivel: 0, nivelMax: 1, efeito: 0.04, tipo: "global", subtipo: "rendimento", limiteAparecimento: 600 },
+    comptiaNet: { nome: "CompTIA Network+", descricao: "Reduz o tempo de todas as linguagens em 5%", icone: "🌐", precoBase: 1000, precoAtual: 1000, multiplicadorPreco: 1.0, nivel: 0, nivelMax: 1, efeito: 0.05, tipo: "global", subtipo: "tempo", limiteAparecimento: 800 },
+    comptiaSec: { nome: "CompTIA Security+", descricao: "Aumenta o ganho de todas as linguagens em 6%", icone: "🔒", precoBase: 1200, precoAtual: 1200, multiplicadorPreco: 1.0, nivel: 0, nivelMax: 1, efeito: 0.06, tipo: "global", subtipo: "rendimento", limiteAparecimento: 900 },
+    ccna: { nome: "Cisco CCNA", descricao: "Reduz o tempo de todas as linguagens em 7%", icone: "📡", precoBase: 1500, precoAtual: 1500, multiplicadorPreco: 1.0, nivel: 0, nivelMax: 1, efeito: 0.07, tipo: "global", subtipo: "tempo", limiteAparecimento: 1200 },
+    ccnp: { nome: "Cisco CCNP", descricao: "Aumenta o ganho de todas as linguagens em 10%", icone: "🛜", precoBase: 2500, precoAtual: 2500, multiplicadorPreco: 1.0, nivel: 0, nivelMax: 1, efeito: 0.10, tipo: "global", subtipo: "rendimento", limiteAparecimento: 2000 },
+    oracleDba: { nome: "Oracle DBA", descricao: "Aumenta o ganho de todas as linguagens em 8%", icone: "🗄️", precoBase: 1800, precoAtual: 1800, multiplicadorPreco: 1.0, nivel: 0, nivelMax: 1, efeito: 0.08, tipo: "global", subtipo: "rendimento", limiteAparecimento: 1500 },
+    mcsa: { nome: "MCSA: Windows Server", descricao: "Reduz o tempo de todas as linguagens em 6%", icone: "🪟", precoBase: 1400, precoAtual: 1400, multiplicadorPreco: 1.0, nivel: 0, nivelMax: 1, efeito: 0.06, tipo: "global", subtipo: "tempo", limiteAparecimento: 1100 },
+    mcse: { nome: "MCSE: Core Infrastructure", descricao: "Aumenta o ganho de todas as linguagens em 9%", icone: "🏢", precoBase: 2200, precoAtual: 2200, multiplicadorPreco: 1.0, nivel: 0, nivelMax: 1, efeito: 0.09, tipo: "global", subtipo: "rendimento", limiteAparecimento: 1800 },
+    pmp: { nome: "PMP", descricao: "Aumenta o ganho de todas as linguagens em 12% (gerenciamento)", icone: "📊", precoBase: 3000, precoAtual: 3000, multiplicadorPreco: 1.0, nivel: 0, nivelMax: 1, efeito: 0.12, tipo: "global", subtipo: "rendimento", limiteAparecimento: 2500 },
+    itil: { nome: "ITIL Foundation", descricao: "Reduz o tempo de todas as linguagens em 8%", icone: "🔄", precoBase: 1600, precoAtual: 1600, multiplicadorPreco: 1.0, nivel: 0, nivelMax: 1, efeito: 0.08, tipo: "global", subtipo: "tempo", limiteAparecimento: 1300 },
+    netlify: { nome: "Netlify", descricao: "Aumenta o ganho de todas as linguagens em 5%", icone: "🌍", precoBase: 900, precoAtual: 900, multiplicadorPreco: 1.0, nivel: 0, nivelMax: 1, efeito: 0.05, tipo: "global", subtipo: "rendimento", limiteAparecimento: 700 },
+    vercel: { nome: "Vercel", descricao: "Reduz o tempo de todas as linguagens em 4%", icone: "▲", precoBase: 850, precoAtual: 850, multiplicadorPreco: 1.0, nivel: 0, nivelMax: 1, efeito: 0.04, tipo: "global", subtipo: "tempo", limiteAparecimento: 650 },
+    heroku: { nome: "Heroku", descricao: "Aumenta o ganho de todas as linguagens em 6%", icone: "⚙️", precoBase: 1000, precoAtual: 1000, multiplicadorPreco: 1.0, nivel: 0, nivelMax: 1, efeito: 0.06, tipo: "global", subtipo: "rendimento", limiteAparecimento: 800 },
+    digitalOcean: { nome: "DigitalOcean", descricao: "Reduz o tempo de todas as linguagens em 5%", icone: "🐳", precoBase: 1100, precoAtual: 1100, multiplicadorPreco: 1.0, nivel: 0, nivelMax: 1, efeito: 0.05, tipo: "global", subtipo: "tempo", limiteAparecimento: 900 },
+    linode: { nome: "Linode", descricao: "Aumenta o ganho de todas as linguagens em 7%", icone: "🌱", precoBase: 1200, precoAtual: 1200, multiplicadorPreco: 1.0, nivel: 0, nivelMax: 1, efeito: 0.07, tipo: "global", subtipo: "rendimento", limiteAparecimento: 1000 },
+    vultr: { nome: "Vultr", descricao: "Reduz o tempo de todas as linguagens em 6%", icone: "🦅", precoBase: 1300, precoAtual: 1300, multiplicadorPreco: 1.0, nivel: 0, nivelMax: 1, efeito: 0.06, tipo: "global", subtipo: "tempo", limiteAparecimento: 1100 },
+    azure: { nome: "Microsoft Azure", descricao: "Aumenta o ganho de todas as linguagens em 10%", icone: "☁️", precoBase: 3000, precoAtual: 3000, multiplicadorPreco: 1.0, nivel: 0, nivelMax: 1, efeito: 0.10, tipo: "global", subtipo: "rendimento", limiteAparecimento: 2500 },
+    googleCloud: { nome: "Google Cloud", descricao: "Reduz o tempo de todas as linguagens em 9%", icone: "☁️", precoBase: 2800, precoAtual: 2800, multiplicadorPreco: 1.0, nivel: 0, nivelMax: 1, efeito: 0.09, tipo: "global", subtipo: "tempo", limiteAparecimento: 2300 },
+    ibmCloud: { nome: "IBM Cloud", descricao: "Aumenta o ganho de todas as linguagens em 8%", icone: "🧊", precoBase: 2600, precoAtual: 2600, multiplicadorPreco: 1.0, nivel: 0, nivelMax: 1, efeito: 0.08, tipo: "global", subtipo: "rendimento", limiteAparecimento: 2100 },
+    oracleCloud: { nome: "Oracle Cloud", descricao: "Reduz o tempo de todas as linguagens em 7%", icone: "🔮", precoBase: 2400, precoAtual: 2400, multiplicadorPreco: 1.0, nivel: 0, nivelMax: 1, efeito: 0.07, tipo: "global", subtipo: "tempo", limiteAparecimento: 1900 },
+    jira: { nome: "Jira", descricao: "Aumenta o ganho de todas as linguagens em 5%", icone: "📋", precoBase: 600, precoAtual: 600, multiplicadorPreco: 1.0, nivel: 0, nivelMax: 1, efeito: 0.05, tipo: "global", subtipo: "rendimento", limiteAparecimento: 450 },
+    trello: { nome: "Trello", descricao: "Reduz o tempo de todas as linguagens em 4%", icone: "📌", precoBase: 500, precoAtual: 500, multiplicadorPreco: 1.0, nivel: 0, nivelMax: 1, efeito: 0.04, tipo: "global", subtipo: "tempo", limiteAparecimento: 400 },
+    slack: { nome: "Slack", descricao: "Aumenta o ganho de todas as linguagens em 6%", icone: "💬", precoBase: 700, precoAtual: 700, multiplicadorPreco: 1.0, nivel: 0, nivelMax: 1, efeito: 0.06, tipo: "global", subtipo: "rendimento", limiteAparecimento: 550 },
+    discord: { nome: "Discord", descricao: "Reduz o tempo de todas as linguagens em 5%", icone: "🎮", precoBase: 650, precoAtual: 650, multiplicadorPreco: 1.0, nivel: 0, nivelMax: 1, efeito: 0.05, tipo: "global", subtipo: "tempo", limiteAparecimento: 500 },
+    zoom: { nome: "Zoom", descricao: "Aumenta o ganho de todas as linguagens em 3%", icone: "📹", precoBase: 400, precoAtual: 400, multiplicadorPreco: 1.0, nivel: 0, nivelMax: 1, efeito: 0.03, tipo: "global", subtipo: "rendimento", limiteAparecimento: 300 },
+    teams: { nome: "Microsoft Teams", descricao: "Reduz o tempo de todas as linguagens em 4%", icone: "👥", precoBase: 550, precoAtual: 550, multiplicadorPreco: 1.0, nivel: 0, nivelMax: 1, efeito: 0.04, tipo: "global", subtipo: "tempo", limiteAparecimento: 450 },
+    notion: { nome: "Notion", descricao: "Aumenta o ganho de todas as linguagens em 7%", icone: "📒", precoBase: 750, precoAtual: 750, multiplicadorPreco: 1.0, nivel: 0, nivelMax: 1, efeito: 0.07, tipo: "global", subtipo: "rendimento", limiteAparecimento: 600 },
+    evernote: { nome: "Evernote", descricao: "Reduz o tempo de todas as linguagens em 5%", icone: "🐘", precoBase: 680, precoAtual: 680, multiplicadorPreco: 1.0, nivel: 0, nivelMax: 1, efeito: 0.05, tipo: "global", subtipo: "tempo", limiteAparecimento: 530 },
+    obsidian: { nome: "Obsidian", descricao: "Aumenta o ganho de todas as linguagens em 8%", icone: "🔮", precoBase: 900, precoAtual: 900, multiplicadorPreco: 1.0, nivel: 0, nivelMax: 1, efeito: 0.08, tipo: "global", subtipo: "rendimento", limiteAparecimento: 700 },
+    confluence: { nome: "Confluence", descricao: "Reduz o tempo de todas as linguagens em 6%", icone: "📚", precoBase: 850, precoAtual: 850, multiplicadorPreco: 1.0, nivel: 0, nivelMax: 1, efeito: 0.06, tipo: "global", subtipo: "tempo", limiteAparecimento: 650 },
+    fibra: { nome: "Fibra Óptica 1Gbps", descricao: "Aumenta o ganho de todas as linguagens em 10%", icone: "🌐", precoBase: 2000, precoAtual: 2000, multiplicadorPreco: 1.0, nivel: 0, nivelMax: 1, efeito: 0.10, tipo: "global", subtipo: "rendimento", limiteAparecimento: 1500 },
+    cincoG: { nome: "5G Móvel", descricao: "Reduz o tempo de todas as linguagens em 8%", icone: "📶", precoBase: 1800, precoAtual: 1800, multiplicadorPreco: 1.0, nivel: 0, nivelMax: 1, efeito: 0.08, tipo: "global", subtipo: "tempo", limiteAparecimento: 1400 },
+    starlink: { nome: "Starlink", descricao: "Aumenta o ganho de todas as linguagens em 15%", icone: "🛰️", precoBase: 5000, precoAtual: 5000, multiplicadorPreco: 1.0, nivel: 0, nivelMax: 1, efeito: 0.15, tipo: "global", subtipo: "rendimento", limiteAparecimento: 4000 },
+    proxy: { nome: "Proxy Empresarial", descricao: "Aumenta a segurança e o ganho em 7%", icone: "🔒", precoBase: 1200, precoAtual: 1200, multiplicadorPreco: 1.0, nivel: 0, nivelMax: 1, efeito: 0.07, tipo: "global", subtipo: "rendimento", limiteAparecimento: 900 },
+    vpn: { nome: "VPN Corporativa", descricao: "Reduz o tempo de todas as linguagens em 5%", icone: "🔐", precoBase: 1000, precoAtual: 1000, multiplicadorPreco: 1.0, nivel: 0, nivelMax: 1, efeito: 0.05, tipo: "global", subtipo: "tempo", limiteAparecimento: 800 },
+    cadeiraErgo: { nome: "Cadeira Ergonômica Herman Miller", descricao: "Aumenta o ganho de todas as linguagens em 12%", icone: "🪑", precoBase: 3500, precoAtual: 3500, multiplicadorPreco: 1.0, nivel: 0, nivelMax: 1, efeito: 0.12, tipo: "global", subtipo: "rendimento", limiteAparecimento: 2800 },
+    mesaAjustavel: { nome: "Mesa Ajustável em Altura", descricao: "Reduz o tempo de todas as linguagens em 8%", icone: "📐", precoBase: 2200, precoAtual: 2200, multiplicadorPreco: 1.0, nivel: 0, nivelMax: 1, efeito: 0.08, tipo: "global", subtipo: "tempo", limiteAparecimento: 1800 },
+    luzLed: { nome: "Luz LED RGB", descricao: "Aumenta o ganho de todas as linguagens em 5%", icone: "💡", precoBase: 400, precoAtual: 400, multiplicadorPreco: 1.0, nivel: 0, nivelMax: 1, efeito: 0.05, tipo: "global", subtipo: "rendimento", limiteAparecimento: 300 },
+    headset: { nome: "Headset Gamer 7.1", descricao: "Aumenta o poder de clique em 20%", icone: "🎧", precoBase: 600, precoAtual: 600, multiplicadorPreco: 1.0, nivel: 0, nivelMax: 1, efeito: 0.20, tipo: "global", subtipo: "clique", limiteAparecimento: 500 },
+    microfone: { nome: "Microfone Condensador", descricao: "Aumenta o ganho de todas as linguagens em 4%", icone: "🎙️", precoBase: 450, precoAtual: 450, multiplicadorPreco: 1.0, nivel: 0, nivelMax: 1, efeito: 0.04, tipo: "global", subtipo: "rendimento", limiteAparecimento: 350 },
+    cafeExtra: { nome: "Café Extra Forte", descricao: "Aumenta o ganho de todas as linguagens em 8% por 30s (passivo)", icone: "☕", precoBase: 150, precoAtual: 150, multiplicadorPreco: 1.0, nivel: 0, nivelMax: 1, efeito: 0.08, tipo: "global", subtipo: "rendimento", limiteAparecimento: 100 },
+    redBull: { nome: "Red Bull", descricao: "Reduz o tempo de todas as linguagens em 10% (energia)", icone: "🥤", precoBase: 200, precoAtual: 200, multiplicadorPreco: 1.0, nivel: 0, nivelMax: 1, efeito: 0.10, tipo: "global", subtipo: "tempo", limiteAparecimento: 150 },
+    energetico: { nome: "Energético Genérico", descricao: "Aumenta o ganho de todas as linguagens em 6%", icone: "⚡", precoBase: 180, precoAtual: 180, multiplicadorPreco: 1.0, nivel: 0, nivelMax: 1, efeito: 0.06, tipo: "global", subtipo: "rendimento", limiteAparecimento: 120 },
+    pizzaSexta: { nome: "Pizza na Sexta", descricao: "Aumenta o ganho de todas as linguagens em 15% na sexta-feira (sempre ativo)", icone: "🍕", precoBase: 300, precoAtual: 300, multiplicadorPreco: 1.0, nivel: 0, nivelMax: 1, efeito: 0.15, tipo: "global", subtipo: "rendimento", limiteAparecimento: 250 },
+    diaFolga: { nome: "Dia de Folga", descricao: "Reduz o tempo de todas as linguagens em 12% (descanso)", icone: "😎", precoBase: 500, precoAtual: 500, multiplicadorPreco: 1.0, nivel: 0, nivelMax: 1, efeito: 0.12, tipo: "global", subtipo: "tempo", limiteAparecimento: 400 }
 };
 
 let upgradesData = JSON.parse(JSON.stringify(upgradesDataTemplate));
@@ -3134,21 +1939,139 @@ const lingUpgradesDataTemplate = {
 let lingUpgradesData = JSON.parse(JSON.stringify(lingUpgradesDataTemplate));
 
 // =======================
-// NOVO: SISTEMA DE ASCENSÃO (PRESTIGE)
+// SISTEMA DE ASCENSÃO CORRIGIDO
 // =======================
-let prestigeUnlocked = false;          // Se a ascensão já foi desbloqueada
-let prestigePoints = 0;                // Pontos de ascensão acumulados (não gastos)
-let prestigeBonus = 0;                 // Bônus percentual total (cada ponto = +1%)
-let prestigeProgress = 0;              // Dinheiro acumulado na era atual para próxima ascensão
-let nextPrestigeThreshold = 1e9;       // Primeiro marco: 1 bilhão
-let prestigePointsGainedThisRun = 0;    // Quantos pontos já foram ganhos nesta era (para calcular próximo marco)
-
-// Nível de ascensão (para bônus passivo)
+let prestigeUnlocked = false;
+let prestigePoints = 0;
+let prestigeBonus = 0; // bônus percentual total = ascensionLevel
+let prestigeProgress = 0;
+let prestigePointsGainedThisRun = 0; // pontos ganhos na run atual (para confirmar)
+const PRESTIGE_BASE = 1e9; // primeiro marco
 let ascensionLevel = 0;
 
-// Upgrades permanentes comprados com pontos de ascensão
+function calcularProximoMarco() {
+    return PRESTIGE_BASE * (ascensionLevel + 1);
+}
+
+function verificarProgressoAscensao() {
+    // Desbloqueia a ascensão quando totalMoneyEarned atinge 1e9
+    if (!prestigeUnlocked && totalMoneyEarned >= 1e9) {
+        prestigeUnlocked = true;
+        const container = document.getElementById('ascensionButtonContainer');
+        if (container) {
+            container.style.display = 'flex';
+            container.classList.add('unlocked');
+        }
+        mostrarFeedback('⭐ Ascensão desbloqueada!', 'success');
+        // Garante que o listener da barra seja adicionado após desbloquear
+        atualizarReferenciasBotoesAscensao();
+    }
+
+    // Se ainda não desbloqueada, não processa pontos
+    if (!prestigeUnlocked) return;
+
+    // Enquanto o progresso atual atingir ou ultrapassar o próximo marco, concede pontos
+    let proximoMarco = calcularProximoMarco();
+    let pontosGanhos = 0;
+    while (prestigeProgress >= proximoMarco) {
+        prestigePoints++;
+        prestigePointsGainedThisRun++;
+        prestigeProgress -= proximoMarco;
+        pontosGanhos++;
+        proximoMarco = calcularProximoMarco(); // recalcula com novo nível
+        invalidarCacheCalculos();
+        mostrarFeedback(`⭐ +1 Ponto de Ascensão! Total: ${prestigePoints}`, 'success');
+    }
+    if (pontosGanhos > 0) {
+        console.log(`🎉 Ascensão: +${pontosGanhos} ponto(s). Progresso restante: ${prestigeProgress}`);
+    }
+
+    // Atualiza a interface da barra de ascensão
+    atualizarDisplayAscensao();
+}
+
+function atualizarDisplayAscensao() {
+    const container = document.getElementById('ascensionButtonContainer');
+    const pointsSpan = document.getElementById('prestigePointsTop');
+    const barFill = container?.querySelector('.ascension-bar-fill');
+    if (!container) return;
+
+    const proximoMarco = calcularProximoMarco();
+    const progresso = Math.min(prestigeProgress / proximoMarco, 1);
+    const percentual = progresso * 100;
+
+    if (barFill) barFill.style.width = percentual + '%';
+    if (pointsSpan) {
+        pointsSpan.textContent = `${formatarDinheiro(prestigeProgress)} / ${formatarDinheiro(proximoMarco)} ⭐ (${percentual.toFixed(1)}%)`;
+    }
+
+    if (progresso >= 1) {
+        container.classList.add('pode-ascender');
+    } else {
+        container.classList.remove('pode-ascender');
+    }
+}
+
+function tentarAscender() {
+    if (gamePaused) return;
+    const proximoMarco = calcularProximoMarco();
+    if (prestigeProgress < proximoMarco) {
+        mostrarFeedback('Ainda não atingiu o próximo nível de ascensão!', 'error');
+        return;
+    }
+    abrirModalConfirmacaoAscensao();
+}
+
+function realizarAscensao() {
+    ascensionLevel++;
+    prestigePoints++;
+    prestigeBonus = ascensionLevel; // 1% por nível
+
+    resetarJogoPreservandoAscensao();
+
+    fecharModalConfirmacaoAscensao();
+    fecharModalArvoreSkills();
+    retomarJogo();
+
+    mostrarFeedback(`⭐ Ascensão concluída! Nível ${ascensionLevel} com ${prestigePoints} ponto(s).`, 'success');
+}
+
+function resetarJogoPreservandoAscensao() {
+    money = 0;
+    totalMoneyEarned = 0;
+    linguagensData = JSON.parse(JSON.stringify(linguagensDataTemplate));
+    upgradesData = JSON.parse(JSON.stringify(upgradesDataTemplate));
+    lingUpgradesData = JSON.parse(JSON.stringify(lingUpgradesDataTemplate));
+
+    for (const id in activeProductions) delete activeProductions[id];
+    for (const key in progressoAtivo) progressoAtivo[key] = false;
+
+    document.querySelectorAll('.barra').forEach(barra => {
+        const fill = barra.querySelector('.progress-fill');
+        const timer = barra.querySelector('.timer-text');
+        if (fill) {
+            fill.style.transition = 'none';
+            fill.style.width = '0%';
+            fill.offsetHeight;
+            fill.style.transition = 'width 0.45s cubic-bezier(.22,.9,.36,1)';
+        }
+        if (timer) timer.textContent = '00:00';
+    });
+
+    prestigeProgress = 0;
+    setupAutoClick();
+    if (moneyEl) moneyEl.textContent = "$0.00";
+    document.getElementById('ascensionButtonContainer').style.display = 'flex';
+    atualizarDisplayAscensao();
+    inicializarInterface();
+    atualizarTodosUpgrades();
+    atualizarEstatisticas();
+}
+
+// =======================
+// UPGRADES DE ASCENSÃO (PERMANENTES)
+// =======================
 let prestigeUpgradesData = {
-    // ===== CENTRO: RAIZ DA ÁRVORE =====
     prodGlobal1: {
         nome: "Produção Global +10%",
         descricao: "Aumenta a produção de todas as linguagens em 10%.",
@@ -3160,25 +2083,8 @@ let prestigeUpgradesData = {
         tipo: "global",
         subtipo: "rendimento",
         requisito: null,
-        x: 1450, y: 750 // Centro do canvas
+        x: 1450, y: 750
     },
-
-    // ===== CENTRO: RAIZ DA ÁRVORE =====
-    prodGlobal1: {
-        nome: "Produção Global +10%",
-        descricao: "Aumenta a produção de todas as linguagens em 10%.",
-        icone: "🌍",
-        preco: 1,
-        nivel: 0,
-        nivelMax: 10,
-        efeito: 0.10,
-        tipo: "global",
-        subtipo: "rendimento",
-        requisito: null,
-        x: 1450, y: 750 // Centro do canvas
-    },
-
-    // ===== PRIMEIRO CÍRCULO: UPGRADES BÁSICOS =====
     tempoGlobal1: {
         nome: "Velocidade Global +5%",
         descricao: "Reduz o tempo de todas as linguagens em 5%.",
@@ -3190,10 +2096,8 @@ let prestigeUpgradesData = {
         tipo: "global",
         subtipo: "tempo",
         requisito: "prodGlobal1",
-        x: 1250, y: 550 // 9 horas
+        x: 1250, y: 550
     },
-
-    // ===== SEGUNDO CÍRCULO: UPGRADES INTERMEDIÁRIOS =====
     tempoGlobal2: {
         nome: "Aceleração Crítica",
         descricao: "Reduz o tempo em 3% durante produções críticas.",
@@ -3205,10 +2109,8 @@ let prestigeUpgradesData = {
         tipo: "global",
         subtipo: "tempo_critico",
         requisito: "tempoGlobal1",
-        x: 1150, y: 450 // 10:30
+        x: 1150, y: 450
     },
-
-    // ===== TERCEIRO CÍRCULO: UPGRADES AVANÇADOS =====
     tempoGlobal3: {
         nome: "Fluxo Contínuo",
         descricao: "Reduz o tempo de espera entre produções em 10%.",
@@ -3220,9 +2122,8 @@ let prestigeUpgradesData = {
         tipo: "global",
         subtipo: "tempo_espera",
         requisito: "tempoGlobal2",
-        x: 1050, y: 350 // 10 horas
+        x: 1050, y: 350
     },
-
     prodGlobal2: {
         nome: "Multiplicador Global",
         descricao: "Multiplica a produção global por 1.05x.",
@@ -3234,9 +2135,8 @@ let prestigeUpgradesData = {
         tipo: "global",
         subtipo: "multiplicador",
         requisito: "prodGlobal1",
-        x: 1650, y: 550 // 3 horas
+        x: 1650, y: 550
     },
-
     prodGlobal3: {
         nome: "Surtos de Produtividade",
         descricao: "Chance de 5% de dobrar a produção por nível.",
@@ -3248,9 +2148,8 @@ let prestigeUpgradesData = {
         tipo: "global",
         subtipo: "sorte_prod",
         requisito: "prodGlobal2",
-        x: 1750, y: 450 // 1:30
+        x: 1750, y: 450
     },
-
     prodGlobal4: {
         nome: "Onda de Eficiência",
         descricao: "Produção aumenta 8% durante períodos de baixa atividade.",
@@ -3262,10 +2161,8 @@ let prestigeUpgradesData = {
         tipo: "global",
         subtipo: "eficiencia",
         requisito: "prodGlobal3",
-        x: 1850, y: 350 // 2 horas
+        x: 1850, y: 350
     },
-
-    // ===== RAMO CENTRAL: ECONOMIA =====
     priceDiscount: {
         nome: "Desconto Comercial",
         descricao: "Reduz o custo de compra de linguagens em 5%.",
@@ -3277,9 +2174,8 @@ let prestigeUpgradesData = {
         tipo: "global",
         subtipo: "preco",
         requisito: "prodGlobal1",
-        x: 1850, y: 650 // 5 horas
+        x: 1850, y: 650
     },
-
     priceDiscount2: {
         nome: "Negociação Mestre",
         descricao: "Reduz custos de upgrades em 3%.",
@@ -3291,9 +2187,8 @@ let prestigeUpgradesData = {
         tipo: "global",
         subtipo: "preco_upgrades",
         requisito: "priceDiscount",
-        x: 1950, y: 550 // 4 horas
+        x: 1950, y: 550
     },
-
     priceDiscount3: {
         nome: "Economia Circular",
         descricao: "5% de chance de reembolsar custo de compras.",
@@ -3305,10 +2200,8 @@ let prestigeUpgradesData = {
         tipo: "global",
         subtipo: "reembolso",
         requisito: "priceDiscount2",
-        x: 2050, y: 450 // 3 horas
+        x: 2050, y: 450
     },
-
-    // ===== QUARTO CÍRCULO: UPGRADES ESPECIAIS =====
     autoClick: {
         nome: "Automação Claudinho",
         descricao: "Gera um clique automático por segundo.",
@@ -3320,10 +2213,8 @@ let prestigeUpgradesData = {
         tipo: "global",
         subtipo: "autoclick",
         requisito: "priceDiscount",
-        x: 2150, y: 750 // Leste
+        x: 2150, y: 750
     },
-
-    // ===== QUINTO CÍRCULO: UPGRADES ÉPICOS =====
     autoClick2: {
         nome: "IA Assistente",
         descricao: "Cliques automáticos inteligentes que priorizam linguagens mais produtivas.",
@@ -3335,10 +2226,8 @@ let prestigeUpgradesData = {
         tipo: "global",
         subtipo: "autoclick_inteligente",
         requisito: "autoClick",
-        x: 2350, y: 850 // Sudeste
+        x: 2350, y: 850
     },
-
-    // ===== SEXTO CÍRCULO: UPGRADES LENDÁRIOS =====
     autoClick3: {
         nome: "Rede Neural",
         descricao: "Cliques automáticos aprendem e otimizam padrões de produção.",
@@ -3350,10 +2239,8 @@ let prestigeUpgradesData = {
         tipo: "global",
         subtipo: "autoclick_ml",
         requisito: "autoClick2",
-        x: 2550, y: 950 // Sudeste distante
+        x: 2550, y: 950
     },
-
-    // ===== RAMO INFERIOR DIREITO: BÔNUS ESPECIAIS =====
     bonusIconBoost: {
         nome: "Amuleto do Bônus",
         descricao: "Aumenta o valor dos ícones de bônus em 20%.",
@@ -3365,9 +2252,8 @@ let prestigeUpgradesData = {
         tipo: "global",
         subtipo: "bonusicon",
         requisito: "prodGlobal1",
-        x: 1050, y: 650 // 7 horas
+        x: 1050, y: 650
     },
-
     bonusIconBoost2: {
         nome: "Sorte Estelar",
         descricao: "Chance dobrada de ícones de bônus aparecerem.",
@@ -3379,9 +2265,8 @@ let prestigeUpgradesData = {
         tipo: "global",
         subtipo: "bonusicon_freq",
         requisito: "bonusIconBoost",
-        x: 950, y: 550 // 8 horas
+        x: 950, y: 550
     },
-
     bonusIconBoost3: {
         nome: "Constelação da Sorte",
         descricao: "Ícones de bônus podem aparecer em cascata.",
@@ -3393,10 +2278,8 @@ let prestigeUpgradesData = {
         tipo: "global",
         subtipo: "bonusicon_cascata",
         requisito: "bonusIconBoost2",
-        x: 850, y: 450 // 9 horas
+        x: 850, y: 450
     },
-
-    // ===== RAMO CLIQUE =====
     multiplicadorClique: {
         nome: "Clique Poderoso",
         descricao: "Cliques no Claudinho rendem 50% mais.",
@@ -3408,9 +2291,8 @@ let prestigeUpgradesData = {
         tipo: "global",
         subtipo: "clique",
         requisito: "prodGlobal1",
-        x: 1450, y: 1050 // 6 horas
+        x: 1450, y: 1050
     },
-
     multiplicadorClique2: {
         nome: "Toque Mágico",
         descricao: "Cliques têm 10% de chance de serem críticos (3x valor).",
@@ -3422,9 +2304,8 @@ let prestigeUpgradesData = {
         tipo: "global",
         subtipo: "clique_critico",
         requisito: "multiplicadorClique",
-        x: 1550, y: 1150 // 4:30
+        x: 1550, y: 1150
     },
-
     multiplicadorClique3: {
         nome: "Combo de Cliques",
         descricao: "Cliques consecutivos ganham bônus cumulativo.",
@@ -3436,9 +2317,8 @@ let prestigeUpgradesData = {
         tipo: "global",
         subtipo: "clique_combo",
         requisito: "multiplicadorClique2",
-        x: 1650, y: 1250 // 3:30
+        x: 1650, y: 1250
     },
-
     htmlBoost: {
         nome: "HTML Acelerado",
         descricao: "Aumenta a produção de HTML em 25%.",
@@ -3451,9 +2331,8 @@ let prestigeUpgradesData = {
         linguagem: "html",
         subtipo: "rendimento",
         requisito: "prodGlobal1",
-        x: 1450, y: 450 // 12 horas
+        x: 1450, y: 450
     },
-
     htmlTimeBoost: {
         nome: "HTML Otimizado",
         descricao: "Reduz o tempo de HTML em 15%.",
@@ -3466,9 +2345,8 @@ let prestigeUpgradesData = {
         linguagem: "html",
         subtipo: "tempo",
         requisito: "htmlBoost",
-        x: 1350, y: 350 // 11 horas
+        x: 1350, y: 350
     },
-
     cssBoost: {
         nome: "CSS Elegante",
         descricao: "Aumenta a produção de CSS em 25%.",
@@ -3481,9 +2359,8 @@ let prestigeUpgradesData = {
         linguagem: "css",
         subtipo: "rendimento",
         requisito: "htmlBoost",
-        x: 1550, y: 350 // 1 hora
+        x: 1550, y: 350
     },
-
     cssTimeBoost: {
         nome: "CSS Fluido",
         descricao: "Reduz o tempo de CSS em 15%.",
@@ -3496,9 +2373,8 @@ let prestigeUpgradesData = {
         linguagem: "css",
         subtipo: "tempo",
         requisito: "cssBoost",
-        x: 1650, y: 250 // 12:30
+        x: 1650, y: 250
     },
-
     jsBoost: {
         nome: "JavaScript Dinâmico",
         descricao: "Aumenta a produção de JavaScript em 25%.",
@@ -3511,9 +2387,8 @@ let prestigeUpgradesData = {
         linguagem: "js",
         subtipo: "rendimento",
         requisito: "cssBoost",
-        x: 1250, y: 250 // 10:30
+        x: 1250, y: 250
     },
-
     jsTimeBoost: {
         nome: "JavaScript Compilado",
         descricao: "Reduz o tempo de JavaScript em 15%.",
@@ -3526,9 +2401,8 @@ let prestigeUpgradesData = {
         linguagem: "js",
         subtipo: "tempo",
         requisito: "jsBoost",
-        x: 1150, y: 150 // Sudoeste
+        x: 1150, y: 150
     },
-
     pythonBoost: {
         nome: "Python Turbo",
         descricao: "Aumenta a produção de Python em 25%.",
@@ -3541,9 +2415,8 @@ let prestigeUpgradesData = {
         linguagem: "python",
         subtipo: "rendimento",
         requisito: "jsBoost",
-        x: 750, y: 250 // Oeste
+        x: 750, y: 250
     },
-
     pythonTimeBoost: {
         nome: "Python Otimizado",
         descricao: "Reduz o tempo de Python em 15%.",
@@ -3556,9 +2429,8 @@ let prestigeUpgradesData = {
         linguagem: "python",
         subtipo: "tempo",
         requisito: "pythonBoost",
-        x: 650, y: 150 // Sudoeste
+        x: 650, y: 150
     },
-
     javaBoost: {
         nome: "Java Enterprise",
         descricao: "Aumenta a produção de Java em 25%.",
@@ -3571,9 +2443,8 @@ let prestigeUpgradesData = {
         linguagem: "java",
         subtipo: "rendimento",
         requisito: "pythonBoost",
-        x: 550, y: 50 // Noroeste
+        x: 550, y: 50
     },
-
     javaTimeBoost: {
         nome: "Java JIT",
         descricao: "Reduz o tempo de Java em 15%.",
@@ -3586,9 +2457,8 @@ let prestigeUpgradesData = {
         linguagem: "java",
         subtipo: "tempo",
         requisito: "javaBoost",
-        x: 450, y: 150 // Noroeste distante
+        x: 450, y: 150
     },
-
     cppBoost: {
         nome: "C++ Performance",
         descricao: "Aumenta a produção de C++ em 25%.",
@@ -3601,9 +2471,8 @@ let prestigeUpgradesData = {
         linguagem: "cpp",
         subtipo: "rendimento",
         requisito: "javaBoost",
-        x: 350, y: 50 // Norte distante
+        x: 350, y: 50
     },
-
     cppTimeBoost: {
         nome: "C++ Compilado",
         descricao: "Reduz o tempo de C++ em 15%.",
@@ -3616,9 +2485,8 @@ let prestigeUpgradesData = {
         linguagem: "cpp",
         subtipo: "tempo",
         requisito: "cppBoost",
-        x: 250, y: 50 // Noroeste distante
+        x: 250, y: 50
     },
-
     offlineProgress: {
         nome: "Progresso Offline",
         descricao: "Ganha 10% da produção normal quando offline.",
@@ -3630,9 +2498,8 @@ let prestigeUpgradesData = {
         tipo: "global",
         subtipo: "offline",
         requisito: "prodGlobal4",
-        x: 1950, y: 250 // Nordeste
+        x: 1950, y: 250
     },
-
     criticalMultiplier: {
         nome: "Multiplicador Crítico",
         descricao: "Produções críticas valem 25% mais por nível.",
@@ -3644,9 +2511,8 @@ let prestigeUpgradesData = {
         tipo: "global",
         subtipo: "critico",
         requisito: "prodGlobal3",
-        x: 1750, y: 150 // Noroeste
+        x: 1750, y: 150
     },
-
     efficiencyMaster: {
         nome: "Mestre da Eficiência",
         descricao: "Reduz todos os custos em 2% e aumenta produção em 3%.",
@@ -3658,9 +2524,28 @@ let prestigeUpgradesData = {
         tipo: "global",
         subtipo: "mestre",
         requisito: "criticalMultiplier",
-        x: 1850, y: 50 // Norte
+        x: 1850, y: 50
     }
 };
+
+// =======================
+// APLICAR BÔNUS DE ASCENSÃO
+// =======================
+function aplicarBonusAscensao(valorBase, tipo, linguagemId = null) {
+    let valor = valorBase;
+    for (const up of Object.values(prestigeUpgradesData)) {
+        if (up.nivel > 0) {
+            if (up.tipo === 'global' && up.subtipo === tipo) {
+                if (tipo === 'tempo') valor *= (1 - up.nivel * up.efeito);
+                else valor *= (1 + up.nivel * up.efeito);
+            } else if (up.tipo === 'linguagem-especifica' && up.linguagem === linguagemId && up.subtipo === tipo) {
+                if (tipo === 'tempo') valor *= (1 - up.nivel * up.efeito);
+                else valor *= (1 + up.nivel * up.efeito);
+            }
+        }
+    }
+    return valor;
+}
 
 // =======================
 // ORDEM DOS UPGRADES (para exibição, não mais usado, mas mantido)
@@ -3708,31 +2593,6 @@ function verificarRequisitoLingUpgrade(upgrade) {
 }
 
 // =======================
-// NOVO: FUNÇÃO PARA APLICAR BÔNUS DE ASCENSÃO
-// =======================
-function aplicarBonusAscensao(valorBase, tipo, linguagemId = null) {
-    let valor = valorBase;
-    for (const up of Object.values(prestigeUpgradesData)) {
-        if (up.nivel > 0) {
-            if (up.tipo === 'global' && up.subtipo === tipo) {
-                if (tipo === 'tempo') {
-                    valor *= (1 - up.nivel * up.efeito);
-                } else {
-                    valor *= (1 + up.nivel * up.efeito);
-                }
-            } else if (up.tipo === 'linguagem-especifica' && up.linguagem === linguagemId && up.subtipo === tipo) {
-                if (tipo === 'tempo') {
-                    valor *= (1 - up.nivel * up.efeito);
-                } else {
-                    valor *= (1 + up.nivel * up.efeito);
-                }
-            }
-        }
-    }
-    return valor;
-}
-
-// =======================
 // CÁLCULOS DE PREÇOS E RECOMPENSAS (COM UPGRADES)
 // =======================
 // ⚡ OTIMIZAÇÃO: Cache para cálculos de recompensa e tempo
@@ -3767,7 +2627,6 @@ function calcularRecompensaAtual(id) {
     // Aplicar upgrades globais que afetam rendimento
     for (const [upId, up] of Object.entries(upgradesData)) {
         if (up.nivel > 0 && up.tipo === 'global') {
-            // Normalizar efeito para múltiplo de 5 e aplicar com arredondamento para cima
             const efeitoNormalizado = normalizarEfeitoParaMultiploDe5(up.efeito);
             
             if (up.subtipo === 'rendimento') {
@@ -3787,7 +2646,6 @@ function calcularRecompensaAtual(id) {
     // Aplicar upgrades de linguagem
     for (const [upId, up] of Object.entries(lingUpgradesData)) {
         if (up.linguagemId === id && up.nivel > 0) {
-            // Normalizar efeito para múltiplo de 5 e aplicar com arredondamento para cima
             const efeitoNormalizado = normalizarEfeitoParaMultiploDe5(up.efeito);
             
             if (up.subtipo === 'rendimento') {
@@ -3801,19 +2659,17 @@ function calcularRecompensaAtual(id) {
     // Aplicar bônus temporário do ícone
     recompensaAtual *= bonusRewardMultiplier;
     
-    // NOVO: Aplicar bônus de ascensão (pontos e upgrades permanentes)
+    // Aplicar bônus de ascensão (pontos e upgrades permanentes)
     recompensaAtual *= (1 + prestigeBonus / 100);   // cada ponto = 1%
     recompensaAtual = aplicarBonusAscensao(recompensaAtual, 'rendimento', id);
     
     recompensaAtual = arredondar(recompensaAtual);
     
-    // ⚡ Guardar em cache
     calculoCache.recompensa.set(id, recompensaAtual);
     return recompensaAtual;
 }
 
 function calcularTempoAtual(id) {
-    // ⚡ Verificar cache
     if (calculoCache.tempo.has(id)) {
         return calculoCache.tempo.get(id);
     }
@@ -3823,10 +2679,8 @@ function calcularTempoAtual(id) {
     
     let tempoAtual = data.tempo;
     
-    // Aplicar upgrades globais que afetam tempo
     for (const [upId, up] of Object.entries(upgradesData)) {
         if (up.nivel > 0 && up.tipo === 'global') {
-            // Normalizar efeito para múltiplo de 5 e aplicar com arredondamento para cima
             const efeitoNormalizado = normalizarEfeitoParaMultiploDe5(up.efeito);
             
             if (up.subtipo === 'tempo') {
@@ -3845,10 +2699,8 @@ function calcularTempoAtual(id) {
         }
     }
     
-    // Aplicar upgrades de linguagem
     for (const [upId, up] of Object.entries(lingUpgradesData)) {
         if (up.linguagemId === id && up.nivel > 0) {
-            // Normalizar efeito para múltiplo de 5 e aplicar com arredondamento para cima
             const efeitoNormalizado = normalizarEfeitoParaMultiploDe5(up.efeito);
             
             if (up.subtipo === 'tempo') {
@@ -3859,16 +2711,12 @@ function calcularTempoAtual(id) {
         }
     }
     
-    // Aplicar bônus de velocidade do ícone
     tempoAtual /= bonusSpeedMultiplier;
-    
-    // NOVO: Aplicar bônus de ascensão de tempo
     tempoAtual = aplicarBonusAscensao(tempoAtual, 'tempo', id);
     
     tempoAtual = Math.max(0.1, tempoAtual);
     tempoAtual = Math.round(tempoAtual * 10) / 10;
     
-    // ⚡ Guardar em cache
     calculoCache.tempo.set(id, tempoAtual);
     return tempoAtual;
 }
@@ -3885,7 +2733,6 @@ function calcularPrecoUnitario(id, quantidade = 1) {
         precoAtual = arredondar(precoAtual * data.multiplicadorPreco);
     }
     
-    // aplicar desconto de ascensão se houver upgrade de preço
     for (const up of Object.values(prestigeUpgradesData)) {
         if (up.nivel > 0 && up.subtipo === 'preco') {
             const efeitoNormalizado = normalizarEfeitoParaMultiploDe5(up.efeito);
@@ -3901,9 +2748,8 @@ function calcularPrecoLingUpgrade(id) {
     const upgrade = lingUpgradesData[id];
     if (!upgrade) return 0;
     
-    let preco = arredondar(upgrade.precoBase); // preço fixo, sem multiplicador
+    let preco = arredondar(upgrade.precoBase);
     
-    // aplicar desconto de ascensão se houver upgrade de preço
     for (const up of Object.values(prestigeUpgradesData)) {
         if (up.nivel > 0 && (up.subtipo === 'preco' || up.subtipo === 'preco_upgrades')) {
             const efeitoNormalizado = normalizarEfeitoParaMultiploDe5(up.efeito);
@@ -3922,7 +2768,6 @@ function ativarAutomaticoSeDisponivel(id) {
     const data = linguagensData[id];
     if (!data) return;
     
-    // Verifica se já existe upgrade de automatização comprado
     const autoUpgrade = Object.values(lingUpgradesData).find(up => up.linguagemId === id && up.subtipo === 'automacao' && up.nivel > 0);
     if (autoUpgrade) {
         data.automatic = true;
@@ -3955,11 +2800,9 @@ function criarPopUpDinheiro(valor, elementoReferencia, raio = 50) {
     popUp.style.border = '2px solid #27ae60';
     popUp.style.whiteSpace = 'nowrap';
 
-    // ⚡ OTIMIZAÇÃO: Usar getClientRects para evitar reflow quando possível, caso falhe usar fallback
     let centroX = window.innerWidth / 2;
     let centroY = window.innerHeight / 2;
     
-    // Tentar usar getBoundingClientRect apenas se necessário
     try {
         const rect = elementoReferencia.getBoundingClientRect();
         if (rect.width > 0 && rect.height > 0) {
@@ -3967,7 +2810,7 @@ function criarPopUpDinheiro(valor, elementoReferencia, raio = 50) {
             centroY = rect.top + rect.height / 2;
         }
     } catch (e) {
-        // Fallback para valores padrão
+        // fallback
     }
 
     const angulo = Math.random() * 2 * Math.PI;
@@ -4041,40 +2884,34 @@ function iniciarAnimacaoBarras() {
 // =======================
 function pausarJogo() {
     if (pauseState.active) return;
+    console.log("⏸️ Pausando jogo");
     pauseState.active = true;
     gamePaused = true;
     pauseState.pausedAt = Date.now();
 
-    // Calcula o tempo restante de cada produção ativa
     for (const [id, prod] of Object.entries(activeProductions)) {
         const elapsed = (Date.now() - prod.startTime) / 1000;
         const remain = Math.max(0, prod.totalDuration - elapsed);
         pauseState.productionRemains[id] = remain;
     }
 
-    // Limpa animação para não continuar rodando
     if (animationFrameId) {
         cancelAnimationFrame(animationFrameId);
         animationFrameId = null;
     }
 
-    // Bloqueia interação geral (exceto modais)
     document.body.style.pointerEvents = 'none';
     const modals = document.querySelectorAll('.modal');
     modals.forEach(m => { m.style.pointerEvents = 'auto'; });
 
-    // Esconde tooltips para não interferir
     const tooltip = document.getElementById('custom-tooltip');
     if (tooltip) {
         tooltip.classList.remove('visible');
         tooltip.textContent = '';
     }
 
-    // Exibe overlay de pausa para indicar que o jogo está parado
     const overlay = document.getElementById('pause-overlay');
-    if (overlay) {
-        overlay.style.display = 'block';
-    }
+    if (overlay) overlay.style.display = 'block';
 }
 
 function desbloquearInteracao() {
@@ -4083,10 +2920,10 @@ function desbloquearInteracao() {
 
 function retomarJogo() {
     if (!pauseState.active) return;
+    console.log("▶️ Retomando jogo");
     pauseState.active = false;
     gamePaused = false;
 
-    // Restaura produções com o tempo restando
     for (const [id, remain] of Object.entries(pauseState.productionRemains)) {
         activeProductions[id] = {
             startTime: Date.now(),
@@ -4095,16 +2932,11 @@ function retomarJogo() {
     }
     pauseState.productionRemains = {};
 
-    // Reativa animação
     iniciarAnimacaoBarras();
 
-    // Esconde overlay de pausa
     const overlay = document.getElementById('pause-overlay');
-    if (overlay) {
-        overlay.style.display = 'none';
-    }
+    if (overlay) overlay.style.display = 'none';
 
-    // Reativa interação normal
     desbloquearInteracao();
 }
 
@@ -4129,25 +2961,29 @@ function ajustarTimerParaUpgrade(id) {
     prod.totalDuration = novoTempoTotal;
 }
 
-// Helper para iniciar produção sem depender de evento de clique
 function iniciarProducao(id) {
-    if (gamePaused) return;
-
-    const ling = document.querySelector(`.ling[data-id="${id}"]`);
+    if (gamePaused) {
+        console.warn(`⏸️ Jogo pausado, não pode iniciar produção de ${id}`);
+        return;
+    }
+    if (activeProductions[id]) {
+        console.warn(`⚠️ Produção de ${id} já em andamento`);
+        return;
+    }
     const data = linguagensData[id];
-    if (!ling || !data) return;
-    if (!data.desbloqueada) return;
-    if (activeProductions[id]) return;
+    if (!data || !data.desbloqueada) {
+        console.warn(`❌ Linguagem ${id} não desbloqueada`);
+        return;
+    }
 
     const barra = document.getElementById(`barra-${id}`);
     const fill = barra?.querySelector(".progress-fill");
     const timer = barra?.querySelector(".timer-text");
 
     if (fill) {
-        // reinicia animação da barra
         fill.style.transition = 'none';
         fill.style.width = "0%";
-        fill.offsetHeight; // força reflow
+        fill.offsetHeight;
         fill.style.transition = 'width 0.45s cubic-bezier(.22,.9,.36,1)';
         fill.style.width = '100%';
     }
@@ -4159,45 +2995,42 @@ function iniciarProducao(id) {
         totalDuration: tempoAtual
     };
 
+    console.log(`🚀 Iniciando produção de ${id} (${tempoAtual}s)`);
     iniciarAnimacaoBarras();
 }
 
 function completarProducao(id) {
     const recompensaTotal = calcularRecompensaAtual(id);
-    
+    console.log(`🎯 Ciclo concluído: ${id} | +$${recompensaTotal}`);
+
     money = arredondar(money + recompensaTotal);
     totalMoneyEarned = arredondar(totalMoneyEarned + recompensaTotal);
-    // NOVO: Adicionar ao progresso de ascensão
-    prestigeProgress += recompensaTotal;
-    verificarProgressoAscensao();
+    prestigeProgress = arredondar(prestigeProgress + recompensaTotal);
     
-    // ⚡ OTIMIZAÇÃO: Throttle de atualização de dinheiro
-    const agora = Date.now();
-    if (agora - lastMoneyUpdate > MONEY_UPDATE_INTERVAL) {
-        if (moneyEl) moneyEl.textContent = "$" + formatarDinheiro(money);
-        lastMoneyUpdate = agora;
+    if (moneyEl) {
+        moneyEl.textContent = "$" + formatarDinheiro(money);
+        console.log(`💰 Novo saldo: ${moneyEl.textContent}`);
     }
-    
-    // ⚡ OTIMIZAÇÃO: Agendar atualização de upgrades com throttle
+
+    verificarProgressoAscensao();
+
+    const agora = Date.now();
     agendarAtualizacaoUpgrades(agora);
-    
-    // ⚡ OTIMIZAÇÃO: Agendar atualização de estatísticas com throttle
     agendarAtualizacaoEstatisticas(agora);
-    
+
     const barra = document.getElementById(`barra-${id}`);
     const icon = document.querySelector(`.clickable[data-id="${id}"]`);
     if (icon) {
         criarPopUpDinheiro(recompensaTotal, icon, 50);
     }
-    
-    // Reseta imediatamente o visual da barra antiga
+
     if (barra) {
         const fill = barra.querySelector(".progress-fill");
         const timer = barra.querySelector(".timer-text");
         if (fill) {
             fill.style.transition = 'none';
             fill.style.width = "0%";
-            fill.offsetHeight; // forçar reflow
+            fill.offsetHeight;
             fill.style.transition = 'width 0.45s cubic-bezier(.22,.9,.36,1)';
         }
         if (timer) timer.textContent = "00:00";
@@ -4205,64 +3038,21 @@ function completarProducao(id) {
     }
     progressoAtivo[id] = false;
 
+    delete activeProductions[id];
+
     const data = linguagensData[id];
     if (data && data.automatic) {
-        // reinício automático imediato
-        iniciarProducao(id);
         console.log(`🔄 Reinício automático imediato de ${id}`);
-        return; // pula animação adicional
+        iniciarProducao(id);
+        return;
     }
-    
-    // Se não for automático ou após reinício, exibe animação de shake e reset atrasado
+
     setTimeout(() => {
         if (barra) {
             barra.offsetWidth;
             barra.classList.add("shake");
         }
     }, 250);
-}
-
-// =======================
-// NOVO: FUNÇÃO PARA VERIFICAR PROGRESSO DA ASCENSÃO
-// =======================
-function verificarProgressoAscensao() {
-    if (!prestigeUnlocked) {
-        // Verifica se atingiu 1 bilhão para desbloquear
-        if (totalMoneyEarned >= 1e9) {
-            prestigeUnlocked = true;
-            // ATUALIZADO: Usar novo container
-            document.getElementById('ascensionButtonContainer').style.display = 'flex';
-            document.getElementById('ascensionButtonContainer').classList.add('unlocked');
-            mostrarFeedback('⭐ Ascensão desbloqueada! Uma nova era te aguarda!', 'success');
-        } else {
-            return;
-        }
-    }
-
-    const proximoMarco = nextPrestigeThreshold * (prestigePointsGainedThisRun + 1);
-    const progresso = Math.min(prestigeProgress / proximoMarco, 1);
-    
-    // Atualizar display de ascensão
-    atualizarDisplayAscensao();
-
-    // Se atingiu ou passou do marco, ganha ponto(s) (pode ganhar múltiplos de uma vez)
-    while (prestigeProgress >= proximoMarco) {
-        prestigePoints++;
-        // prestigeBonus agora baseado no nível, não nos pontos
-        prestigePointsGainedThisRun++;
-        prestigeProgress -= proximoMarco;
-        
-        // ⚡ Invalidar cache sempre que o bônus de ascensão muda
-        invalidarCacheCalculos();
-        
-        mostrarFeedback(`⭐ +1 Ponto de Ascensão! Total: ${prestigePoints}`, 'success');
-        
-        // Atualiza display
-        atualizarDisplayAscensao();
-        
-        // Recalcula próximo marco (crescimento linear)
-        // o próximo marco já é baseado no novo prestigePointsGainedThisRun
-    }
 }
 
 // =======================
@@ -4307,7 +3097,6 @@ function agendarAtualizacaoEstatisticas(agora) {
 // =======================
 function verificarSeUpgradeGlobalDeveAparecer(upgradeId, upgradeData) {
     if (upgradeData.nivel >= upgradeData.nivelMax) return false;
-    // Se já está na lista, continua aparecendo
     if (elementosUpgrades.has(`global_${upgradeId}`)) return true;
     
     const limiteAparecimento = upgradeData.limiteAparecimento || (upgradeData.precoAtual * 0.5);
@@ -4320,13 +3109,11 @@ function verificarSeLingUpgradeDeveAparecer(upgradeId, upgradeData) {
     if (upgradeData.nivel >= upgradeData.nivelMax) return false;
     if (elementosUpgrades.has(`linguagem_${upgradeId}`)) return true;
     
-    // Verifica requisito de compras
     if (!verificarRequisitoLingUpgrade(upgradeData)) return false;
     
     const dataLinguagem = linguagensData[upgradeData.linguagemId];
     if (!dataLinguagem || !dataLinguagem.desbloqueada) return false;
     
-    // Aparece se o dinheiro for suficiente ou se estiver próximo
     const preco = calcularPrecoLingUpgrade(upgradeId);
     if (money >= preco || money >= preco * 0.5) return true;
     
@@ -4334,23 +3121,19 @@ function verificarSeLingUpgradeDeveAparecer(upgradeId, upgradeData) {
 }
 
 function atualizarTodosUpgrades() {
-    // ⚠️ Removida a linha que escondia o tooltip aqui (isso causava o sumiço durante ciclos)
-
     const lista = document.getElementById('all-upgrades');
     const noUpgradesMessage = document.getElementById('no-upgrades-message');
     const upgradesTitle = document.querySelector('.upgrades-title');
     
     if (!lista) return;
     
-    const upgradesDisponiveis = new Map(); // chave: upgradeId, valor: { info, timestamp }
+    const upgradesDisponiveis = new Map();
     
-    // Coletar upgrades globais disponíveis
     for (const [id, upgrade] of Object.entries(upgradesData)) {
         if (upgrade.nivel < upgrade.nivelMax) {
             const deveAparecer = verificarSeUpgradeGlobalDeveAparecer(id, upgrade);
             if (deveAparecer) {
                 const upgradeId = `global_${id}`;
-                // Se já tem timestamp, mantém; senão, cria agora
                 let timestamp = upgradeTimestamps.get(upgradeId);
                 if (!timestamp) {
                     timestamp = Date.now();
@@ -4371,7 +3154,6 @@ function atualizarTodosUpgrades() {
         }
     }
     
-    // Coletar upgrades de linguagem disponíveis
     for (const [id, upgrade] of Object.entries(lingUpgradesData)) {
         if (upgrade.nivel < upgrade.nivelMax) {
             const deveAparecer = verificarSeLingUpgradeDeveAparecer(id, upgrade);
@@ -4407,7 +3189,6 @@ function atualizarTodosUpgrades() {
         lista.innerHTML = '';
         elementosUpgrades.clear();
 
-        // 🔥 NOVO: Esconde o tooltip se não houver upgrades (para não ficar flutuando)
         if (tooltipEl) {
             tooltipEl.classList.remove('visible');
             tooltipEl.textContent = '';
@@ -4419,7 +3200,6 @@ function atualizarTodosUpgrades() {
         if (noUpgradesMessage) noUpgradesMessage.style.display = 'none';
     }
     
-    // Ordenar por timestamp decrescente (mais novo primeiro)
     const upgradesOrdenados = Array.from(upgradesDisponiveis.values()).sort((a, b) => b.timestamp - a.timestamp);
     
     const fragment = document.createDocumentFragment();
@@ -4445,12 +3225,11 @@ function atualizarTodosUpgrades() {
         fragment.appendChild(elemento);
     }
     
-    // Remover elementos que não estão mais disponíveis
     for (const [upgradeId, elemento] of elementosUpgrades) {
         if (!upgradesDisponiveis.has(upgradeId) && elemento.parentNode === lista) {
             elemento.remove();
             elementosUpgrades.delete(upgradeId);
-            upgradeTimestamps.delete(upgradeId); // limpar timestamp
+            upgradeTimestamps.delete(upgradeId);
         }
     }
     
@@ -4474,7 +3253,7 @@ function criarElementoUpgrade(upgradeInfo) {
     row.dataset.upgradeId = upgradeId;
     
     if (disponivel) row.classList.add('available');
-    if (nivel > 0) row.classList.add('purchased'); // não deve acontecer, mas mantido
+    if (nivel > 0) row.classList.add('purchased');
     
     let tooltipText = '';
     let botaoTexto = `Comprar ($${formatarDinheiro(preco)})`;
@@ -4637,19 +3416,15 @@ function comprarUpgrade(id) {
     money = arredondar(money - upgrade.precoAtual);
     if (moneyEl) moneyEl.textContent = "$" + formatarDinheiro(money);
     
-    upgrade.nivel = 1; // comprou, agora nível 1
+    upgrade.nivel = 1;
     
-    // ⚡ OTIMIZAÇÃO: Invalidar cache de cálculos
     invalidarCacheCalculos();
     
-    // Se for upgrade de tempo, ajustar produções ativas
     if (upgrade.subtipo === 'tempo' || upgrade.subtipo === 'ambos' || upgrade.subtipo === 'gambiarra' || upgrade.subtipo === 'vibe') {
         for (const linguagemId in activeProductions) {
             if (activeProductions[linguagemId]) ajustarTimerParaUpgrade(linguagemId);
         }
     }
-    
-    // Preço não precisa ser atualizado, pois não será mais comprado
     
     atualizarTodosUpgrades();
     atualizarEstatisticas();
@@ -4684,26 +3459,21 @@ function comprarLingUpgrade(id) {
     
     upgrade.nivel = 1;
     
-    // ⚡ OTIMIZAÇÃO: Invalidar cache de cálculos
     invalidarCacheCalculos();
     
     if (upgrade.subtipo === 'tempo' || upgrade.subtipo === 'ambos') {
         if (activeProductions[linguagemId]) ajustarTimerParaUpgrade(linguagemId);
     }
     
-    // Se for upgrade de automatização, ativar a flag e iniciar imediatamente se não estiver em ciclo
     if (upgrade.subtipo === 'automacao') {
         data.automatic = true;
         
-        // Verifica se a linguagem NÃO está em produção
         if (!activeProductions[linguagemId]) {
             const img = document.querySelector(`.clickable[data-id="${linguagemId}"]`);
             if (img) {
-                // Dispara o clique para iniciar o ciclo imediatamente
                 img.click();
             }
         }
-        // Se já estiver em produção, a automação será aplicada ao final do ciclo atual
     }
     
     atualizarTodosUpgrades();
@@ -4754,7 +3524,6 @@ function comprarLinguagemMultipla(id, quantidade) {
             data.precoAtual = arredondar(data.precoAtual * data.multiplicadorPreco);
         }
         
-        // ⚡ OTIMIZAÇÃO: Invalidar cache de cálculos
         invalidarCacheCalculos();
         
         const countEl = ling.querySelector(".compra-count");
@@ -4771,7 +3540,6 @@ function comprarLinguagemMultipla(id, quantidade) {
             console.log(`✅ Linguagem ${id} desbloqueada!`);
         }
         
-        // Verifica se algum upgrade de linguagem ficou disponível
         atualizarTodosUpgrades();
         atualizarEstatisticas();
         atualizarInterfaceLinguagens();
@@ -4885,10 +3653,8 @@ function inicializarInterface() {
         
         atualizarTodosUpgrades();
         ajustarAlturaListaUpgrades();
-        // configura autoclick caso seja ativo
         setupAutoClick();
         
-        // Inicializar referências dos botões de ascensão
         atualizarReferenciasBotoesAscensao();
         
         console.log('✅ Interface do jogo inicializada com sucesso');
@@ -4929,7 +3695,7 @@ function contarUpgradesComprados() {
 }
 
 function contarUpgradesAtivos() {
-    return contarUpgradesComprados(); // todos comprados são ativos
+    return contarUpgradesComprados();
 }
 
 function contarLinguagensAutomaticas() {
@@ -4941,11 +3707,9 @@ function contarLinguagensAutomaticas() {
 // =======================
 function atualizarEstatisticas() {
     try {
-        // ⚡ OTIMIZAÇÃO: Verificar se a modal está visível antes de atualizar
         const modal = document.getElementById('menu-modal');
         const isModalVisible = modal && modal.style.display !== 'none';
         
-        // Sempre atualizar valores principais (mudam frequentemente)
         const statTotalEarned = document.getElementById('stat-total-earned');
         const statUnlocked = document.getElementById('stat-unlocked');
         const statTotalUnits = document.getElementById('stat-total-units');
@@ -4966,7 +3730,6 @@ function atualizarEstatisticas() {
         if (statPrestigeBonus) statPrestigeBonus.textContent = `${prestigePoints} ⭐ (${prestigeBonus}% bônus passivo)`;
         if (statAscensionLevel) statAscensionLevel.textContent = `Nível ${ascensionLevel} (${ascensionLevel}% bônus passivo)`;
         
-        // ⚡ OTIMIZAÇÃO: Só atualizar lista de linguagens se modal estiver visível
         if (!isModalVisible) return;
         
         const lista = document.getElementById('linguagens-stats-list');
@@ -5014,22 +3777,18 @@ document.querySelectorAll(".clickable").forEach(img => {
 });
 
 // =======================
-// NOVO: CLIQUE NO CLAUDINHO (gera dinheiro)
+// CLIQUE NO CLAUDINHO
 // =======================
 document.getElementById('claudinho-click').addEventListener('click', function() {
     if (gamePaused) return;
 
-    // Valor base do clique
-    let ganhoBase = 0.10; // 10 centavos
-    // Aplica bônus de clique dos upgrades
+    let ganhoBase = 0.10;
     for (const up of Object.values(upgradesData)) {
         if (up.nivel > 0 && up.tipo === 'global' && up.subtipo === 'clique') {
-            // Normalizar efeito para múltiplo de 5 e aplicar com arredondamento para cima
             const efeitoNormalizado = normalizarEfeitoParaMultiploDe5(up.efeito);
             ganhoBase = Math.ceil(ganhoBase * (1 + efeitoNormalizado));
         }
     }
-    // Aplica bônus de ascensão de clique (se houver)
     ganhoBase = aplicarBonusAscensao(ganhoBase, 'clique');
     
     money += ganhoBase;
@@ -5210,10 +3969,11 @@ function adicionarDinheiro(quantia) {
     try {
         money = arredondar(money + quantia);
         totalMoneyEarned = arredondar(totalMoneyEarned + quantia);
-        prestigeProgress += quantia;
-        verificarProgressoAscensao();
+        prestigeProgress = arredondar(prestigeProgress + quantia);
         
         if (moneyEl) moneyEl.textContent = "$" + formatarDinheiro(money);
+        
+        verificarProgressoAscensao();
         
         const menuModal = document.getElementById('menu-modal');
         if (menuModal && menuModal.style.display === 'block') atualizarEstatisticas();
@@ -5235,13 +3995,11 @@ function resetarJogo() {
         
         money = 0.00;
         totalMoneyEarned = 0.00;
-        // Resetar dados de ascensão também
         prestigeUnlocked = false;
         prestigePoints = 0;
         prestigeBonus = 0;
         prestigeProgress = 0;
         prestigePointsGainedThisRun = 0;
-        // Resetar upgrades permanentes
         for (const key in prestigeUpgradesData) {
             prestigeUpgradesData[key].nivel = 0;
         }
@@ -5275,7 +4033,6 @@ function resetarJogo() {
         
         document.querySelectorAll('.upgrade-row.novo-upgrade').forEach(el => el.classList.remove('novo-upgrade'));
         
-        // Esconder container de ascensão (ATUALIZADO)
         document.getElementById('ascensionButtonContainer').style.display = 'none';
         
         atualizarTodosUpgrades();
@@ -5301,12 +4058,10 @@ function abrirModalConfirmacaoAscensao() {
     const modal = document.getElementById('confirm-ascension-modal');
     if (!modal) return;
 
-    // Pausa o jogo e bloqueia interações enquanto o modal estiver aberto
     pausarJogo();
 
-    // Calcular pontos a ganhar
     const pontosAGanhar = prestigePointsGainedThisRun;
-    const totalPontos = prestigePoints; // Pontos já confirmados
+    const totalPontos = prestigePoints;
 
     const gainEl = document.getElementById('ascension-points-gain');
     const totalEl = document.getElementById('ascension-points-total');
@@ -5315,12 +4070,10 @@ function abrirModalConfirmacaoAscensao() {
 
     modal.style.display = 'block';
     
-    // Impede fechar clicando fora do modal
     modal.onclick = (event) => {
         event.stopPropagation();
     };
 
-    // Desabilitar botão de cancelar para forçar confirmação
     const cancelBtn = document.getElementById('cancel-ascension-btn');
     if (cancelBtn) {
         cancelBtn.disabled = true;
@@ -5332,16 +4085,13 @@ function abrirModalConfirmacaoAscensao() {
     if (proceedBtn) {
         proceedBtn.disabled = false;
         proceedBtn.addEventListener('click', function() {
-            // Resetar jogo imediatamente após confirmação
-            const pontosAtuais = prestigePointsGainedThisRun; // Apenas os pontos ganhos nesta run
+            const pontosAtuais = prestigePointsGainedThisRun;
             const upgradesComprados = JSON.parse(JSON.stringify(prestigeUpgradesData));
 
             resetarJogoPreservandoAscensao(pontosAtuais, upgradesComprados);
 
-            // Limpar pontos pendentes
             prestigePointsGainedThisRun = 0;
 
-            // Fecha modal de confirmação e abre árvore de skills para escolher upgrades
             fecharModalConfirmacaoAscensao();
             abrirModalArvoreSkills();
         });
@@ -5354,7 +4104,6 @@ function fecharModalConfirmacaoAscensao() {
     const modal = document.getElementById('confirm-ascension-modal');
     if (modal) modal.style.display = 'none';
 
-    // Reativa interações e retoma o jogo caso não esteja em ascensão confirmada
     desbloquearInteracao();
     retomarJogo();
 }
@@ -5366,13 +4115,11 @@ function abrirModalArvoreSkills() {
         return;
     }
     
-    // Atualizar exibição dos pontos de ascensão
     const pontosElement = document.getElementById('skill-tree-points');
     if (pontosElement) {
         pontosElement.textContent = prestigePoints;
     }
     
-    // Desabilitar botão de fechar para forçar ascensão
     const closeBtn = document.querySelector('.close-skill-tree');
     if (closeBtn) {
         closeBtn.disabled = true;
@@ -5380,7 +4127,6 @@ function abrirModalArvoreSkills() {
         closeBtn.style.cursor = 'not-allowed';
     }
     
-    // Garantir que os event listeners estejam configurados
     atualizarReferenciasBotoesAscensao();
     
     renderizarArvoreSkills();
@@ -5404,7 +4150,6 @@ function renderizarArvoreSkills() {
     canvas.innerHTML = '';
     
     try {
-        // Criar conexões primeiro (para ficarem atrás)
         for (const [id, upgrade] of Object.entries(prestigeUpgradesData)) {
             if (upgrade.requisito) {
                 const reqUpgrade = prestigeUpgradesData[upgrade.requisito];
@@ -5414,14 +4159,11 @@ function renderizarArvoreSkills() {
             }
         }
         
-        // Criar nós das skills
         for (const [id, upgrade] of Object.entries(prestigeUpgradesData)) {
             criarNoSkill(id, upgrade);
         }
         
-        // Implementar arrastar da tela
         implementarArrastarCanvas(canvas);
-        // Implementar zoom na árvore
         implementarZoomCanvas();
     } catch (error) {
         alert('ERRO na renderização: ' + error.message);
@@ -5429,7 +4171,6 @@ function renderizarArvoreSkills() {
     }
 }
 
-// Variáveis globais para zoom
 let currentScale = 1.0;
 const MIN_SCALE = 0.5;
 const MAX_SCALE = 3.0;
@@ -5440,27 +4181,24 @@ function implementarZoomCanvas() {
     const zoomIndicator = document.getElementById('zoom-indicator');
 
     container.addEventListener('wheel', (e) => {
-        if (!e.ctrlKey) return; // Zoom apenas com Ctrl pressionado
+        if (!e.ctrlKey) return;
         e.preventDefault();
 
         const rect = container.getBoundingClientRect();
         const mouseX = e.clientX - rect.left;
         const mouseY = e.clientY - rect.top;
 
-        // Posição do mouse relativa ao conteúdo antes do zoom
         const scrollLeft = container.scrollLeft;
         const scrollTop = container.scrollTop;
         const contentX = scrollLeft + mouseX;
         const contentY = scrollTop + mouseY;
 
-        // Aplicar zoom
         const delta = e.deltaY > 0 ? -0.1 : 0.1;
         let newScale = currentScale + delta;
         newScale = Math.min(MAX_SCALE, Math.max(MIN_SCALE, newScale));
 
         if (newScale === currentScale) return;
 
-        // Ajustar scroll para manter o ponto sob o mouse
         const scaleRatio = newScale / currentScale;
         const newScrollLeft = contentX * scaleRatio - mouseX;
         const newScrollTop = contentY * scaleRatio - mouseY;
@@ -5471,11 +4209,9 @@ function implementarZoomCanvas() {
         container.scrollLeft = newScrollLeft;
         container.scrollTop = newScrollTop;
 
-        // Atualizar indicador de zoom
         if (zoomIndicator) {
             zoomIndicator.style.display = 'block';
             zoomIndicator.textContent = `Zoom: ${currentScale.toFixed(1)}x`;
-            // Esconder após 1.5 segundos
             clearTimeout(window.zoomTimeout);
             window.zoomTimeout = setTimeout(() => {
                 zoomIndicator.style.display = 'none';
@@ -5489,7 +4225,7 @@ function criarConexao(fromUpgrade, toUpgrade) {
     const connection = document.createElement('div');
     connection.className = 'skill-connection';
     
-    const x1 = fromUpgrade.x + 40; // centro do nó
+    const x1 = fromUpgrade.x + 40;
     const y1 = fromUpgrade.y + 40;
     const x2 = toUpgrade.x + 40;
     const y2 = toUpgrade.y + 40;
@@ -5504,7 +4240,6 @@ function criarConexao(fromUpgrade, toUpgrade) {
     connection.style.transformOrigin = '0 50%';
     connection.style.transform = `rotate(${angle}deg)`;
     
-    // Verificar se a conexão está desbloqueada
     if (!fromUpgrade.requisito || prestigeUpgradesData[fromUpgrade.requisito].nivel >= prestigeUpgradesData[fromUpgrade.requisito].nivelMax) {
         connection.classList.add('unlocked');
     }
@@ -5520,18 +4255,15 @@ function criarNoSkill(id, upgrade) {
     node.style.left = upgrade.x + 'px';
     node.style.top = upgrade.y + 'px';
     
-    // Verificar se está desbloqueado
     const isUnlocked = !upgrade.requisito || prestigeUpgradesData[upgrade.requisito].nivel >= prestigeUpgradesData[upgrade.requisito].nivelMax;
     if (isUnlocked) {
         node.classList.add('unlocked');
     }
     
-    // Verificar se já possui
     if (upgrade.nivel > 0) {
         node.classList.add('owned');
     }
     
-    // Event listeners para tooltip
     node.addEventListener('mouseenter', function(e) {
         mostrarTooltipSkill(id, upgrade, e);
     });
@@ -5544,7 +4276,6 @@ function criarNoSkill(id, upgrade) {
         esconderTooltipSkill();
     });
     
-    // Event listener para compra (apenas clique)
     node.addEventListener('click', (e) => {
         e.stopPropagation();
         const upgradeData = prestigeUpgradesData[id];
@@ -5562,6 +4293,9 @@ function criarNoSkill(id, upgrade) {
 function mostrarTooltipSkill(id, upgrade, e) {
     if (!tooltipEl) tooltipEl = document.getElementById('custom-tooltip');
     if (!tooltipEl) return;
+    
+    const node = e.currentTarget;
+    if (!node) return;
     
     const isUnlocked = !upgrade.requisito || prestigeUpgradesData[upgrade.requisito].nivel > 0;
     const canAfford = prestigePoints >= upgrade.preco;
@@ -5581,37 +4315,30 @@ function mostrarTooltipSkill(id, upgrade, e) {
     tooltipEl.textContent = tooltipText;
     tooltipEl.classList.add('visible');
     
-    atualizarPosicaoTooltip(e);
+    const rect = node.getBoundingClientRect();
+    const tooltipRect = tooltipEl.getBoundingClientRect();
+    
+    let left = rect.left + rect.width / 2 - tooltipRect.width / 2;
+    let top = rect.top - tooltipRect.height - 10;
+    
+    if (left < 0) left = 5;
+    if (left + tooltipRect.width > window.innerWidth) {
+        left = window.innerWidth - tooltipRect.width - 5;
+    }
+    if (top < 0) {
+        top = rect.bottom + 10;
+    }
+    
+    tooltipEl.style.left = left + 'px';
+    tooltipEl.style.top = top + 'px';
 }
 
 function atualizarPosicaoTooltip(e) {
-    if (!tooltipEl) return;
-    
-    let x = e.pageX + 15;
-    let y = e.pageY - 30;
-    
-    // Ajustar posição se o tooltip sair da tela
-    const tooltipRect = tooltipEl.getBoundingClientRect();
-    const viewportWidth = window.innerWidth;
-    const viewportHeight = window.innerHeight;
-    
-    if (x + tooltipRect.width > viewportWidth) {
-        x = e.pageX - tooltipRect.width - 15;
-    }
-    
-    if (y + tooltipRect.height > viewportHeight) {
-        y = e.pageY - tooltipRect.height - 15;
-    }
-    
-    if (y < 10) {
-        y = 10;
-    }
-    
-    tooltipEl.style.left = x + 'px';
-    tooltipEl.style.top = y + 'px';
+    // não faz nada
 }
 
 function esconderTooltipSkill() {
+    if (!tooltipEl) tooltipEl = document.getElementById('custom-tooltip');
     if (!tooltipEl) return;
     tooltipEl.classList.remove('visible');
 }
@@ -5623,19 +4350,15 @@ function comprarUpgradeSkill(id) {
     upgrade.nivel++;
     prestigePoints -= upgrade.preco;
     
-    // Recalcular bônus
     prestigeBonus = prestigePoints;
-
-    // ⚡ Invalidar cache para aplicar imediatamente os efeitos dos upgrades de ascensão
+    
     invalidarCacheCalculos();
     
-    // Atualizar exibição dos pontos
     const pontosElement = document.getElementById('skill-tree-points');
     if (pontosElement) {
         pontosElement.textContent = prestigePoints;
     }
     
-    // Atualizar interface
     atualizarDisplayAscensao();
     renderizarArvoreSkills();
     
@@ -5643,13 +4366,12 @@ function comprarUpgradeSkill(id) {
 }
 
 function implementarArrastarCanvas(canvas) {
-    const container = canvas.parentElement; // O container com overflow: auto
+    const container = canvas.parentElement;
 
     let isDragging = false;
     let startX, startY;
     let scrollLeft, scrollTop;
 
-    // Adicionar cursor grab ao container quando mouse passa sobre ele
     container.addEventListener('mouseenter', () => {
         if (!isDragging) {
             container.style.cursor = 'grab';
@@ -5682,21 +4404,19 @@ function implementarArrastarCanvas(canvas) {
     });
 }
 
-// Configura ou reinicia autoclick automático com base no upgrade
 let autoClickInterval = null;
 function setupAutoClick() {
     if (autoClickInterval) clearInterval(autoClickInterval);
 
-    // Calcular cliques automáticos totais de todos os upgrades
     let totalAutoClicks = 0;
     for (const [id, up] of Object.entries(prestigeUpgradesData)) {
         if (up.subtipo && up.subtipo.includes('autoclick') && up.nivel > 0) {
             if (up.subtipo === 'autoclick') {
-                totalAutoClicks += up.nivel * up.efeito; // 1 clique por nível
+                totalAutoClicks += up.nivel * up.efeito;
             } else if (up.subtipo === 'autoclick_inteligente') {
-                totalAutoClicks += up.nivel * up.efeito; // 1.5 cliques por nível
+                totalAutoClicks += up.nivel * up.efeito;
             } else if (up.subtipo === 'autoclick_ml') {
-                totalAutoClicks += up.nivel * up.efeito; // 2.0 cliques por nível
+                totalAutoClicks += up.nivel * up.efeito;
             }
         }
     }
@@ -5718,7 +4438,7 @@ function renderizarPrestigeUpgrades() {
     container.innerHTML = '';
     
     for (const [id, up] of Object.entries(prestigeUpgradesData)) {
-        if (up.nivel >= up.nivelMax) continue; // já no máximo
+        if (up.nivel >= up.nivelMax) continue;
         
         const row = document.createElement('div');
         row.className = 'upgrade-row prestige';
@@ -5738,7 +4458,6 @@ function renderizarPrestigeUpgrades() {
             </button>
         `;
         
-        // attach click handler for this upgrade
         const btn = row.querySelector('button');
         if (btn) {
             btn.addEventListener('click', () => comprarPrestigeUpgrade(id));
@@ -5746,7 +4465,6 @@ function renderizarPrestigeUpgrades() {
         container.appendChild(row);
     }
     
-    // Se não houver upgrades disponíveis
     if (container.children.length === 0) {
         container.innerHTML = '<p class="no-upgrades">Todos os upgrades adquiridos!</p>';
     }
@@ -5760,10 +4478,7 @@ function comprarPrestigeUpgrade(id) {
     
     prestigePoints -= up.preco;
     up.nivel++;
-    // prestigeBonus continua sendo = prestigePoints (cada ponto = 1%)
-    // Mas os efeitos dos upgrades são aplicados separadamente em aplicarBonusAscensao
     
-    // Atualiza displays de pontos
     const ascensionPointsModal = document.getElementById('ascensionPointsModal');
     if (ascensionPointsModal) ascensionPointsModal.textContent = prestigePoints;
     
@@ -5772,49 +4487,39 @@ function comprarPrestigeUpgrade(id) {
     
     mostrarFeedback(`✅ Upgrade ${up.nome} adquirido!`, 'success');
     
-    // Re-renderiza upgrades e árvore de skills
     renderizarPrestigeUpgrades();
     renderizarArvoreSkills();
     
-    // Se for upgrade que afeta tempo, ajustar produções ativas
     if (up.subtipo === 'tempo' || up.subtipo === 'ambos') {
         for (const lang in activeProductions) {
             ajustarTimerParaUpgrade(lang);
         }
     }
-    // se for autoclick, reconfigura intervalo
     if (up.subtipo === 'autoclick') {
         setupAutoClick();
     }
 }
 
 function ascender() {
-    // Salva dados de ascensão
     const pontosAtuais = prestigePoints;
-    const upgradesComprados = JSON.parse(JSON.stringify(prestigeUpgradesData)); // salva níveis
+    const upgradesComprados = JSON.parse(JSON.stringify(prestigeUpgradesData));
     
-    // Reseta o jogo (similar ao resetarJogo, mas preservando ascensão)
     resetarJogoPreservandoAscensao(pontosAtuais, upgradesComprados);
     
-    // Fecha modal
     fecharModalAscensao();
     
-    // Mostra feedback
     mostrarFeedback('⭐ Ascensão concluída! Bônus permanente ativo.', 'success');
 }
 
 function resetarJogoPreservandoAscensao(pontos, upgrades) {
-    // Reseta tudo que é resetado no reset normal
     money = 0;
     totalMoneyEarned = 0;
     linguagensData = JSON.parse(JSON.stringify(linguagensDataTemplate));
     upgradesData = JSON.parse(JSON.stringify(upgradesDataTemplate));
     lingUpgradesData = JSON.parse(JSON.stringify(lingUpgradesDataTemplate));
     
-    // Limpa produções ativas
     for (const id in activeProductions) delete activeProductions[id];
     
-    // Garantir que nenhum progresso visual fique carregado (mesma lógica do reset completo)
     for (const key in progressoAtivo) progressoAtivo[key] = false;
     document.querySelectorAll('.barra').forEach(barra => {
         const fill = barra.querySelector('.progress-fill');
@@ -5822,40 +4527,33 @@ function resetarJogoPreservandoAscensao(pontos, upgrades) {
         if (fill) {
             fill.style.transition = 'none';
             fill.style.width = '0%';
-            fill.offsetHeight; // força reflow para reiniciar animação
+            fill.offsetHeight;
             fill.style.transition = 'width 0.45s cubic-bezier(.22,.9,.36,1)';
         }
         if (timer) timer.textContent = '00:00';
     });
 
-    // Reseta progresso de ascensão para a nova era
     prestigeProgress = 0;
     prestigePointsGainedThisRun = 0;
     
-    // Restaura dados de ascensão
     prestigePoints = pontos;
-    prestigeUpgradesData = upgrades; // substitui pelos níveis salvos
+    prestigeUpgradesData = upgrades;
     
-    // Aumenta nível de ascensão e calcula bônus passivo
     ascensionLevel++;
-    prestigeBonus = ascensionLevel; // cada nível = 1% bônus passivo
+    prestigeBonus = ascensionLevel;
     
-    // configura autoclick caso esteja ativo
     setupAutoClick();
     
-    // Atualiza interface
     if (moneyEl) moneyEl.textContent = "$0.00";
     
-    // Garante que o botão de ascensão esteja visível se já desbloqueado (ATUALIZADO)
     if (prestigeUnlocked) {
         document.getElementById('ascensionButtonContainer').style.display = 'flex';
     } else {
         document.getElementById('ascensionButtonContainer').style.display = 'none';
     }
     
-    verificarProgressoAscensao(); // atualiza barra (que estará zerada)
+    verificarProgressoAscensao();
     
-    // Re-renderiza tudo
     inicializarInterface();
     atualizarTodosUpgrades();
     atualizarEstatisticas();
@@ -5888,16 +4586,14 @@ function initTooltip() {
 }
 
 // =======================
-// FUNÇÃO PARA AJUSTAR ALTURA DA LISTA DE UPGRADES (IGUAL À DAS LINGUAGENS)
+// FUNÇÃO PARA AJUSTAR ALTURA DA LISTA DE UPGRADES
 // =======================
-// ⚡ OTIMIZAÇÃO: Throttle para ajuste de altura
 let lastAlturaAjuste = 0;
-const ALTURA_AJUSTE_INTERVAL = 50; // ajustar altura a cada 50ms no máximo
+const ALTURA_AJUSTE_INTERVAL = 50;
 
 function ajustarAlturaListaUpgrades() {
     const agora = Date.now();
     
-    // ⚡ Não ajustar altura muito frequentemente
     if (agora - lastAlturaAjuste < ALTURA_AJUSTE_INTERVAL) {
         return;
     }
@@ -5915,7 +4611,7 @@ function ajustarAlturaListaUpgrades() {
 }
 
 // =======================
-// OBSERVADOR DE MUDANÇA DE TAMANHO DAS LINGUAGENS (ResizeObserver)
+// OBSERVADOR DE MUDANÇA DE TAMANHO DAS LINGUAGENS
 // =======================
 let resizeObserver;
 function observarLinguagens() {
@@ -5932,85 +4628,129 @@ function observarLinguagens() {
 }
 
 // =======================
-// INICIALIZAÇÃO DO JOGO
+// SISTEMA DE SIDEBAR (HAMBURGER)
 // =======================
-document.addEventListener('DOMContentLoaded', () => {
-    try {
-        console.log('🎮 Iniciando I.T Adventure...');
-        iniciarTemporizador();
-        inicializarInterface();
-        inicializarMenu();
-        inicializarSidebar(); // NOVO: Inicializar sidebar
-        atualizarEstatisticas();
-        initTooltip();
-        ajustarAlturaListaUpgrades();
-        observarLinguagens();
-        agendarProximoBonus(); // Inicia o ciclo do ícone de bônus
-        window.addEventListener('resize', ajustarAlturaListaUpgrades);
-        
-        // NOVO: Atualizar referências de botões de ascensão
-        atualizarReferenciasBotoesAscensao();
-        
-        console.log('✅ I.T Adventure iniciado com sucesso!');
-        console.log('📋 Teclas de atalho: M, R, U, G');
-    } catch (error) {
-        console.error('❌ Erro ao inicializar o jogo:', error);
-        mostrarFeedback('❌ Erro ao carregar o jogo!', 'error');
+function inicializarSidebar() {
+    const hamburgerBtn = document.getElementById('hamburger-btn');
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('sidebar-overlay');
+    const closeSidebarBtn = document.getElementById('close-sidebar');
+    const openMenuFromSidebar = document.getElementById('open-menu-from-sidebar');
+    
+    if (hamburgerBtn) {
+        hamburgerBtn.addEventListener('click', () => {
+            hamburgerBtn.classList.toggle('active');
+            sidebar.classList.toggle('active');
+            overlay.classList.toggle('active');
+        });
     }
-    const upgradesList = document.getElementById('all-upgrades');
-    if (upgradesList) {
-        upgradesList.addEventListener('mouseleave', () => {
-            if (tooltipEl) {
-                tooltipEl.classList.remove('visible');
-                tooltipEl.textContent = '';
+    
+    if (closeSidebarBtn) {
+        closeSidebarBtn.addEventListener('click', () => {
+            hamburgerBtn.classList.remove('active');
+            sidebar.classList.remove('active');
+            overlay.classList.remove('active');
+        });
+    }
+    
+    if (overlay) {
+        overlay.addEventListener('click', () => {
+            hamburgerBtn.classList.remove('active');
+            sidebar.classList.remove('active');
+            overlay.classList.remove('active');
+        });
+    }
+    
+    if (openMenuFromSidebar) {
+        openMenuFromSidebar.addEventListener('click', () => {
+            hamburgerBtn.classList.remove('active');
+            sidebar.classList.remove('active');
+            overlay.classList.remove('active');
+            
+            setTimeout(() => {
+                abrirMenu();
+            }, 200);
+        });
+    }
+    
+    console.log('✅ Sistema de sidebar inicializado com sucesso');
+}
+
+// =======================
+// ATUALIZAR REFERÊNCIAS DE BOTÕES NA INICIALIZAÇÃO
+// =======================
+let ascensionBarListenerAdded = false;
+
+function atualizarReferenciasBotoesAscensao() {
+    const ascensionBar = document.getElementById('ascensionButtonContainer');
+    if (ascensionBar && !ascensionBarListenerAdded) {
+        ascensionBar.addEventListener('click', () => {
+            console.log("🔘 Barra de ascensão clicada");
+            if (gamePaused) {
+                console.warn("Jogo pausado, não pode ascender");
+                return;
+            }
+            const proximoMarco = calcularProximoMarco();
+            console.log(`Progresso: ${prestigeProgress}, Marco: ${proximoMarco}`);
+            if (prestigeProgress < proximoMarco) {
+                mostrarFeedback('Ainda não atingiu o próximo nível de ascensão!', 'error');
+                return;
+            }
+            abrirModalConfirmacaoAscensao();
+        });
+        ascensionBarListenerAdded = true;
+        console.log("✅ Listener de ascensão adicionado");
+    }
+    
+    const closeSkillTreeBtn = document.querySelector('.close-skill-tree');
+    if (closeSkillTreeBtn) {
+        closeSkillTreeBtn.addEventListener('click', () => {
+            if (pauseState.active) return;
+            fecharModalArvoreSkills();
+        });
+    }
+    
+    const skillTreeAscendBtn = document.getElementById('skill-tree-ascend-btn');
+    if (skillTreeAscendBtn) {
+        skillTreeAscendBtn.addEventListener('click', () => {
+            if (pauseState.active) return;
+            fecharModalArvoreSkills();
+            retomarJogo();
+
+            mostrarFeedback('⭐ Upgrades aplicados! Continue progredindo.', 'success');
+        });
+    }
+    
+    const confirmAscensionModal = document.getElementById('confirm-ascension-modal');
+    if (confirmAscensionModal) {
+        confirmAscensionModal.addEventListener('click', (event) => {
+            if (pauseState.active) return;
+            if (event.target === confirmAscensionModal) {
+                fecharModalConfirmacaoAscensao();
             }
         });
     }
-});
-
-// =======================
-// SISTEMA DE ESCALA PROPORCIONAL 
-// =======================
-function ajustarProporcao() {
-    const LARGURA_BASE = 1920;
-    const ALTURA_BASE = 1080;
-    const larguraAtual = window.innerWidth;
-    const alturaAtual = window.innerHeight;
-    let fatorEscala = Math.min(larguraAtual / LARGURA_BASE, alturaAtual / ALTURA_BASE);
-    fatorEscala = Math.min(Math.max(fatorEscala, 0.625), 1);
-    document.documentElement.style.setProperty('--scale', fatorEscala);
+    
+    const skillTreeModal = document.getElementById('skill-tree-modal');
+    if (skillTreeModal) {
+        skillTreeModal.style.pointerEvents = 'auto';
+    }
 }
 
-let resizeTimer;
-window.addEventListener('resize', () => {
-    clearTimeout(resizeTimer);
-    resizeTimer = setTimeout(ajustarProporcao, 50);
-    ajustarAlturaListaUpgrades();
-});
-
-window.addEventListener('load', () => {
-    ajustarProporcao();
-    ajustarAlturaListaUpgrades();
-});
-
 // =======================
-// SISTEMA DE ÍCONE DE BÔNUS FLUTUANTE (com barra de progresso)
+// SISTEMA DE ÍCONE DE BÔNUS FLUTUANTE
 // =======================
-
 let bonusIcon = document.getElementById('bonus-icon');
 let bonusIndicator = document.getElementById('bonus-indicator');
 let bonusTimeout = null;
 let bonusInterval = null;
 let bonusStartTime = null;
 
-// Multiplicadores temporários
-let bonusSpeedMultiplier = 1;   // 5, 10, 15
-let bonusRewardMultiplier = 1;  // 10, 50, 100
+let bonusSpeedMultiplier = 1;
+let bonusRewardMultiplier = 1;
 
-// Duração do bônus em milissegundos (60 segundos)
 const BONUS_DURATION = 60000;
 
-// Função para calcular a soma das recompensas atuais de todas as linguagens
 function somaRecompensasLinguagens() {
     let total = 0;
     for (const id in linguagensData) {
@@ -6021,7 +4761,6 @@ function somaRecompensasLinguagens() {
     return total;
 }
 
-// Função para mostrar o ícone em posição aleatória
 function mostrarBonusIcon() {
     if (!bonusIcon) return;
 
@@ -6037,14 +4776,12 @@ function mostrarBonusIcon() {
     console.log('⭐ Ícone de bônus apareceu!');
 }
 
-// Função para esconder o ícone
 function esconderBonusIcon() {
     if (bonusIcon) {
         bonusIcon.style.display = 'none';
     }
 }
 
-// Função para atualizar a barra de progresso do bônus ativo
 function atualizarBarraBonus() {
     if (!bonusStartTime) return;
     const agora = Date.now();
@@ -6056,13 +4793,9 @@ function atualizarBarraBonus() {
     if (progressFill) {
         progressFill.style.width = percentual + '%';
     }
-
-    // Se o tempo acabou, a barra será removida pelo setTimeout do término
 }
 
-// Função para aplicar os bônus
 function aplicarBonus() {
-    // Cancela qualquer bônus anterior ainda ativo
     if (bonusTimeout) clearTimeout(bonusTimeout);
     if (bonusInterval) clearInterval(bonusInterval);
 
@@ -6072,11 +4805,9 @@ function aplicarBonus() {
     bonusSpeedMultiplier = speedOptions[Math.floor(Math.random() * speedOptions.length)];
     bonusRewardMultiplier = rewardOptions[Math.floor(Math.random() * rewardOptions.length)];
 
-    // ⚡ Invalidar cache pra garantir que o bônus seja aplicado imediatamente
     invalidarCacheCalculos();
 
     let bonusMoney = somaRecompensasLinguagens() * 0.15;
-    // aplica upgrade de bonusicon se existir
     for (const up of Object.values(prestigeUpgradesData)) {
         if (up.nivel > 0 && up.subtipo === 'bonusicon') {
             bonusMoney = Math.ceil(bonusMoney * (1 + up.efeito * up.nivel));
@@ -6095,9 +4826,8 @@ function aplicarBonus() {
         `;
     }
 
-    // Marca o início do bônus e inicia a atualização da barra
     bonusStartTime = Date.now();
-    bonusInterval = setInterval(atualizarBarraBonus, 100); // atualiza a cada 100ms
+    bonusInterval = setInterval(atualizarBarraBonus, 100);
 
     mostrarFeedback(`⭐ Bônus! +$${formatarDinheiro(bonusMoney)}`, 'success');
     mostrarFeedback(`⚡ Velocidade x${bonusSpeedMultiplier} | 💰 Recompensa x${bonusRewardMultiplier}`, 'success');
@@ -6110,12 +4840,11 @@ function aplicarBonus() {
         bonusSpeedMultiplier = 1;
         bonusRewardMultiplier = 1;
         
-        // ⚡ Invalidar cache ao terminar o bônus
         invalidarCacheCalculos();
         
         if (bonusIndicator) {
             bonusIndicator.style.display = 'none';
-            bonusIndicator.innerHTML = ''; // remove a barra junto
+            bonusIndicator.innerHTML = '';
         }
         if (bonusInterval) {
             clearInterval(bonusInterval);
@@ -6139,17 +4868,14 @@ if (bonusIcon) {
 }
 
 function agendarProximoBonus() {
-    let baseDelay = Math.random() * (300000 - 60000) + 60000; // 60s a 300s
+    let baseDelay = Math.random() * (300000 - 60000) + 60000;
     
-    // Aplicar upgrades que afetam frequência dos ícones de bônus
     for (const up of Object.values(prestigeUpgradesData)) {
         if (up.nivel > 0 && up.subtipo === 'bonusicon_freq') {
-            // Reduz o delay (torna mais frequente)
             baseDelay *= (1 - up.efeito * up.nivel);
         }
     }
     
-    // Garantir delay mínimo de 30 segundos
     const delay = Math.max(30000, baseDelay);
     
     setTimeout(() => {
@@ -6158,176 +4884,62 @@ function agendarProximoBonus() {
 }
 
 // =======================
-// NOVO: SISTEMA DE SIDEBAR (HAMBURGER)
+// INICIALIZAÇÃO DO JOGO
 // =======================
-
-function inicializarSidebar() {
-    const hamburgerBtn = document.getElementById('hamburger-btn');
-    const sidebar = document.getElementById('sidebar');
-    const overlay = document.getElementById('sidebar-overlay');
-    const closeSidebarBtn = document.getElementById('close-sidebar');
-    const openMenuFromSidebar = document.getElementById('open-menu-from-sidebar');
-    
-    // Abrir sidebar com hamburger
-    if (hamburgerBtn) {
-        hamburgerBtn.addEventListener('click', () => {
-            hamburgerBtn.classList.toggle('active');
-            sidebar.classList.toggle('active');
-            overlay.classList.toggle('active');
-        });
+document.addEventListener('DOMContentLoaded', () => {
+    try {
+        console.log('🎮 Iniciando I.T Adventure...');
+        iniciarTemporizador();
+        inicializarInterface();
+        inicializarMenu();
+        inicializarSidebar();
+        atualizarEstatisticas();
+        initTooltip();
+        ajustarAlturaListaUpgrades();
+        observarLinguagens();
+        agendarProximoBonus();
+        window.addEventListener('resize', ajustarAlturaListaUpgrades);
+        
+        atualizarReferenciasBotoesAscensao();
+        
+        console.log('✅ I.T Adventure iniciado com sucesso!');
+        console.log('📋 Teclas de atalho: M, R, U, G');
+    } catch (error) {
+        console.error('❌ Erro ao inicializar o jogo:', error);
+        mostrarFeedback('❌ Erro ao carregar o jogo!', 'error');
     }
-    
-    // Fechar sidebar com botão X
-    if (closeSidebarBtn) {
-        closeSidebarBtn.addEventListener('click', () => {
-            hamburgerBtn.classList.remove('active');
-            sidebar.classList.remove('active');
-            overlay.classList.remove('active');
-        });
-    }
-    
-    // Fechar sidebar ao clicar no overlay
-    if (overlay) {
-        overlay.addEventListener('click', () => {
-            hamburgerBtn.classList.remove('active');
-            sidebar.classList.remove('active');
-            overlay.classList.remove('active');
-        });
-    }
-    
-    // Abrir menu de estatísticas a partir da sidebar
-    if (openMenuFromSidebar) {
-        openMenuFromSidebar.addEventListener('click', () => {
-            // Fecha a sidebar primeiro
-            hamburgerBtn.classList.remove('active');
-            sidebar.classList.remove('active');
-            overlay.classList.remove('active');
-            
-            // Abre o menu
-            setTimeout(() => {
-                abrirMenu();
-            }, 200);
-        });
-    }
-    
-    console.log('✅ Sistema de sidebar inicializado com sucesso');
-}
-
-// =======================
-// NOVO: ATUALIZAR DISPLAY DE ASCENSÃO NO TOP-ROW
-// =======================
-
-function atualizarDisplayAscensao() {
-    const container = document.getElementById('ascensionButtonContainer');
-    const pointsSpan = document.getElementById('prestigePointsTop');
-    const barFill = container?.querySelector('.ascension-bar-fill');
-    
-    if (!container) return;
-    
-    // Calcular progresso até próximo nível
-    const proximoMarco = nextPrestigeThreshold * (prestigePointsGainedThisRun + 1);
-    const progresso = Math.min(prestigeProgress / proximoMarco, 1);
-    const percentual = progresso * 100;
-    
-    // Atualizar barra de preenchimento
-    if (barFill) {
-        barFill.style.width = `${percentual}%`;
-    }
-    
-    // Atualizar pontos (mostrar quantos pontos foram ganhos nesta era e progresso para o próximo)
-    if (pointsSpan) {
-        const pontosCorrente = prestigePointsGainedThisRun;
-        pointsSpan.textContent = `${pontosCorrente} ⭐ (${percentual.toFixed(1)}%)`;
-    }
-    
-    // Se foi desbloqueado agora, ativar animação
-    if (prestigeUnlocked && !container.classList.contains('unlocked')) {
-        container.classList.add('unlocked');
-        // Remover a classe após a animação
-        setTimeout(() => {
-            container.classList.remove('unlocked');
-        }, 800);
-    }
-}
-
-// =======================
-// INTEGRAR FUNÇÃO ATUALIZAR ASCENSÃO NO VERIFICAR PROGRESSO
-// =======================
-
-// Esta função será chamada após a verificarProgressoAscensao original
-function verificarProgressoAscensaoComUI() {
-    if (!prestigeUnlocked) {
-        if (totalMoneyEarned >= 1e9) {
-            prestigeUnlocked = true;
-            document.getElementById('ascensionButtonContainer').style.display = 'flex';
-            document.getElementById('ascensionButtonContainer').classList.add('unlocked');
-            mostrarFeedback('⭐ Ascensão desbloqueada! Uma nova era te aguarda!', 'success');
-            
-            // Atualizar referências dos botões após desbloquear
-            atualizarReferenciasBotoesAscensao();
-        } else {
-            return;
-        }
-    }
-    
-    // Atualizar display
-    atualizarDisplayAscensao();
-}
-
-// =======================
-// ATUALIZAR REFERÊNCIAS DE BOTÕES NA INICIALIZAÇÃO
-// =======================
-
-function atualizarReferenciasBotoesAscensao() {
-    // Adicionar event listener à barra de progresso de ascensão no top-row
-    const ascensionBar = document.getElementById('ascensionButtonContainer');
-    
-    if (ascensionBar) {
-        ascensionBar.addEventListener('click', () => {
-            if (gamePaused) return;
-            abrirModalConfirmacaoAscensao();
-        });
-    }
-    
-    // Event listeners para modal da árvore de skills
-    const closeSkillTreeBtn = document.querySelector('.close-skill-tree');
-    if (closeSkillTreeBtn) {
-        closeSkillTreeBtn.addEventListener('click', () => {
-            if (pauseState.active) return;
-            fecharModalArvoreSkills();
-        });
-    }
-    
-    const skillTreeAscendBtn = document.getElementById('skill-tree-ascend-btn');
-    if (skillTreeAscendBtn) {
-        skillTreeAscendBtn.addEventListener('click', () => {
-            if (pauseState.active) return;
-            // Fechar modal e retomar jogo (efeitos já aplicados ao comprar upgrades)
-            fecharModalArvoreSkills();
-            retomarJogo();
-
-            mostrarFeedback('⭐ Upgrades aplicados! Continue progredindo.', 'success');
-        });
-    }
-    
-    // Fechar modais ao clicar fora (só quando o jogo não estiver pausado)
-    const confirmAscensionModal = document.getElementById('confirm-ascension-modal');
-    if (confirmAscensionModal) {
-        confirmAscensionModal.addEventListener('click', (event) => {
-            if (pauseState.active) return;
-            if (event.target === confirmAscensionModal) {
-                fecharModalConfirmacaoAscensao();
+    const upgradesList = document.getElementById('all-upgrades');
+    if (upgradesList) {
+        upgradesList.addEventListener('mouseleave', () => {
+            if (tooltipEl) {
+                tooltipEl.classList.remove('visible');
+                tooltipEl.textContent = '';
             }
         });
     }
-    
-    const skillTreeModal = document.getElementById('skill-tree-modal');
-    if (skillTreeModal) {
-        skillTreeModal.addEventListener('click', (event) => {
-            if (pauseState.active) return;
-            if (event.target === skillTreeModal) {
-                fecharModalArvoreSkills();
-            }
-        });
-    }
+});
+
+// =======================
+// SISTEMA DE ESCALA PROPORCIONAL
+// =======================
+function ajustarProporcao() {
+    const LARGURA_BASE = 1920;
+    const ALTURA_BASE = 1080;
+    const larguraAtual = window.innerWidth;
+    const alturaAtual = window.innerHeight;
+    let fatorEscala = Math.min(larguraAtual / LARGURA_BASE, alturaAtual / ALTURA_BASE);
+    fatorEscala = Math.min(Math.max(fatorEscala, 0.625), 1);
+    document.documentElement.style.setProperty('--scale', fatorEscala);
 }
+
+let resizeTimer;
+window.addEventListener('resize', () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(ajustarProporcao, 50);
+    ajustarAlturaListaUpgrades();
+});
+
+window.addEventListener('load', () => {
+    ajustarProporcao();
+    ajustarAlturaListaUpgrades();
+});
