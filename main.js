@@ -14,8 +14,18 @@ const ALTURA_AJUSTE_INTERVAL = 50;
 const CACHE_THRESHOLD = 0.01;
 
 // ------------------------
+// CONTA PARA DEV
+// ------------------------
+const DEV_CREDENTIALS = {
+    username: 'dev',
+    password: 'dev123'
+};
+let isDeveloper = false;
+
+// ------------------------
 // VARIÁVEIS GLOBAIS
 // ------------------------
+
 let money = 0;
 let totalMoneyEarned = 0;
 let gamePaused = false;
@@ -41,7 +51,7 @@ let formatCache = new Map();
 let totalBarCompletions = 0;       // número total de vezes que a barra encheu (aumenta o próximo marco)
 let pendingPrestigePoints = 0;     // pontos pendentes (ganhos pela barra, mas ainda não reivindicados)
 let totalPrestigeEarned = 0;   // total de pontos já obtidos em todo o jogo
-let pendingAscensionPoints = 0;  
+let pendingAscensionPoints = 0;
 let prestigeUnlocked = false;
 let prestigePoints = 0;
 let totalBonus = 0;
@@ -915,7 +925,7 @@ function criarPopUpDinheiro(valor, elementoReferencia, raio = 50) {
             centroX = rect.left + rect.width / 2;
             centroY = rect.top + rect.height / 2;
         }
-    } catch (e) {}
+    } catch (e) { }
     const angulo = Math.random() * 2 * Math.PI;
     const distancia = Math.random() * raio;
     const offsetX = Math.cos(angulo) * distancia;
@@ -1119,7 +1129,7 @@ function criarElementoUpgrade(upgradeInfo) {
         `;
     }
 
-    row.addEventListener('mouseenter', function(e) {
+    row.addEventListener('mouseenter', function (e) {
         if (!tooltipEl) tooltipEl = document.getElementById('custom-tooltip');
         if (!tooltipEl) return;
         const tooltipDiv = this.querySelector('.upgrade-tooltip');
@@ -1130,14 +1140,14 @@ function criarElementoUpgrade(upgradeInfo) {
         tooltipEl.style.top = e.pageY - 30 + 'px';
         this.classList.remove('novo-upgrade');
     });
-    row.addEventListener('mousemove', function(e) {
+    row.addEventListener('mousemove', function (e) {
         if (!tooltipEl) return;
         if (tooltipEl.classList.contains('visible')) {
             tooltipEl.style.left = e.pageX + 15 + 'px';
             tooltipEl.style.top = e.pageY - 30 + 'px';
         }
     });
-    row.addEventListener('mouseleave', function() {
+    row.addEventListener('mouseleave', function () {
         if (!tooltipEl) return;
         tooltipEl.classList.remove('visible');
     });
@@ -1306,11 +1316,7 @@ function atualizarInterfaceLinguagens() {
         const precoTotal = calcularPrecoUnitario(id, multiplicadorCompra);
         const btn = ling.querySelector(".buy-btn");
         if (btn) {
-            if (multiplicadorCompra > 1) {
-                btn.innerHTML = `Comprar x${multiplicadorCompra}<br><span class="preco-pequeno">$${formatarDinheiro(precoTotal)}</span>`;
-            } else {
-                btn.innerHTML = `Comprar<br><span class="preco-pequeno">$${formatarDinheiro(precoTotal)}</span>`;
-            }
+            btn.innerHTML = `$${formatarDinheiro(precoTotal)}`;
         }
 
         const countEl = ling.querySelector(".compra-count");
@@ -1883,21 +1889,21 @@ function aplicarBonus() {
     for (const id in activeProductions) ajustarTimerParaUpgrade(id);
 
     bonusTimeout = setTimeout(() => {
-    bonusSpeedMultiplier = 1;
-    bonusRewardMultiplier = 1;
-    invalidarCacheCalculos();
-    if (bonusIndicator) {
-        bonusIndicator.style.display = 'none';
-        bonusIndicator.innerHTML = '';
-    }
-    if (bonusInterval) clearInterval(bonusInterval);
-    bonusStartTime = null;
-    mostrarFeedback('⏰ Bônus terminou!', 'reset');
-    for (const id in activeProductions) ajustarTimerParaUpgrade(id);
-    
-    // Agenda o próximo bônus após o término do bônus atual
-    agendarProximoBonus();
-}, BONUS_DURATION);
+        bonusSpeedMultiplier = 1;
+        bonusRewardMultiplier = 1;
+        invalidarCacheCalculos();
+        if (bonusIndicator) {
+            bonusIndicator.style.display = 'none';
+            bonusIndicator.innerHTML = '';
+        }
+        if (bonusInterval) clearInterval(bonusInterval);
+        bonusStartTime = null;
+        mostrarFeedback('⏰ Bônus terminou!', 'reset');
+        for (const id in activeProductions) ajustarTimerParaUpgrade(id);
+
+        // Agenda o próximo bônus após o término do bônus atual
+        agendarProximoBonus();
+    }, BONUS_DURATION);
 }
 
 function agendarProximoBonus() {
@@ -1910,9 +1916,9 @@ function agendarProximoBonus() {
     }
     const delay = Math.max(60000, baseDelay);
     nextBonusScheduled = true;
-    setTimeout(() => { 
+    setTimeout(() => {
         nextBonusScheduled = false;
-        mostrarBonusIcon(); 
+        mostrarBonusIcon();
     }, delay);
 }
 
@@ -1920,12 +1926,12 @@ function ativarSuperBonus() {
     // Cancela qualquer bônus ativo no momento
     if (bonusTimeout) clearTimeout(bonusTimeout);
     if (bonusInterval) clearInterval(bonusInterval);
-    
+
     // Define os multiplicadores extremos
     bonusSpeedMultiplier = 100;
     bonusRewardMultiplier = 100;
     invalidarCacheCalculos();  // Recalcula recompensas e tempos
-    
+
     // (Opcional) Dá um dinheiro extra como recompensa visual
     let bonusMoney = somaRecompensasLinguagens() * 15; // 15x o total das linguagens
     for (const up of Object.values(prestigeUpgradesData)) {
@@ -1935,7 +1941,7 @@ function ativarSuperBonus() {
     }
     mostrarFeedback(`💥 SUPER BÔNUS! +$${formatarDinheiro(bonusMoney)}`, 'success');
     mostrarFeedback(`⚡ Velocidade x${bonusSpeedMultiplier} | 💰 Recompensa x${bonusRewardMultiplier}`, 'success');
-    
+
     // Exibe o indicador de bônus na tela
     const bonusIndicator = document.getElementById('bonus-indicator');
     if (bonusIndicator) {
@@ -1949,13 +1955,13 @@ function ativarSuperBonus() {
             </div>
         `;
     }
-    
+
     bonusStartTime = Date.now();
     bonusInterval = setInterval(atualizarBarraBonus, 100);
-    
+
     // Ajusta os timers de todas as produções ativas (para refletir a nova velocidade)
     for (const id in activeProductions) ajustarTimerParaUpgrade(id);
-    
+
     // Duração padrão do bônus (60 segundos)
     bonusTimeout = setTimeout(() => {
         bonusSpeedMultiplier = 1;
@@ -2103,9 +2109,31 @@ function agendarAtualizacaoEstatisticas(agora) {
 // ------------------------
 // MENU, DEBUG E RESET
 // ------------------------
+
+function ajustarVisibilidadeDebug() {
+    const debugTab = document.querySelector('.tab-btn[data-tab="debug"]');
+    const debugContent = document.getElementById('debug-tab');
+    if (debugTab && debugContent) {
+        if (isDeveloper) {
+            debugTab.style.display = 'block';
+            // Se a aba debug estiver ativa e não for dev, muda para stats
+            if (debugContent.classList.contains('active')) {
+                document.querySelector('.tab-btn[data-tab="stats"]').click();
+            }
+        } else {
+            debugTab.style.display = 'none';
+            // Se a aba debug estiver visível, muda para stats
+            if (debugContent.classList.contains('active')) {
+                document.querySelector('.tab-btn[data-tab="stats"]').click();
+            }
+        }
+    }
+}
+
 function abrirMenu() {
     const modal = document.getElementById('menu-modal');
     if (modal) {
+        ajustarVisibilidadeDebug(); // esconde/mostra a aba Debug conforme o usuário
         modal.style.display = 'block';
         atualizarEstatisticas();
         const statsTab = document.querySelector('[data-tab="stats"]');
@@ -2254,7 +2282,7 @@ function inicializarControlesMultiplicador() {
     const botoes = document.querySelectorAll('.multiplicador-btn');
     if (!botoes.length) return;
     botoes.forEach(botao => {
-        botao.addEventListener('click', function() {
+        botao.addEventListener('click', function () {
             multiplicadorCompra = parseInt(this.dataset.mult);
             botoes.forEach(b => b.classList.remove('active'));
             this.classList.add('active');
@@ -2262,6 +2290,34 @@ function inicializarControlesMultiplicador() {
             mostrarFeedback(`Multiplicador definido para x${multiplicadorCompra}`, 'success');
         });
     });
+}
+
+function carregarEstadoCompleto(gameData) {
+    if (!gameData) return;
+
+    money = gameData.money ?? 0;
+    totalMoneyEarned = gameData.totalMoneyEarned ?? 0;
+    prestigeProgress = gameData.prestigeProgress ?? 0;
+    totalPrestigeEarned = gameData.totalPrestigeEarned ?? 0;
+    prestigePoints = gameData.prestigePoints ?? 0;
+    totalBarCompletions = gameData.totalBarCompletions ?? 0;
+    pendingPrestigePoints = gameData.pendingPrestigePoints ?? 0;
+    prestigeUnlocked = gameData.prestigeUnlocked === 1 || gameData.prestigeUnlocked === true;
+
+    if (gameData.linguagensData) linguagensData = gameData.linguagensData;
+    if (gameData.upgradesData) upgradesData = gameData.upgradesData;
+    if (gameData.lingUpgradesData) lingUpgradesData = gameData.lingUpgradesData;
+    if (gameData.prestigeUpgradesData) prestigeUpgradesData = gameData.prestigeUpgradesData;
+
+    // Atualizar interface
+    if (moneyEl) moneyEl.textContent = "$" + formatarDinheiro(money);
+    atualizarInterfaceLinguagens();
+    atualizarTodosUpgrades();
+    atualizarEstatisticas();
+    invalidarCacheCalculos();
+
+    // Atualizar display da ascensão
+    atualizarDisplayAscensao();
 }
 
 function inicializarInterface() {
@@ -2274,11 +2330,7 @@ function inicializarInterface() {
         const precoTotal = calcularPrecoUnitario(id, multiplicadorCompra);
         const btn = ling.querySelector(".buy-btn");
         if (btn) {
-            if (multiplicadorCompra > 1) {
-                btn.innerHTML = `Comprar x${multiplicadorCompra}<br><span class="preco-pequeno">$${formatarDinheiro(precoTotal)}</span>`;
-            } else {
-                btn.innerHTML = `Comprar<br><span class="preco-pequeno">$${formatarDinheiro(precoTotal)}</span>`;
-            }
+            btn.innerHTML = `$${formatarDinheiro(precoTotal)}`;
             btn.replaceWith(btn.cloneNode(true));
         }
         const countEl = ling.querySelector(".compra-count");
@@ -2301,14 +2353,14 @@ function inicializarInterface() {
         const bonusIcon = document.getElementById('bonus-icon');
         if (bonusIcon) {
             bonusIcon.addEventListener('click', () => {
-            if (!bonusIconVisible) return;
-            if (window.bonusFadeTimeout) clearTimeout(window.bonusFadeTimeout);
-            aplicarBonus();
-            esconderBonusIcon();
-            agendarProximoBonus();
-        });
-    }
-});
+                if (!bonusIconVisible) return;
+                if (window.bonusFadeTimeout) clearTimeout(window.bonusFadeTimeout);
+                aplicarBonus();
+                esconderBonusIcon();
+                agendarProximoBonus();
+            });
+        }
+    });
 
     document.querySelectorAll(".buy-btn").forEach(btn => {
         btn.addEventListener("click", (event) => {
@@ -2329,7 +2381,7 @@ function inicializarInterface() {
         });
     });
 
-    document.getElementById('claudinho-click').addEventListener('click', function() {
+    document.getElementById('claudinho-click').addEventListener('click', function () {
         if (gamePaused) return;
         let ganhoBase = 0.10;
         for (const up of Object.values(upgradesData)) {
@@ -2372,6 +2424,17 @@ function inicializarSidebar() {
     const overlay = document.getElementById('sidebar-overlay');
     const closeSidebarBtn = document.getElementById('close-sidebar');
     const openMenuFromSidebar = document.getElementById('open-menu-from-sidebar');
+    const saveGameBtn = document.getElementById('save-game-btn');
+
+    if (saveGameBtn) {
+        saveGameBtn.addEventListener('click', () => {
+            if (!loggedIn) {
+                mostrarFeedback('Você precisa estar logado para salvar o progresso', 'error');
+                return;
+            }
+            saveProgressToServer();
+        });
+    }
 
     if (hamburgerBtn) {
         hamburgerBtn.addEventListener('click', () => {
@@ -2430,7 +2493,7 @@ function atualizarReferenciasBotoesAscensao() {
         });
     }
 
-    
+
 }
 
 function initTooltip() {
@@ -2452,11 +2515,457 @@ function observarLinguagens() {
 function ajustarProporcao() {
     const LARGURA_BASE = 1920;
     const ALTURA_BASE = 1080;
+    const ESCALA_MIN = 0.7;   // mínimo de 70% (para telas muito pequenas)
+    const ESCALA_MAX = 1.15;   // máximo de 115% (para telas muito grandes)
     const larguraAtual = window.innerWidth;
     const alturaAtual = window.innerHeight;
-    let fatorEscala = Math.min(larguraAtual / LARGURA_BASE, alturaAtual / ALTURA_BASE);
-    fatorEscala = Math.min(Math.max(fatorEscala, 0.625), 1);
+
+    // Calcula a escala baseada na largura e na altura (usa a menor das duas para não estourar)
+    let fatorLargura = larguraAtual / LARGURA_BASE;
+    let fatorAltura = alturaAtual / ALTURA_BASE;
+    let fatorEscala = Math.min(fatorLargura, fatorAltura);
+
+    // Aplica os limites
+    fatorEscala = Math.min(ESCALA_MAX, Math.max(ESCALA_MIN, fatorEscala));
+
+    // Atualiza a variável CSS
     document.documentElement.style.setProperty('--scale', fatorEscala);
+}
+
+function aguardarLogin() {
+    return new Promise((resolve) => {
+        // Exibe o modal de login (certifique-se de que o modal existe no HTML)
+        const modal = document.getElementById('login-modal');
+        if (modal) modal.style.display = 'block';
+
+        // Guarda a função resolve para ser chamada pelos botões de login/cadastro
+        loginPromiseResolve = (sucesso) => {
+            if (sucesso) {
+                modal.style.display = 'none';
+                resolve();
+            }
+        };
+    });
+}
+
+// ------------------------
+// FUNÇÃO DROPDOWN ACCOUNT
+// ------------------------
+
+function setupAccountDropdown() {
+    const accountBtn = document.getElementById('account-btn');
+    const dropdown = document.getElementById('dropdown-content');
+    if (!accountBtn || !dropdown) return;
+
+    // Abrir/fechar ao clicar no botão
+    accountBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        dropdown.classList.toggle('show-dropdown');
+    });
+
+    // Fechar dropdown ao clicar fora
+    document.addEventListener('click', (e) => {
+        if (!accountBtn.contains(e.target) && !dropdown.contains(e.target)) {
+            dropdown.classList.remove('show-dropdown');
+        }
+    });
+
+    // Evitar que cliques dentro do dropdown fechem imediatamente
+    dropdown.addEventListener('click', (e) => {
+        e.stopPropagation();
+    });
+}
+
+// ==================== AUTENTICAÇÃO ====================
+let loggedIn = false;
+let currentUsername = '';
+
+const API_BASE = window.location.pathname.includes('/it_adventure/')
+    ? '/it_adventure/backend/'
+    : '/backend/';
+
+async function apiCall(endpoint, data = null) {
+    const options = {
+        method: data ? 'POST' : 'GET',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include'   // ← ESSENCIAL
+    };
+    if (data) options.body = JSON.stringify(data);
+    const res = await fetch(API_BASE + endpoint, options);
+    return await res.json();
+}
+
+async function register(username, email, password) {
+    return apiCall('register.php', { username, email, password });
+}
+
+async function login(username, password) {
+    return apiCall('login.php', { username, password });
+}
+
+async function logout() {
+    return apiCall('logout.php');
+}
+
+function abrirModal(modalId) {
+    const modal = document.getElementById(modalId);
+    if (modal) modal.style.display = 'block';
+}
+
+function fecharModal(modalId) {
+    const modal = document.getElementById(modalId);
+    if (modal) modal.style.display = 'none';
+}
+
+function setupAuth() {
+    console.log('setupAuth iniciado');
+
+    const loginBtn = document.getElementById('login-header-btn');
+    const registerBtn = document.getElementById('register-header-btn');
+
+    if (loginBtn) {
+        loginBtn.onclick = () => {
+            console.log('Abrindo modal de login');
+            abrirModal('login-modal');
+        };
+    }
+    if (registerBtn) {
+        registerBtn.onclick = () => {
+            console.log('Abrindo modal de cadastro');
+            abrirModal('register-modal');
+        };
+    }
+
+    const showRegister = document.getElementById('show-register');
+    const showLogin = document.getElementById('show-login');
+    if (showRegister) showRegister.onclick = (e) => {
+        e.preventDefault();
+        fecharModal('login-modal');
+        abrirModal('register-modal');
+    };
+    if (showLogin) showLogin.onclick = (e) => {
+        e.preventDefault();
+        fecharModal('register-modal');
+        abrirModal('login-modal');
+    };
+
+    const doLogin = document.getElementById('do-login');
+    if (doLogin) {
+        doLogin.onclick = async () => {
+            const username = document.getElementById('login-username').value;
+            const password = document.getElementById('login-password').value;
+            const errorDiv = document.getElementById('login-error-message');
+
+            // Limpa mensagem anterior
+            if (errorDiv) errorDiv.style.display = 'none';
+
+            // Verifica se é o desenvolvedor local
+            if (username === DEV_CREDENTIALS.username && password === DEV_CREDENTIALS.password) {
+                loggedIn = true;
+                currentUsername = username;
+                isDeveloper = true;
+                fecharModal('login-modal');
+                ajustarVisibilidadeDebug();
+                atualizarInterfaceLogin();
+                mostrarFeedback('Modo desenvolvedor ativado!', 'success');
+                return;
+            }
+
+            // Tenta login normal
+            const res = await login(username, password);
+            if (res.success) {
+                loggedIn = true;
+                currentUsername = res.username;
+                isDeveloper = false;
+                fecharModal('login-modal');
+                ajustarVisibilidadeDebug();
+                atualizarInterfaceLogin();
+                mostrarFeedback(`Bem-vindo, ${currentUsername}!`, 'success');
+            } else {
+                // Exibe a mensagem de erro dentro do modal
+                if (errorDiv) {
+                    errorDiv.textContent = res.message || 'Usuário ou senha incorretos';
+                    errorDiv.style.display = 'block';
+                }
+                // Opcional: ainda manter o feedback flutuante (comente se preferir)
+                // mostrarFeedback(res.message, 'error');
+            }
+        };
+    }
+
+    const doRegister = document.getElementById('do-register');
+    if (doRegister) {
+        doRegister.onclick = async () => {
+            const username = document.getElementById('reg-username').value;
+            const email = document.getElementById('reg-email').value;
+            const password = document.getElementById('reg-password').value;
+            console.log('Enviando cadastro:', username, email);
+            const res = await register(username, email, password);
+            console.log('Resposta cadastro:', res);
+            if (res.success) {
+                mostrarFeedback(res.message, 'success');
+                fecharModal('register-modal');
+                abrirModal('login-modal');
+            } else {
+                mostrarFeedback(res.message, 'error');
+            }
+        };
+    }
+
+    // Fechar modais com o X
+    document.querySelectorAll('.close-modal').forEach(btn => {
+        btn.onclick = () => {
+            const modal = btn.closest('.modal');
+            if (modal) modal.style.display = 'none';
+        };
+    });
+
+    // Fechar modais clicando fora
+    window.onclick = (event) => {
+        if (event.target.classList.contains('modal')) {
+            event.target.style.display = 'none';
+        }
+    };
+
+    // Botão "Conta" (será criado dinamicamente, então usamos delegação ou adicionamos no momento certo)
+    // Mas já que o dropdown é recriado, vamos adicionar os eventos dentro de `atualizarInterfaceLogin`.
+
+    // Eventos dos modais (podem ser adicionados uma única vez)
+    document.getElementById('change-password-btn')?.addEventListener('click', () => {
+        fecharModal('account-settings-modal');
+        abrirModal('change-password-modal');
+    });
+    document.getElementById('delete-account-btn')?.addEventListener('click', () => {
+        fecharModal('account-settings-modal');
+        abrirModal('confirm-delete-modal');
+    });
+
+    document.getElementById('do-change-password')?.addEventListener('click', async () => {
+        const current = document.getElementById('current-password').value;
+        const newPass = document.getElementById('new-password').value;
+        const confirm = document.getElementById('confirm-password').value;
+        await changePassword(current, newPass, confirm);
+        // Limpar campos
+        document.getElementById('current-password').value = '';
+        document.getElementById('new-password').value = '';
+        document.getElementById('confirm-password').value = '';
+    });
+
+    document.getElementById('do-delete-account')?.addEventListener('click', async () => {
+        const password = document.getElementById('delete-password').value;
+        await deleteAccount(password);
+        document.getElementById('delete-password').value = '';
+    });
+}
+function atualizarInterfaceLogin() {
+    const accountBtn = document.getElementById('account-btn');
+    const dropdown = document.getElementById('dropdown-content');
+    if (loggedIn && currentUsername) {
+        accountBtn.textContent = currentUsername.charAt(0).toUpperCase();
+        dropdown.innerHTML = `
+            <button id="account-settings-btn" class="dropdown-item">⚙️ Conta</button>
+            <button id="logout-dropdown-btn" class="dropdown-item">🚪 Sair</button>
+        `;
+        // Evento do botão "Conta"
+        const accountSettingsBtn = document.getElementById('account-settings-btn');
+        if (accountSettingsBtn) {
+            accountSettingsBtn.onclick = () => openAccountSettings();
+        }
+        // Evento do botão "Sair"
+        const logoutBtn = document.getElementById('logout-dropdown-btn');
+        if (logoutBtn) {
+            logoutBtn.onclick = async () => {
+                const res = await apiCall('logout.php');
+                if (res.success) {
+                    loggedIn = false;
+                    currentUsername = '';
+                    isDeveloper = false;
+                    // Limpa o estado do jogo (opcional: recarrega a página)
+                    location.reload(); // ou resetar variáveis manualmente
+                } else {
+                    mostrarFeedback(res.message, 'error');
+                }
+            };
+        }
+    } else {
+        accountBtn.textContent = '👤';
+        dropdown.innerHTML = `
+            <button id="login-header-btn" class="dropdown-item">🔑 Login</button>
+            <button id="register-header-btn" class="dropdown-item">📝 Cadastrar</button>
+        `;
+        // Reatribui eventos de login/cadastro (já existentes em setupAuth)
+        setupAuth();
+    }
+}
+
+// Salvar progresso manualmente
+async function saveProgressToServer() {
+    if (!loggedIn) {
+        mostrarFeedback('Faça login para salvar o progresso', 'error');
+        return false;
+    }
+
+    const gameState = {
+        money: money,
+        totalMoneyEarned: totalMoneyEarned,
+        prestigeProgress: prestigeProgress,
+        totalPrestigeEarned: totalPrestigeEarned,
+        prestigePoints: prestigePoints,
+        totalBarCompletions: totalBarCompletions,
+        pendingPrestigePoints: pendingPrestigePoints,
+        prestigeUnlocked: prestigeUnlocked ? 1 : 0,
+        linguagensData: linguagensData,
+        upgradesData: upgradesData,
+        lingUpgradesData: lingUpgradesData,
+        prestigeUpgradesData: prestigeUpgradesData
+    };
+
+    const res = await apiCall('save_game.php', gameState);
+    if (res.success) {
+        mostrarFeedback(res.message, 'success');
+        return true;
+    } else {
+        mostrarFeedback(res.message, 'error');
+        return false;
+    }
+}
+
+// Carregar progresso do servidor (chamado após login)
+async function loadProgressFromServer() {
+    if (!loggedIn) return false;
+    const res = await apiCall('load_game.php');
+    if (res.success && res.game_data) {
+        carregarEstadoCompleto(res.game_data);
+        mostrarFeedback('Progresso carregado!', 'success');
+        return true;
+    }
+    return false;
+}
+
+// Restaurar todas as variáveis do jogo a partir de um objeto
+function carregarEstadoCompleto(gameData) {
+    if (!gameData) return;
+
+    money = gameData.money ?? 0;
+    totalMoneyEarned = gameData.totalMoneyEarned ?? 0;
+    prestigeProgress = gameData.prestigeProgress ?? 0;
+    totalPrestigeEarned = gameData.totalPrestigeEarned ?? 0;
+    prestigePoints = gameData.prestigePoints ?? 0;
+    totalBarCompletions = gameData.totalBarCompletions ?? 0;
+    pendingPrestigePoints = gameData.pendingPrestigePoints ?? 0;
+    prestigeUnlocked = gameData.prestigeUnlocked ?? false;
+
+    if (gameData.linguagensData) linguagensData = gameData.linguagensData;
+    if (gameData.upgradesData) upgradesData = gameData.upgradesData;
+    if (gameData.lingUpgradesData) lingUpgradesData = gameData.lingUpgradesData;
+    if (gameData.prestigeUpgradesData) prestigeUpgradesData = gameData.prestigeUpgradesData;
+
+    // Atualiza interface
+    if (moneyEl) moneyEl.textContent = "$" + formatarDinheiro(money);
+    atualizarInterfaceLinguagens();
+    atualizarTodosUpgrades();
+    atualizarEstatisticas();
+    invalidarCacheCalculos();
+}
+
+// Abrir modal de configurações
+function openAccountSettings() {
+    abrirModal('account-settings-modal');
+}
+
+// Trocar senha
+async function changePassword(currentPassword, newPassword, confirmPassword) {
+    if (newPassword !== confirmPassword) {
+        mostrarFeedback('As novas senhas não coincidem', 'error');
+        return false;
+    }
+    if (newPassword.length < 4) {
+        mostrarFeedback('A nova senha deve ter pelo menos 4 caracteres', 'error');
+        return false;
+    }
+    const res = await apiCall('change_password.php', { currentPassword, newPassword });
+    if (res.success) {
+        mostrarFeedback(res.message, 'success');
+        fecharModal('change-password-modal');
+        fecharModal('account-settings-modal');
+        return true;
+    } else {
+        mostrarFeedback(res.message, 'error');
+        return false;
+    }
+}
+
+// Abrir modal de redefinição a partir do link "Esqueceu a senha?"
+function setupForgotPassword() {
+    const forgotLink = document.getElementById('forgot-password-link');
+    if (forgotLink) {
+        forgotLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            fecharModal('login-modal');
+            abrirModal('reset-password-modal');
+        });
+    }
+
+    const backToLogin = document.getElementById('back-to-login');
+    if (backToLogin) {
+        backToLogin.addEventListener('click', (e) => {
+            e.preventDefault();
+            fecharModal('reset-password-modal');
+            abrirModal('login-modal');
+        });
+    }
+
+    const resetBtn = document.getElementById('do-reset-password');
+    if (resetBtn) {
+        resetBtn.addEventListener('click', async () => {
+            const email = document.getElementById('reset-email').value;
+            const newPass = document.getElementById('reset-new-password').value;
+            const confirmPass = document.getElementById('reset-confirm-password').value;
+            await resetPassword(email, newPass, confirmPass);
+        });
+    }
+}
+
+async function resetPassword(email, newPassword, confirmPassword) {
+    if (newPassword !== confirmPassword) {
+        mostrarFeedback('As senhas não coincidem', 'error');
+        return false;
+    }
+    if (newPassword.length < 4) {
+        mostrarFeedback('A nova senha deve ter pelo menos 4 caracteres', 'error');
+        return false;
+    }
+    const res = await apiCall('reset_password.php', { email, newPassword });
+    if (res.success) {
+        mostrarFeedback(res.message, 'success');
+        fecharModal('reset-password-modal');
+        abrirModal('login-modal');
+        // Limpar campos
+        document.getElementById('reset-email').value = '';
+        document.getElementById('reset-new-password').value = '';
+        document.getElementById('reset-confirm-password').value = '';
+        return true;
+    } else {
+        mostrarFeedback(res.message, 'error');
+        return false;
+    }
+}
+
+// Deletar conta
+async function deleteAccount(password) {
+    const res = await apiCall('delete_account.php', { password });
+    if (res.success) {
+        mostrarFeedback(res.message, 'success');
+        // Desloga e recarrega a página
+        loggedIn = false;
+        currentUsername = '';
+        isDeveloper = false;
+        location.reload();
+        return true;
+    } else {
+        mostrarFeedback(res.message, 'error');
+        return false;
+    }
 }
 
 // ------------------------
@@ -2468,6 +2977,9 @@ document.addEventListener('DOMContentLoaded', () => {
         inicializarInterface();
         inicializarMenu();
         inicializarSidebar();
+        setupAccountDropdown();
+        setupForgotPassword();
+        setupAuth();
         atualizarEstatisticas();
         initTooltip();
         ajustarAlturaListaUpgrades();
@@ -2479,15 +2991,19 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         ajustarProporcao();
         document.addEventListener('keydown', (event) => {
+            const activeTag = document.activeElement?.tagName?.toLowerCase();
+            const isTyping = activeTag === 'input' || activeTag === 'textarea' || document.activeElement?.isContentEditable;
+            if (isTyping) return;
+
             if (event.key === 'm' || event.key === 'M') abrirMenu();
-            if (event.key === 'r' || event.key === 'R') {
-                if (confirm('Tem certeza que deseja resetar TODO o progresso do jogo?\nIsso inclui dinheiro, linguagens, upgrades, ascensão e o tempo de jogo!')) resetarJogo();
+
+            // Somente desenvolvedor pode usar reset e adicionar dinheiro
+            if (isDeveloper) {
+                if (event.key === 'r' || event.key === 'R') {
+                    if (confirm('Tem certeza que deseja resetar TODO o progresso do jogo?\nIsso inclui dinheiro, linguagens, upgrades, ascensão e o tempo de jogo!')) resetarJogo();
+                }
+                if (event.key === 'g' || event.key === 'G') adicionarDinheiro(100000000000);
             }
-            if (event.key === 'u' || event.key === 'U') {
-                atualizarTodosUpgrades();
-                console.log('⚡ Display dos upgrades atualizado via tecla U');
-            }
-            if (event.key === 'g' || event.key === 'G') adicionarDinheiro(100000000000);
         });
         console.log('✅ I.T Adventure iniciado com sucesso!');
     } catch (error) {

@@ -1,464 +1,560 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>I.T Adventure</title>
     <link rel="stylesheet" href="style.css" />
 </head>
+
 <body>
 
-<!-- Botão Hamburger -->
-<button class="hamburger-btn" id="hamburger-btn">
-    <span></span>
-    <span></span>
-    <span></span>
-</button>
-
-<!-- Sidebar -->
-<div class="sidebar" id="sidebar">
-    <button class="close-sidebar" id="close-sidebar">&times;</button>
-    <div class="sidebar-content">
-        <div class="sidebar-section">
-            <h3>Menu Principal</h3>
-            <button class="sidebar-menu-btn" id="open-menu-from-sidebar">📊 Estatísticas & Debug</button>
+    <header class="game-header">
+        <div class="header-left">
+            <button class="hamburger-btn" id="hamburger-btn">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
         </div>
-    </div>
-</div>
-
-<!-- Overlay da sidebar -->
-<div class="sidebar-overlay" id="sidebar-overlay"></div>
-
-<div class="tela">
-
-    <div class="left">
-
-        <div class="top-row">
-            <div class="caixa dinheiro">
-                <span id="money">0.00</span>
-            </div>
-            <!-- Container de Ascensão (barra de progresso) -->
-            <div class="ascension-progress-bar" id="ascensionButtonContainer" style="display: none;">
-                <div class="ascension-bar-fill"></div>
-                <span class="ascension-points-overlay" id="prestigePointsTop">0 ⭐</span>
+        <div class="header-right" id="account-area">
+            <div class="account-dropdown">
+                <button class="account-btn" id="account-btn">👤</button>
+                <div class="dropdown-content" id="dropdown-content">
+                    <button id="login-header-btn" class="dropdown-item">🔑 Login</button>
+                    <button id="register-header-btn" class="dropdown-item">📝 Cadastrar</button>
+                </div>
             </div>
         </div>
+    </header>
 
-        <div class="linguagens">
-
-            <div class="col">
-                <!-- HTML desbloqueado e com 1 unidade inicial -->
-                <div class="ling" data-id="html" data-locked="false">
-                    <div class="ling-img-container">
-                        <img class="clickable" data-id="html" src="img/ling/Html5.png" alt="HTML">
-                        <div class="compra-count">1</div>
-                    </div>
-                    <div class="ling-info">
-                        <div class="barra" id="barra-html">
-                            <div class="progress-fill"></div>
-                            <span class="timer-text">00:00</span>
-                        </div>
-                        <button class="buy-btn" data-id="html">Comprar (10.00)</button>
-                    </div>
-                </div>
-
-                <!-- Outras linguagens começam bloqueadas -->
-                <div class="ling" data-id="python" data-locked="true">
-                    <div class="ling-img-container">
-                        <img class="clickable" data-id="python" src="img/ling/python.png" alt="Python">
-                        <div class="compra-count">0</div>
-                    </div>
-                    <div class="ling-info">
-                        <div class="barra" id="barra-python">
-                            <div class="progress-fill"></div>
-                            <span class="timer-text">00:00</span>
-                        </div>
-                        <button class="buy-btn" data-id="python">Comprar (25.00)</button>
-                    </div>
-                </div>
-
-                <div class="ling" data-id="java" data-locked="true">
-                    <div class="ling-img-container">
-                        <img class="clickable" data-id="java" src="img/ling/java.png" alt="Java">
-                        <div class="compra-count">0</div>
-                    </div>
-                    <div class="ling-info">
-                        <div class="barra" id="barra-java">
-                            <div class="progress-fill"></div>
-                            <span class="timer-text">00:00</span>
-                        </div>
-                        <button class="buy-btn" data-id="java">Comprar (50.00)</button>
-                    </div>
-                </div>
-
-                <div class="ling" data-id="c" data-locked="true">
-                    <div class="ling-img-container">
-                        <img class="clickable" data-id="c" src="img/ling/c.png" alt="C">
-                        <div class="compra-count">0</div>
-                    </div>
-                    <div class="ling-info">
-                        <div class="barra" id="barra-c">
-                            <div class="progress-fill"></div>
-                            <span class="timer-text">00:00</span>
-                        </div>
-                        <button class="buy-btn" data-id="c">Comprar (250.00)</button>
-                    </div>
-                </div>
-
-                <div class="ling" data-id="ts" data-locked="true">
-                    <div class="ling-img-container">
-                        <img class="clickable" data-id="ts" src="img/ling/TypeScript.png" alt="TypeScript">
-                        <div class="compra-count">0</div>
-                    </div>
-                    <div class="ling-info">
-                        <div class="barra" id="barra-ts">
-                            <div class="progress-fill"></div>
-                            <span class="timer-text">00:00</span>
-                        </div>
-                        <button class="buy-btn" data-id="ts">Comprar (750.00)</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col">
-                <div class="ling" data-id="flutter" data-locked="true">
-                    <div class="ling-img-container">
-                        <img class="clickable" data-id="flutter" src="img/ling/flutter.png" alt="Flutter">
-                        <div class="compra-count">0</div>
-                    </div>
-                    <div class="ling-info">
-                        <div class="barra" id="barra-flutter">
-                            <div class="progress-fill"></div>
-                            <span class="timer-text">00:00</span>
-                        </div>
-                        <button class="buy-btn" data-id="flutter">Comprar (2500.00)</button>
-                    </div>
-                </div>
-
-                <div class="ling" data-id="rust" data-locked="true">
-                    <div class="ling-img-container">
-                        <img class="clickable" data-id="rust" src="img/ling/rust.png" alt="Rust">
-                        <div class="compra-count">0</div>
-                    </div>
-                    <div class="ling-info">
-                        <div class="barra" id="barra-rust">
-                            <div class="progress-fill"></div>
-                            <span class="timer-text">00:00</span>
-                        </div>
-                        <button class="buy-btn" data-id="rust">Comprar (10000.00)</button>
-                    </div>
-                </div>
-
-                <div class="ling" data-id="cobol" data-locked="true">
-                    <div class="ling-img-container">
-                        <img class="clickable" data-id="cobol" src="img/ling/cobol.png" alt="COBOL">
-                        <div class="compra-count">0</div>
-                    </div>
-                    <div class="ling-info">
-                        <div class="barra" id="barra-cobol">
-                            <div class="progress-fill"></div>
-                            <span class="timer-text">00:00</span>
-                        </div>
-                        <button class="buy-btn" data-id="cobol">Comprar (50000.00)</button>
-                    </div>
-                </div>
-
-                <div class="ling" data-id="assembly" data-locked="true">
-                    <div class="ling-img-container">
-                        <img class="clickable" data-id="assembly" src="img/ling/assembly.png" alt="Assembly">
-                        <div class="compra-count">0</div>
-                    </div>
-                    <div class="ling-info">
-                        <div class="barra" id="barra-assembly">
-                            <div class="progress-fill"></div>
-                            <span class="timer-text">00:00</span>
-                        </div>
-                        <button class="buy-btn" data-id="assembly">Comprar (100000.00)</button>
-                    </div>
-                </div>
-
-                <div class="ling" data-id="templeos" data-locked="true">
-                    <div class="ling-img-container">
-                        <img class="clickable" data-id="templeos" src="img/ling/TempleOS.jpg" alt="TempleOS">
-                        <div class="compra-count">0</div>
-                    </div>
-                    <div class="ling-info">
-                        <div class="barra" id="barra-templeos">
-                            <div class="progress-fill"></div>
-                            <span class="timer-text">00:00</span>
-                        </div>
-                        <button class="buy-btn" data-id="templeos">Comprar (250000.00)</button>
-                    </div>
-                </div>
-            </div>
-
+    <!-- Modal de Configurações da Conta -->
+    <div id="account-settings-modal" class="modal">
+        <div class="modal-content" style="max-width: 400px;">
+            <span class="close-modal">&times;</span>
+            <h2>Configurações da Conta</h2>
+            <button id="change-password-btn" class="modal-action-btn">🔑 Trocar Senha</button>
+            <button id="delete-account-btn" class="modal-action-btn delete-btn">🗑️ Deletar Conta</button>
         </div>
     </div>
 
-    <div class="hud">
-        <div class="claudinho" id="claudinho-click">
-            <img src="img/ling/claudinho.jpg" alt="Claudinho">
+    <!-- Modal de Trocar Senha -->
+    <div id="change-password-modal" class="modal">
+        <div class="modal-content" style="max-width: 400px;">
+            <span class="close-modal">&times;</span>
+            <h2>Trocar Senha</h2>
+            <input type="password" id="current-password" placeholder="Senha atual">
+            <input type="password" id="new-password" placeholder="Nova senha">
+            <input type="password" id="confirm-password" placeholder="Confirmar nova senha">
+            <button id="do-change-password">Alterar Senha</button>
         </div>
-        
-        <div class="controles-container">
-            <div class="multiplicador-opcoes">
-                <div class="multiplicador-botoes">
-                    <button class="multiplicador-btn active" data-mult="1">x1</button>
-                    <button class="multiplicador-btn" data-mult="5">x5</button>
-                    <button class="multiplicador-btn" data-mult="10">x10</button>
-                    <button class="multiplicador-btn" data-mult="25">x25</button>
-                    <button class="multiplicador-btn" data-mult="100">x100</button>
-                </div>
-            </div>
-        </div>
+    </div>
 
-        <div class="upgrades-container caixa">
-            <div class="upgrades-list" id="all-upgrades">
-                <!-- Upgrades inseridos dinamicamente -->
-            </div>
-            <div id="no-upgrades-message" class="no-upgrades-message" style="display: none;">
-                <p>Nenhum upgrade disponível no momento.</p>
-                <p>Continue jogando para desbloquear novos upgrades!</p>
+    <!-- Modal de Confirmar Deleção -->
+    <div id="confirm-delete-modal" class="modal">
+        <div class="modal-content" style="max-width: 400px;">
+            <span class="close-modal">&times;</span>
+            <h2>⚠️ Atenção</h2>
+            <p>Tem certeza que deseja <strong>DELETAR PERMANENTEMENTE</strong> sua conta e todo o progresso?</p>
+            <p>Esta ação não pode ser desfeita.</p>
+            <input type="password" id="delete-password" placeholder="Digite sua senha para confirmar">
+            <button id="do-delete-account" class="delete-btn">Sim, deletar minha conta</button>
+        </div>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <button class="close-sidebar" id="close-sidebar">&times;</button>
+        <div class="sidebar-content">
+            <div class="sidebar-section">
+                <h3>Menu Principal</h3>
+                <button class="sidebar-menu-btn" id="open-menu-from-sidebar">📊 Estatísticas & Debug</button>
+                <button class="sidebar-menu-btn" id="save-game-btn">💾 Salvar Progresso</button>
             </div>
         </div>
     </div>
 
-</div>
+    <!-- Overlay da sidebar -->
+    <div class="sidebar-overlay" id="sidebar-overlay"></div>
 
-<!-- Ícone de bônus flutuante -->
-<div id="bonus-icon" class="bonus-icon">⭐</div>
+    <div class="tela">
 
-<!-- Indicador de bônus ativo -->
-<div id="bonus-indicator" class="bonus-indicator" style="display: none;"></div>
+        <div class="left">
 
-<!-- Menu Modal -->
-<div id="menu-modal" class="modal">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h2>Menu do Jogo</h2>
-            <button class="close-menu">&times;</button>
-        </div>
-        
-        <div class="modal-tabs">
-            <button class="tab-btn active" data-tab="stats">📊 Estatísticas</button>
-            <button class="tab-btn" data-tab="debug">🛠️ Debug</button>
-        </div>
-        
-        <div class="tab-content active" id="stats-tab">
-            <div class="stats-container">
-                <h3>📈 Visão Geral</h3>
-                <div class="stats-grid">
-                    <div class="stat-card">
-                        <span class="stat-icon">🏦</span>
-                        <div class="stat-info">
-                            <span class="stat-label">Total Adquirido</span>
-                            <span class="stat-value" id="stat-total-earned">$0.00</span>
+            <div class="top-row">
+                <div class="caixa dinheiro">
+                    <span id="money">0.00</span>
+                </div>
+                <!-- Container de Ascensão (barra de progresso) -->
+                <div class="ascension-progress-bar" id="ascensionButtonContainer" style="display: none;">
+                    <div class="ascension-bar-fill"></div>
+                    <span class="ascension-points-overlay" id="prestigePointsTop">0 ⭐</span>
+                </div>
+            </div>
+
+            <div class="linguagens">
+
+                <div class="col">
+                    <!-- HTML desbloqueado e com 1 unidade inicial -->
+                    <div class="ling" data-id="html" data-locked="false">
+                        <div class="ling-img-container">
+                            <img class="clickable" data-id="html" src="img/ling/Html5.png" alt="HTML">
+                            <div class="compra-count">1</div>
+                        </div>
+                        <div class="ling-info">
+                            <div class="barra" id="barra-html">
+                                <div class="progress-fill"></div>
+                                <span class="timer-text">00:00</span>
+                            </div>
+                            <button class="buy-btn" data-id="html">Comprar (10.00)</button>
                         </div>
                     </div>
-                    <div class="stat-card">
-                        <span class="stat-icon">🏆</span>
-                        <div class="stat-info">
-                            <span class="stat-label">Linguagens</span>
-                            <span class="stat-value" id="stat-unlocked">1/10</span>
+
+                    <!-- Outras linguagens começam bloqueadas -->
+                    <div class="ling" data-id="python" data-locked="true">
+                        <div class="ling-img-container">
+                            <img class="clickable" data-id="python" src="img/ling/python.png" alt="Python">
+                            <div class="compra-count">0</div>
+                        </div>
+                        <div class="ling-info">
+                            <div class="barra" id="barra-python">
+                                <div class="progress-fill"></div>
+                                <span class="timer-text">00:00</span>
+                            </div>
+                            <button class="buy-btn" data-id="python">Comprar (25.00)</button>
                         </div>
                     </div>
-                    <div class="stat-card">
-                        <span class="stat-icon">📦</span>
-                        <div class="stat-info">
-                            <span class="stat-label">Total Unidades</span>
-                            <span class="stat-value" id="stat-total-units">1</span>
+
+                    <div class="ling" data-id="java" data-locked="true">
+                        <div class="ling-img-container">
+                            <img class="clickable" data-id="java" src="img/ling/java.png" alt="Java">
+                            <div class="compra-count">0</div>
+                        </div>
+                        <div class="ling-info">
+                            <div class="barra" id="barra-java">
+                                <div class="progress-fill"></div>
+                                <span class="timer-text">00:00</span>
+                            </div>
+                            <button class="buy-btn" data-id="java">Comprar (50.00)</button>
                         </div>
                     </div>
-                    <div class="stat-card">
-                        <span class="stat-icon">⏱️</span>
-                        <div class="stat-info">
-                            <span class="stat-label">Tempo de Jogo</span>
-                            <span class="stat-value" id="stat-playtime">00:00:00</span>
+
+                    <div class="ling" data-id="c" data-locked="true">
+                        <div class="ling-img-container">
+                            <img class="clickable" data-id="c" src="img/ling/c.png" alt="C">
+                            <div class="compra-count">0</div>
+                        </div>
+                        <div class="ling-info">
+                            <div class="barra" id="barra-c">
+                                <div class="progress-fill"></div>
+                                <span class="timer-text">00:00</span>
+                            </div>
+                            <button class="buy-btn" data-id="c">Comprar (250.00)</button>
                         </div>
                     </div>
-                    <div class="stat-card">
-                        <span class="stat-icon">⚡</span>
-                        <div class="stat-info">
-                            <span class="stat-label">Upgrades Comprados</span>
-                            <span class="stat-value" id="stat-upgrades">0</span>
+
+                    <div class="ling" data-id="ts" data-locked="true">
+                        <div class="ling-img-container">
+                            <img class="clickable" data-id="ts" src="img/ling/TypeScript.png" alt="TypeScript">
+                            <div class="compra-count">0</div>
                         </div>
-                    </div>
-                    <div class="stat-card">
-                        <span class="stat-icon">⭐</span>
-                        <div class="stat-info">
-                            <span class="stat-label">Upgrades Ativos</span>
-                            <span class="stat-value" id="stat-active-upgrades">0</span>
-                        </div>
-                    </div>
-                    <div class="stat-card">
-                        <span class="stat-icon">🔄</span>
-                        <div class="stat-info">
-                            <span class="stat-label">Auto-Produções</span>
-                            <span class="stat-value" id="stat-autoproducoes">0</span>
-                        </div>
-                    </div>
-                    <div class="stat-card">
-                        <span class="stat-icon">⭐</span>
-                        <div class="stat-info">
-                            <span class="stat-label">Bônus de Ascensão</span>
-                            <span class="stat-value" id="stat-prestige-bonus">0 ⭐ (0% bônus passivo)</span>
-                        </div>
-                    </div>
-                    <div class="stat-card">
-                        <span class="stat-icon">🏔️</span>
-                        <div class="stat-info">
-                            <span class="stat-label">Nível de Ascensão</span>
-                            <span class="stat-value" id="stat-ascension-level">Nível 0 (0% bônus passivo)</span>
+                        <div class="ling-info">
+                            <div class="barra" id="barra-ts">
+                                <div class="progress-fill"></div>
+                                <span class="timer-text">00:00</span>
+                            </div>
+                            <button class="buy-btn" data-id="ts">Comprar (750.00)</button>
                         </div>
                     </div>
                 </div>
-                
-                <div class="linguagens-stats">
-                    <h4>📊 Estatísticas por Linguagem</h4>
-                    <div id="linguagens-stats-list" class="stats-list-grid"></div>
+
+                <div class="col">
+                    <div class="ling" data-id="flutter" data-locked="true">
+                        <div class="ling-img-container">
+                            <img class="clickable" data-id="flutter" src="img/ling/flutter.png" alt="Flutter">
+                            <div class="compra-count">0</div>
+                        </div>
+                        <div class="ling-info">
+                            <div class="barra" id="barra-flutter">
+                                <div class="progress-fill"></div>
+                                <span class="timer-text">00:00</span>
+                            </div>
+                            <button class="buy-btn" data-id="flutter">Comprar (2500.00)</button>
+                        </div>
+                    </div>
+
+                    <div class="ling" data-id="rust" data-locked="true">
+                        <div class="ling-img-container">
+                            <img class="clickable" data-id="rust" src="img/ling/rust.png" alt="Rust">
+                            <div class="compra-count">0</div>
+                        </div>
+                        <div class="ling-info">
+                            <div class="barra" id="barra-rust">
+                                <div class="progress-fill"></div>
+                                <span class="timer-text">00:00</span>
+                            </div>
+                            <button class="buy-btn" data-id="rust">Comprar (10000.00)</button>
+                        </div>
+                    </div>
+
+                    <div class="ling" data-id="cobol" data-locked="true">
+                        <div class="ling-img-container">
+                            <img class="clickable" data-id="cobol" src="img/ling/cobol.png" alt="COBOL">
+                            <div class="compra-count">0</div>
+                        </div>
+                        <div class="ling-info">
+                            <div class="barra" id="barra-cobol">
+                                <div class="progress-fill"></div>
+                                <span class="timer-text">00:00</span>
+                            </div>
+                            <button class="buy-btn" data-id="cobol">Comprar (50000.00)</button>
+                        </div>
+                    </div>
+
+                    <div class="ling" data-id="assembly" data-locked="true">
+                        <div class="ling-img-container">
+                            <img class="clickable" data-id="assembly" src="img/ling/assembly.png" alt="Assembly">
+                            <div class="compra-count">0</div>
+                        </div>
+                        <div class="ling-info">
+                            <div class="barra" id="barra-assembly">
+                                <div class="progress-fill"></div>
+                                <span class="timer-text">00:00</span>
+                            </div>
+                            <button class="buy-btn" data-id="assembly">Comprar (100000.00)</button>
+                        </div>
+                    </div>
+
+                    <div class="ling" data-id="templeos" data-locked="true">
+                        <div class="ling-img-container">
+                            <img class="clickable" data-id="templeos" src="img/ling/TempleOS.jpg" alt="TempleOS">
+                            <div class="compra-count">0</div>
+                        </div>
+                        <div class="ling-info">
+                            <div class="barra" id="barra-templeos">
+                                <div class="progress-fill"></div>
+                                <span class="timer-text">00:00</span>
+                            </div>
+                            <button class="buy-btn" data-id="templeos">Comprar (250000.00)</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="hud">
+            <div class="claudinho" id="claudinho-click">
+                <img src="img/ling/claudinho.jpg" alt="Claudinho">
+            </div>
+
+            <div class="controles-container">
+                <div class="multiplicador-opcoes">
+                    <div class="multiplicador-botoes">
+                        <button class="multiplicador-btn active" data-mult="1">x1</button>
+                        <button class="multiplicador-btn" data-mult="5">x5</button>
+                        <button class="multiplicador-btn" data-mult="10">x10</button>
+                        <button class="multiplicador-btn" data-mult="25">x25</button>
+                        <button class="multiplicador-btn" data-mult="100">x100</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="upgrades-container caixa">
+                <div class="upgrades-list" id="all-upgrades">
+                    <!-- Upgrades inseridos dinamicamente -->
+                </div>
+                <div id="no-upgrades-message" class="no-upgrades-message" style="display: none;">
+                    <p>Nenhum upgrade disponível no momento.</p>
+                    <p>Continue jogando para desbloquear novos upgrades!</p>
                 </div>
             </div>
         </div>
-        
-        <div class="tab-content" id="debug-tab">
-            <div class="debug-container">
-                <h3>🛠️ Ferramentas de Debug</h3>
-                <p class="debug-warning">⚠️ Estas ferramentas são para desenvolvimento e teste!</p>
-                <div class="debug-actions-grid">
-                    <button class="debug-action-btn" id="add-100k-btn">
-                        <span class="debug-icon">💰</span>
-                        <span class="debug-text">Adicionar $100k</span>
-                    </button>
-                    <button class="debug-action-btn reset-btn" id="reset-game-btn">
-                        <span class="debug-icon">🔄</span>
-                        <span class="debug-text">Resetar Jogo</span>
-                    </button>
-                    <button class="debug-action-btn" id="super-bonus-btn">
-                        <span class="debug-icon">⭐💥</span>
-                        <span class="debug-text">Super Bônus (100x)</span>
-                    </button>
+
+    </div>
+
+    <!-- Ícone de bônus flutuante -->
+    <div id="bonus-icon" class="bonus-icon">⭐</div>
+
+    <!-- Indicador de bônus ativo -->
+    <div id="bonus-indicator" class="bonus-indicator" style="display: none;"></div>
+
+    <!-- Menu Modal -->
+    <div id="menu-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Menu do Jogo</h2>
+                <button class="close-menu">&times;</button>
+            </div>
+
+            <div class="modal-tabs">
+                <button class="tab-btn active" data-tab="stats">📊 Estatísticas</button>
+                <button class="tab-btn" data-tab="debug">🛠️ Debug</button>
+            </div>
+
+            <div class="tab-content active" id="stats-tab">
+                <div class="stats-container">
+                    <h3>📈 Visão Geral</h3>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <span class="stat-icon">🏦</span>
+                            <div class="stat-info">
+                                <span class="stat-label">Total Adquirido</span>
+                                <span class="stat-value" id="stat-total-earned">$0.00</span>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-icon">🏆</span>
+                            <div class="stat-info">
+                                <span class="stat-label">Linguagens</span>
+                                <span class="stat-value" id="stat-unlocked">1/10</span>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-icon">📦</span>
+                            <div class="stat-info">
+                                <span class="stat-label">Total Unidades</span>
+                                <span class="stat-value" id="stat-total-units">1</span>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-icon">⏱️</span>
+                            <div class="stat-info">
+                                <span class="stat-label">Tempo de Jogo</span>
+                                <span class="stat-value" id="stat-playtime">00:00:00</span>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-icon">⚡</span>
+                            <div class="stat-info">
+                                <span class="stat-label">Upgrades Comprados</span>
+                                <span class="stat-value" id="stat-upgrades">0</span>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-icon">⭐</span>
+                            <div class="stat-info">
+                                <span class="stat-label">Upgrades Ativos</span>
+                                <span class="stat-value" id="stat-active-upgrades">0</span>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-icon">🔄</span>
+                            <div class="stat-info">
+                                <span class="stat-label">Auto-Produções</span>
+                                <span class="stat-value" id="stat-autoproducoes">0</span>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-icon">⭐</span>
+                            <div class="stat-info">
+                                <span class="stat-label">Bônus de Ascensão</span>
+                                <span class="stat-value" id="stat-prestige-bonus">0 ⭐ (0% bônus passivo)</span>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-icon">🏔️</span>
+                            <div class="stat-info">
+                                <span class="stat-label">Nível de Ascensão</span>
+                                <span class="stat-value" id="stat-ascension-level">Nível 0 (0% bônus passivo)</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="linguagens-stats">
+                        <h4>📊 Estatísticas por Linguagem</h4>
+                        <div id="linguagens-stats-list" class="stats-list-grid"></div>
+                    </div>
                 </div>
-                <div class="debug-info">
-                    <h4>📋 Informações de Sistema</h4>
-                    <div class="system-info-grid">
-                        <div class="info-item">
-                            <span class="info-label">Versão:</span>
-                            <span class="info-value">3.0.0</span>
-                        </div>
-                        <div class="info-item">
-                            <span class="info-label">Modo Debug:</span>
-                            <span class="info-value" id="debug-status">Ativo</span>
-                        </div>
-                        <div class="info-item">
-                            <span class="info-label">Atalhos:</span>
-                            <span class="info-value">M, R, U, G</span>
+            </div>
+
+            <div class="tab-content" id="debug-tab">
+                <div class="debug-container">
+                    <h3>🛠️ Ferramentas de Debug</h3>
+                    <p class="debug-warning">⚠️ Estas ferramentas são para desenvolvimento e teste!</p>
+                    <div class="debug-actions-grid">
+                        <button class="debug-action-btn" id="add-100k-btn">
+                            <span class="debug-icon">💰</span>
+                            <span class="debug-text">Adicionar $100k</span>
+                        </button>
+                        <button class="debug-action-btn reset-btn" id="reset-game-btn">
+                            <span class="debug-icon">🔄</span>
+                            <span class="debug-text">Resetar Jogo</span>
+                        </button>
+                        <button class="debug-action-btn" id="super-bonus-btn">
+                            <span class="debug-icon">⭐💥</span>
+                            <span class="debug-text">Super Bônus (100x)</span>
+                        </button>
+                    </div>
+                    <div class="debug-info">
+                        <h4>📋 Informações de Sistema</h4>
+                        <div class="system-info-grid">
+                            <div class="info-item">
+                                <span class="info-label">Versão:</span>
+                                <span class="info-value">3.0.0</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Modo Debug:</span>
+                                <span class="info-value" id="debug-status">Ativo</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Atalhos:</span>
+                                <span class="info-value">M, R, G</span>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
-<!-- Modal de Confirmação de Reset -->
-<div id="confirm-reset-modal" class="modal confirm-modal">
-    <div class="modal-content confirm-content">
-        <div class="confirm-header reset-header">
-            <h3>⚠️ Confirmar Reset</h3>
-        </div>
-        <div class="confirm-body">
-            <p>Tem certeza que deseja resetar TODO o progresso do jogo?</p>
-            <p class="warning-text">Esta ação não pode ser desfeita!</p>
-            <div class="confirm-stats">
-                <p><strong>Você perderá:</strong></p>
-                <ul>
-                    <li>TODO o dinheiro acumulado</li>
-                    <li>TODAS as linguagens compradas</li>
-                    <li>TODO o progresso das barras</li>
-                    <li>TODAS as estatísticas</li>
-                    <li>TODOS os upgrades comprados</li>
-                    <li>TODOS os pontos de ascensão e upgrades permanentes</li>
-                </ul>
+    <!-- Modal de Confirmação de Reset -->
+    <div id="confirm-reset-modal" class="modal confirm-modal">
+        <div class="modal-content confirm-content">
+            <div class="confirm-header reset-header">
+                <h3>⚠️ Confirmar Reset</h3>
             </div>
-        </div>
-        <div class="confirm-footer">
-            <button class="confirm-btn cancel-btn">Cancelar</button>
-            <button class="confirm-btn reset-confirm-btn">Sim, Resetar Tudo</button>
+            <div class="confirm-body">
+                <p>Tem certeza que deseja resetar TODO o progresso do jogo?</p>
+                <p class="warning-text">Esta ação não pode ser desfeita!</p>
+                <div class="confirm-stats">
+                    <p><strong>Você perderá:</strong></p>
+                    <ul>
+                        <li>TODO o dinheiro acumulado</li>
+                        <li>TODAS as linguagens compradas</li>
+                        <li>TODO o progresso das barras</li>
+                        <li>TODAS as estatísticas</li>
+                        <li>TODOS os upgrades comprados</li>
+                        <li>TODOS os pontos de ascensão e upgrades permanentes</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="confirm-footer">
+                <button class="confirm-btn cancel-btn">Cancelar</button>
+                <button class="confirm-btn reset-confirm-btn">Sim, Resetar Tudo</button>
+            </div>
         </div>
     </div>
-</div>
 
-<!-- Modal de Confirmação de Dinheiro -->
-<div id="confirm-money-modal" class="modal confirm-modal">
-    <div class="modal-content confirm-content">
-        <div class="confirm-header money-header">
-            <h3>💰 Adicionar Dinheiro</h3>
-        </div>
-        <div class="confirm-body">
-            <p>Tem certeza que deseja adicionar <strong>$100,000</strong> ao seu saldo?</p>
-            <p class="info-text">Esta ação é para fins de teste e desenvolvimento.</p>
-            <div class="money-preview">
-                <p><strong>Saldo Atual:</strong> <span id="current-balance">$0.00</span></p>
-                <p><strong>Novo Saldo:</strong> <span id="new-balance">$100,000.00</span></p>
+    <!-- Modal de Confirmação de Dinheiro -->
+    <div id="confirm-money-modal" class="modal confirm-modal">
+        <div class="modal-content confirm-content">
+            <div class="confirm-header money-header">
+                <h3>💰 Adicionar Dinheiro</h3>
             </div>
-        </div>
-        <div class="confirm-footer">
-            <button class="confirm-btn cancel-btn">Cancelar</button>
-            <button class="confirm-btn add-money-confirm-btn">Sim, Adicionar</button>
+            <div class="confirm-body">
+                <p>Tem certeza que deseja adicionar <strong>$100,000</strong> ao seu saldo?</p>
+                <p class="info-text">Esta ação é para fins de teste e desenvolvimento.</p>
+                <div class="money-preview">
+                    <p><strong>Saldo Atual:</strong> <span id="current-balance">$0.00</span></p>
+                    <p><strong>Novo Saldo:</strong> <span id="new-balance">$100,000.00</span></p>
+                </div>
+            </div>
+            <div class="confirm-footer">
+                <button class="confirm-btn cancel-btn">Cancelar</button>
+                <button class="confirm-btn add-money-confirm-btn">Sim, Adicionar</button>
+            </div>
         </div>
     </div>
-</div>
 
-<!-- Modal de Confirmação de Ascensão -->
-<div id="confirm-ascension-modal" class="modal confirm-modal">
-    <div class="modal-content confirm-content">
-        <div class="confirm-header ascension-header">
-            <h3>⭐ Confirmar Ascensão</h3>
-        </div>
-        <div class="confirm-body">
-            <p>Tem certeza que deseja ascender?</p>
-            <p class="info-text">Você reiniciará o jogo, mas manterá seus pontos de ascensão e poderá comprar upgrades permanentes.</p>
-            <div class="ascension-preview">
-                <p><strong>Pontos de Ascensão a Ganhar:</strong> <span id="ascension-points-gain">0</span></p>
-                <p><strong>Total de Pontos:</strong> <span id="ascension-points-total">0</span></p>
+    <!-- Modal de Confirmação de Ascensão -->
+    <div id="confirm-ascension-modal" class="modal confirm-modal">
+        <div class="modal-content confirm-content">
+            <div class="confirm-header ascension-header">
+                <h3>⭐ Confirmar Ascensão</h3>
             </div>
-        </div>
-        <div class="confirm-footer">
-            <button class="confirm-btn cancel-btn" id="cancel-ascension-btn">Cancelar</button>
-            <button class="confirm-btn ascension-confirm-btn" id="proceed-ascension-btn">Sim, Ascender</button>
+            <div class="confirm-body">
+                <p>Tem certeza que deseja ascender?</p>
+                <p class="info-text">Você reiniciará o jogo, mas manterá seus pontos de ascensão e poderá comprar
+                    upgrades permanentes.</p>
+                <div class="ascension-preview">
+                    <p><strong>Pontos de Ascensão a Ganhar:</strong> <span id="ascension-points-gain">0</span></p>
+                    <p><strong>Total de Pontos:</strong> <span id="ascension-points-total">0</span></p>
+                </div>
+            </div>
+            <div class="confirm-footer">
+                <button class="confirm-btn cancel-btn" id="cancel-ascension-btn">Cancelar</button>
+                <button class="confirm-btn ascension-confirm-btn" id="proceed-ascension-btn">Sim, Ascender</button>
+            </div>
         </div>
     </div>
-</div>
 
-<!-- Modal da Árvore de Skills de Ascensão -->
-<div id="skill-tree-modal" class="modal">
-    <div class="modal-content skill-tree-content">
-        <div class="modal-header">
-            <h2>🌟 Árvore de Skills de Ascensão</h2>
-            <button class="close-skill-tree">&times;</button>
-        </div>
-        <div class="skill-tree-container" id="skill-tree-container">
-            <div class="skill-tree-canvas" id="skill-tree-canvas">
-                <!-- Skills serão renderizadas aqui -->
+    <!-- Modal da Árvore de Skills de Ascensão -->
+    <div id="skill-tree-modal" class="modal">
+        <div class="modal-content skill-tree-content">
+            <div class="modal-header">
+                <h2>🌟 Árvore de Skills de Ascensão</h2>
+                <button class="close-skill-tree">&times;</button>
             </div>
-            <!-- Indicador de zoom -->
-            <div class="zoom-indicator" id="zoom-indicator" style="display: none;">Zoom: 1.0x</div>
-        </div>
-        <div class="skill-tree-actions">
-            <div class="skill-points-display">
-                <h3>⭐ Pontos de Ascensão: <span id="skill-tree-points">0</span></h3>
+            <div class="skill-tree-container" id="skill-tree-container">
+                <div class="skill-tree-canvas" id="skill-tree-canvas">
+                    <!-- Skills serão renderizadas aqui -->
+                </div>
+                <!-- Indicador de zoom -->
+                <div class="zoom-indicator" id="zoom-indicator" style="display: none;">Zoom: 1.0x</div>
             </div>
-            <button class="skill-tree-ascend-btn" id="skill-tree-ascend-btn">Ascender Agora</button>
+            <div class="skill-tree-actions">
+                <div class="skill-points-display">
+                    <h3>⭐ Pontos de Ascensão: <span id="skill-tree-points">0</span></h3>
+                </div>
+                <button class="skill-tree-ascend-btn" id="skill-tree-ascend-btn">Ascender Agora</button>
+            </div>
         </div>
     </div>
-</div>
 
-<!-- Pop-up flutuante de descrição -->
-<div id="custom-tooltip" class="custom-tooltip"></div>
+    <!-- Pop-up flutuante de descrição -->
+    <div id="custom-tooltip" class="custom-tooltip"></div>
 
-<!-- Overlay de pausa (bloqueia interações enquanto o jogo está pausado) -->
-<div id="pause-overlay" class="pause-overlay" style="display: none;"></div>
+    <!-- Overlay de pausa (bloqueia interações enquanto o jogo está pausado) -->
+    <div id="pause-overlay" class="pause-overlay" style="display: none;"></div>
 
-<script src="main.js"></script>
+    <!-- Modal de Login -->
+    <div id="login-modal" class="modal">
+        <div class="modal-content" style="max-width: 400px;">
+            <span class="close-modal">&times;</span>
+            <h2>Login</h2>
+            <input type="text" id="login-username" placeholder="Usuário ou Email">
+            <input type="password" id="login-password" placeholder="Senha">
+            <button id="do-login">Entrar</button>
+            <div id="login-error-message" class="error-message"
+                style="display: none; color: #e74c3c; margin-top: 0.5rem; font-size: 0.9rem;"></div>
+            <p>Ainda não tem conta? <a href="#" id="show-register">Cadastre-se</a></p>
+            <p><a href="#" id="forgot-password-link">Esqueceu a senha?</a></p>
+        </div>
+    </div>
+
+    <!-- Modal de Cadastro -->
+    <div id="register-modal" class="modal">
+        <div class="modal-content" style="max-width: 400px;">
+            <span class="close-modal">&times;</span>
+            <h2>Cadastro</h2>
+            <input type="text" id="reg-username" placeholder="Usuário">
+            <input type="email" id="reg-email" placeholder="Email">
+            <input type="password" id="reg-password" placeholder="Senha">
+            <button id="do-register">Cadastrar</button>
+            <p>Já tem conta? <a href="#" id="show-login">Faça login</a></p>
+        </div>
+    </div>
+
+    <!-- Modal de Redefinir Senha (para quem esqueceu a senha) -->
+    <div id="reset-password-modal" class="modal">
+        <div class="modal-content" style="max-width: 400px;">
+            <span class="close-modal">&times;</span>
+            <h2>Redefinir Senha</h2>
+            <input type="email" id="reset-email" placeholder="Seu e-mail cadastrado">
+            <input type="password" id="reset-new-password" placeholder="Nova senha">
+            <input type="password" id="reset-confirm-password" placeholder="Confirmar nova senha">
+            <button id="do-reset-password">Redefinir Senha</button>
+            <p><a href="#" id="back-to-login">Voltar ao login</a></p>
+        </div>
+    </div>
+
+    <footer class="game-footer">
+        <p>I.T Adventure © 2026 - Desenvolvido com 💻 e ☕</p>
+    </footer>
+
+    <script src="main.js"></script>
 </body>
+
 </html>
