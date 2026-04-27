@@ -32,6 +32,10 @@ if ($row) {
     $row['lingUpgradesData'] = json_decode($row['lingUpgradesData'], true);
     $row['prestigeUpgradesData'] = json_decode($row['prestigeUpgradesData'], true);
     $row['prestigeUnlocked'] = (bool)$row['prestigeUnlocked'];
+    $row['totalPrestigeEarned'] = (int)$row['totalPrestigeEarned'];
+    $row['prestigePoints'] = (int)$row['prestigePoints'];
+    $row['totalBarCompletions'] = (int)$row['totalBarCompletions'];
+    $row['pendingPrestigePoints'] = (int)$row['pendingPrestigePoints'];
     
     echo json_encode(['success' => true, 'game_data' => $row]);
 } else {

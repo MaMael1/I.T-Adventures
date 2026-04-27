@@ -286,7 +286,7 @@ const upgradesDataTemplate = {
     vim: { nome: "Vim + Plugins", descricao: "Aumenta o ganho de todas as linguagens em 10% (mas requer aprendizado)", icone: "🔧", precoBase: 300, precoAtual: 300, multiplicadorPreco: 1.0, nivel: 0, nivelMax: 1, efeito: 0.10, tipo: "global", subtipo: "rendimento", limiteAparecimento: 200 },
     emacs: { nome: "Emacs Doom", descricao: "Reduz o tempo de todas as linguagens em 10% (após configuração)", icone: "⚙️", precoBase: 400, precoAtual: 400, multiplicadorPreco: 1.0, nivel: 0, nivelMax: 1, efeito: 0.08, tipo: "global", subtipo: "tempo", limiteAparecimento: 300 },
     sublime: { nome: "Sublime Text 4", descricao: "Aumenta o ganho de todas as linguagens em 5%", icone: "✨", precoBase: 250, precoAtual: 250, multiplicadorPreco: 1.0, nivel: 0, nivelMax: 1, efeito: 0.04, tipo: "global", subtipo: "rendimento", limiteAparecimento: 180 },
-    notepadpp: { nome: "Notepad++", descricao: "Aumenta o ganho de todas as linguagens em 5%", icone: "📄", precoBase: 100, precoAtual: 100, multiplicadorPreco: 1.0, nivel: 0, nivelMax: 1, efeito: 0.03, tipo: "global", subtipo: "rendimento", limiteAparecimento: 80 },
+    notepadpp: { nome: "Notepad++", descricao: "Aumenta o ganho de todas as linguagens em 5%", icone: "📄", precoBase: 100, precoAtual: 100, multiplicadorPreco: 1.0, nivel: 0, nivelMax: 1, efeito: 0.05, tipo: "global", subtipo: "rendimento", limiteAparecimento: 80 },
     postman: { nome: "Postman Pro", descricao: "Aumenta o ganho de todas as linguagens em 10%", icone: "📮", precoBase: 600, precoAtual: 600, multiplicadorPreco: 1.0, nivel: 0, nivelMax: 1, efeito: 0.07, tipo: "global", subtipo: "rendimento", limiteAparecimento: 400 },
     insomnia: { nome: "Insomnia", descricao: "Reduz o tempo de todas as linguagens em 5%", icone: "😴", precoBase: 500, precoAtual: 500, multiplicadorPreco: 1.0, nivel: 0, nivelMax: 1, efeito: 0.04, tipo: "global", subtipo: "tempo", limiteAparecimento: 350 },
     dbeaver: { nome: "DBeaver", descricao: "Aumenta o ganho de todas as linguagens em 5%", icone: "🐘", precoBase: 550, precoAtual: 550, multiplicadorPreco: 1.0, nivel: 0, nivelMax: 1, efeito: 0.05, tipo: "global", subtipo: "rendimento", limiteAparecimento: 400 },
@@ -1687,7 +1687,9 @@ function comprarPrestigeUpgrade(id) {
     if (!up || up.nivel >= up.nivelMax || prestigePoints < up.preco) return;
     prestigePoints -= up.preco;
     up.nivel++;
-    // Aplica efeitos (se houver)
+    invalidarCacheCalculos();  // <--- LINHA ADICIONADA
+
+    // resto do código (ajustar timers, auto-click, atualizar interface)
     if (up.subtipo === 'tempo' || up.subtipo === 'ambos') {
         for (const lang in activeProductions) ajustarTimerParaUpgrade(lang);
     }
@@ -2292,34 +2294,6 @@ function inicializarControlesMultiplicador() {
     });
 }
 
-function carregarEstadoCompleto(gameData) {
-    if (!gameData) return;
-
-    money = gameData.money ?? 0;
-    totalMoneyEarned = gameData.totalMoneyEarned ?? 0;
-    prestigeProgress = gameData.prestigeProgress ?? 0;
-    totalPrestigeEarned = gameData.totalPrestigeEarned ?? 0;
-    prestigePoints = gameData.prestigePoints ?? 0;
-    totalBarCompletions = gameData.totalBarCompletions ?? 0;
-    pendingPrestigePoints = gameData.pendingPrestigePoints ?? 0;
-    prestigeUnlocked = gameData.prestigeUnlocked === 1 || gameData.prestigeUnlocked === true;
-
-    if (gameData.linguagensData) linguagensData = gameData.linguagensData;
-    if (gameData.upgradesData) upgradesData = gameData.upgradesData;
-    if (gameData.lingUpgradesData) lingUpgradesData = gameData.lingUpgradesData;
-    if (gameData.prestigeUpgradesData) prestigeUpgradesData = gameData.prestigeUpgradesData;
-
-    // Atualizar interface
-    if (moneyEl) moneyEl.textContent = "$" + formatarDinheiro(money);
-    atualizarInterfaceLinguagens();
-    atualizarTodosUpgrades();
-    atualizarEstatisticas();
-    invalidarCacheCalculos();
-
-    // Atualizar display da ascensão
-    atualizarDisplayAscensao();
-}
-
 function inicializarInterface() {
     inicializarControlesMultiplicador();
 
@@ -2515,20 +2489,16 @@ function observarLinguagens() {
 function ajustarProporcao() {
     const LARGURA_BASE = 1920;
     const ALTURA_BASE = 1080;
-    const ESCALA_MIN = 0.7;   // mínimo de 70% (para telas muito pequenas)
-    const ESCALA_MAX = 1.15;   // máximo de 115% (para telas muito grandes)
+    const ESCALA_MIN = 0.55;   // mínimo para 1280x720
+    const ESCALA_MAX = 1.2;    // máximo para 2560x1440
     const larguraAtual = window.innerWidth;
     const alturaAtual = window.innerHeight;
 
-    // Calcula a escala baseada na largura e na altura (usa a menor das duas para não estourar)
     let fatorLargura = larguraAtual / LARGURA_BASE;
     let fatorAltura = alturaAtual / ALTURA_BASE;
     let fatorEscala = Math.min(fatorLargura, fatorAltura);
 
-    // Aplica os limites
     fatorEscala = Math.min(ESCALA_MAX, Math.max(ESCALA_MIN, fatorEscala));
-
-    // Atualiza a variável CSS
     document.documentElement.style.setProperty('--scale', fatorEscala);
 }
 
@@ -2681,6 +2651,9 @@ function setupAuth() {
                 ajustarVisibilidadeDebug();
                 atualizarInterfaceLogin();
                 mostrarFeedback(`Bem-vindo, ${currentUsername}!`, 'success');
+
+                // 🔁 Carrega o progresso salvo do servidor
+                await loadProgressFromServer();
             } else {
                 // Exibe a mensagem de erro dentro do modal
                 if (errorDiv) {
@@ -2853,7 +2826,7 @@ function carregarEstadoCompleto(gameData) {
     prestigePoints = gameData.prestigePoints ?? 0;
     totalBarCompletions = gameData.totalBarCompletions ?? 0;
     pendingPrestigePoints = gameData.pendingPrestigePoints ?? 0;
-    prestigeUnlocked = gameData.prestigeUnlocked ?? false;
+    prestigeUnlocked = gameData.prestigeUnlocked === 1 || gameData.prestigeUnlocked === true;
 
     if (gameData.linguagensData) linguagensData = gameData.linguagensData;
     if (gameData.upgradesData) upgradesData = gameData.upgradesData;
@@ -2866,6 +2839,14 @@ function carregarEstadoCompleto(gameData) {
     atualizarTodosUpgrades();
     atualizarEstatisticas();
     invalidarCacheCalculos();
+
+    // Exibe ou oculta a barra de ascensão conforme o desbloqueio
+    const ascContainer = document.getElementById('ascensionButtonContainer');
+    if (ascContainer) {
+        ascContainer.style.display = prestigeUnlocked ? 'flex' : 'none';
+        if (prestigeUnlocked) ascContainer.classList.add('unlocked');
+    }
+    atualizarDisplayAscensao();  // <-- ESSENCIAL: atualiza a barra de progresso
 }
 
 // Abrir modal de configurações
@@ -2990,6 +2971,11 @@ document.addEventListener('DOMContentLoaded', () => {
             ajustarProporcao();
         });
         ajustarProporcao();
+        if (loggedIn) {
+            setInterval(() => {
+                if (loggedIn && !gamePaused) saveProgressToServer();
+            }, 180000); // salva a cada 30 segundos
+        }
         document.addEventListener('keydown', (event) => {
             const activeTag = document.activeElement?.tagName?.toLowerCase();
             const isTyping = activeTag === 'input' || activeTag === 'textarea' || document.activeElement?.isContentEditable;

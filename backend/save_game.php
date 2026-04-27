@@ -26,11 +26,11 @@ if (!$data) {
 // Prepara os valores para as colunas (valores padrão se não existirem)
 $money = $data['money'] ?? 0;
 $totalMoneyEarned = $data['totalMoneyEarned'] ?? 0;
-$prestigeProgress = $data['prestigeProgress'] ?? 0;
-$totalPrestigeEarned = $data['totalPrestigeEarned'] ?? 0;
-$prestigePoints = $data['prestigePoints'] ?? 0;
-$totalBarCompletions = $data['totalBarCompletions'] ?? 0;
-$pendingPrestigePoints = $data['pendingPrestigePoints'] ?? 0;
+$prestigeProgress = round($data['prestigeProgress'] ?? 0, 2);
+$totalPrestigeEarned = (int)($data['totalPrestigeEarned'] ?? 0);
+$prestigePoints = (int)($data['prestigePoints'] ?? 0);
+$totalBarCompletions = (int)($data['totalBarCompletions'] ?? 0);
+$pendingPrestigePoints = (int)($data['pendingPrestigePoints'] ?? 0);
 $prestigeUnlocked = isset($data['prestigeUnlocked']) ? (int)$data['prestigeUnlocked'] : 0;
 
 // Converte objetos complexos para JSON
