@@ -1,5 +1,5 @@
 // ========================
-// I.T Adventure - Parte 1: Constantes, Utilitários e Templates
+// I.T Adventure
 // ========================
 
 // ------------------------
@@ -57,6 +57,7 @@ let prestigePoints = 0;
 let totalBonus = 0;
 let prestigeProgress = 0;
 let prestigeUpgradesData = null;   // preenchido após template
+let prestigeBonusMultiplier = 1;  // multiplicador do bônus de ascensão (1 = 1% por ponto)
 
 let pauseState = {
     active: false,
@@ -234,15 +235,15 @@ function mostrarFeedback(mensagem, tipo) {
 // ------------------------
 const linguagensDataTemplate = {
     html: { tempo: 10, recompensaBase: 1.50, precoBase: 10.00, precoAtual: 10.00, multiplicadorPreco: 1.02, multiplicadorRecompensa: 0.4, compras: 1, desbloqueada: true, automatic: false },
-    python: { tempo: 30, recompensaBase: 8.00, precoBase: 25.00, precoAtual: 25.00, multiplicadorPreco: 1.04, multiplicadorRecompensa: 0.4, compras: 0, desbloqueada: false, automatic: false },
-    java: { tempo: 60, recompensaBase: 25.00, precoBase: 50.00, precoAtual: 50.00, multiplicadorPreco: 1.06, multiplicadorRecompensa: 0.4, compras: 0, desbloqueada: false, automatic: false },
-    c: { tempo: 180, recompensaBase: 80.00, precoBase: 250.00, precoAtual: 250.00, multiplicadorPreco: 1.08, multiplicadorRecompensa: 0.4, compras: 0, desbloqueada: false, automatic: false },
-    ts: { tempo: 600, recompensaBase: 250.00, precoBase: 500.00, precoAtual: 500.00, multiplicadorPreco: 1.10, multiplicadorRecompensa: 0.4, compras: 0, desbloqueada: false, automatic: false },
-    flutter: { tempo: 1800, recompensaBase: 800.00, precoBase: 2500.00, precoAtual: 2500.00, multiplicadorPreco: 1.12, multiplicadorRecompensa: 0.4, compras: 0, desbloqueada: false, automatic: false },
-    rust: { tempo: 3600, recompensaBase: 2500.00, precoBase: 5000.00, precoAtual: 5000.00, multiplicadorPreco: 1.14, multiplicadorRecompensa: 0.4, compras: 0, desbloqueada: false, automatic: false },
-    cobol: { tempo: 7200, recompensaBase: 8000.00, precoBase: 25000.00, precoAtual: 25000.00, multiplicadorPreco: 1.16, multiplicadorRecompensa: 0.4, compras: 0, desbloqueada: false, automatic: false },
-    assembly: { tempo: 14400, recompensaBase: 25000.00, precoBase: 50000.00, precoAtual: 50000.00, multiplicadorPreco: 1.18, multiplicadorRecompensa: 0.4, compras: 0, desbloqueada: false, automatic: false },
-    templeos: { tempo: 28800, recompensaBase: 80000.00, precoBase: 250000.00, precoAtual: 250000.00, multiplicadorPreco: 1.20, multiplicadorRecompensa: 0.4, compras: 0, desbloqueada: false, automatic: false }
+    python: { tempo: 30, recompensaBase: 8.00, precoBase: 25.00, precoAtual: 25.00, multiplicadorPreco: 1.04, multiplicadorRecompensa: 0.4, compras: 0, desbloqueada: false, automatic: false, revealed: false },
+    java: { tempo: 60, recompensaBase: 25.00, precoBase: 50.00, precoAtual: 50.00, multiplicadorPreco: 1.06, multiplicadorRecompensa: 0.4, compras: 0, desbloqueada: false, automatic: false, revealed: false },
+    c: { tempo: 180, recompensaBase: 80.00, precoBase: 250.00, precoAtual: 250.00, multiplicadorPreco: 1.08, multiplicadorRecompensa: 0.4, compras: 0, desbloqueada: false, automatic: false, revealed: false },
+    ts: { tempo: 600, recompensaBase: 250.00, precoBase: 500.00, precoAtual: 500.00, multiplicadorPreco: 1.10, multiplicadorRecompensa: 0.4, compras: 0, desbloqueada: false, automatic: false, revealed: false },
+    flutter: { tempo: 1800, recompensaBase: 800.00, precoBase: 2500.00, precoAtual: 2500.00, multiplicadorPreco: 1.12, multiplicadorRecompensa: 0.4, compras: 0, desbloqueada: false, automatic: false, revealed: false },
+    rust: { tempo: 3600, recompensaBase: 2500.00, precoBase: 5000.00, precoAtual: 5000.00, multiplicadorPreco: 1.14, multiplicadorRecompensa: 0.4, compras: 0, desbloqueada: false, automatic: false, revealed: false },
+    cobol: { tempo: 7200, recompensaBase: 8000.00, precoBase: 25000.00, precoAtual: 25000.00, multiplicadorPreco: 1.16, multiplicadorRecompensa: 0.4, compras: 0, desbloqueada: false, automatic: false, revealed: false },
+    assembly: { tempo: 14400, recompensaBase: 25000.00, precoBase: 50000.00, precoAtual: 50000.00, multiplicadorPreco: 1.18, multiplicadorRecompensa: 0.4, compras: 0, desbloqueada: false, automatic: false, revealed: false },
+    templeos: { tempo: 28800, recompensaBase: 80000.00, precoBase: 250000.00, precoAtual: 250000.00, multiplicadorPreco: 1.20, multiplicadorRecompensa: 0.4, compras: 0, desbloqueada: false, automatic: false, revealed: false }
 };
 
 const upgradesDataTemplate = {
@@ -612,42 +613,123 @@ const lingUpgradesDataTemplate = {
     templeos_extra12: { nome: "TempleOS Dual II", descricao: "Aumenta o ganho em 6% e reduz o tempo em 3%", icone: "✨⏱️", precoBase: 2200, multiplicadorPreco: 1.0, nivel: 0, nivelMax: 1, efeito: 0.06, tipo: "linguagem", linguagemId: "templeos", subtipo: "ambos", requisito: { tipo: "compras", valor: 22 } }
 };
 
-const prestigeUpgradesDataTemplate = {
-    prodGlobal1: { nome: "Produção Global +10%", descricao: "Aumenta a produção de todas as linguagens em 10%.", icone: "🌍", preco: 1, nivel: 0, nivelMax: 10, efeito: 0.10, tipo: "global", subtipo: "rendimento", requisito: null, x: 1450, y: 750 },
-    tempoGlobal1: { nome: "Velocidade Global +5%", descricao: "Reduz o tempo de todas as linguagens em 5%.", icone: "⏩", preco: 1, nivel: 0, nivelMax: 10, efeito: 0.05, tipo: "global", subtipo: "tempo", requisito: "prodGlobal1", x: 1250, y: 550 },
-    tempoGlobal2: { nome: "Aceleração Crítica", descricao: "Reduz o tempo em 3% durante produções críticas.", icone: "⚡", preco: 2, nivel: 0, nivelMax: 8, efeito: 0.03, tipo: "global", subtipo: "tempo_critico", requisito: "tempoGlobal1", x: 1150, y: 450 },
-    tempoGlobal3: { nome: "Fluxo Contínuo", descricao: "Reduz o tempo de espera entre produções em 10%.", icone: "🌊", preco: 3, nivel: 0, nivelMax: 6, efeito: 0.10, tipo: "global", subtipo: "tempo_espera", requisito: "tempoGlobal2", x: 1050, y: 350 },
-    prodGlobal2: { nome: "Multiplicador Global", descricao: "Multiplica a produção global por 1.05x.", icone: "✨", preco: 2, nivel: 0, nivelMax: 8, efeito: 1.05, tipo: "global", subtipo: "multiplicador", requisito: "prodGlobal1", x: 1650, y: 550 },
-    prodGlobal3: { nome: "Surtos de Produtividade", descricao: "Chance de 5% de dobrar a produção por nível.", icone: "🎯", preco: 3, nivel: 0, nivelMax: 5, efeito: 0.05, tipo: "global", subtipo: "sorte_prod", requisito: "prodGlobal2", x: 1750, y: 450 },
-    prodGlobal4: { nome: "Onda de Eficiência", descricao: "Produção aumenta 8% durante períodos de baixa atividade.", icone: "🌊", preco: 2, nivel: 0, nivelMax: 7, efeito: 0.08, tipo: "global", subtipo: "eficiencia", requisito: "prodGlobal3", x: 1850, y: 350 },
-    priceDiscount: { nome: "Desconto Comercial", descricao: "Reduz o custo de compra de linguagens em 5%.", icone: "💲", preco: 2, nivel: 0, nivelMax: 10, efeito: 0.05, tipo: "global", subtipo: "preco", requisito: "prodGlobal1", x: 1850, y: 650 },
-    priceDiscount2: { nome: "Negociação Mestre", descricao: "Reduz custos de upgrades em 3%.", icone: "🤝", preco: 3, nivel: 0, nivelMax: 8, efeito: 0.03, tipo: "global", subtipo: "preco_upgrades", requisito: "priceDiscount", x: 1950, y: 550 },
-    priceDiscount3: { nome: "Economia Circular", descricao: "5% de chance de reembolsar custo de compras.", icone: "🔄", preco: 4, nivel: 0, nivelMax: 5, efeito: 0.05, tipo: "global", subtipo: "reembolso", requisito: "priceDiscount2", x: 2050, y: 450 },
-    autoClick: { nome: "Automação Claudinho", descricao: "Gera um clique automático por segundo.", icone: "🤖", preco: 3, nivel: 0, nivelMax: 10, efeito: 1, tipo: "global", subtipo: "autoclick", requisito: "priceDiscount", x: 2150, y: 750 },
-    autoClick2: { nome: "IA Assistente", descricao: "Cliques automáticos inteligentes que priorizam linguagens mais produtivas.", icone: "🧠", preco: 4, nivel: 0, nivelMax: 6, efeito: 1.5, tipo: "global", subtipo: "autoclick_inteligente", requisito: "autoClick", x: 2350, y: 850 },
-    autoClick3: { nome: "Rede Neural", descricao: "Cliques automáticos aprendem e otimizam padrões de produção.", icone: "🕸️", preco: 5, nivel: 0, nivelMax: 4, efeito: 2.0, tipo: "global", subtipo: "autoclick_ml", requisito: "autoClick2", x: 2550, y: 950 },
-    bonusIconBoost: { nome: "Amuleto do Bônus", descricao: "Aumenta o valor dos ícones de bônus em 20%.", icone: "⭐", preco: 2, nivel: 0, nivelMax: 10, efeito: 0.20, tipo: "global", subtipo: "bonusicon", requisito: "prodGlobal1", x: 1050, y: 650 },
-    bonusIconBoost2: { nome: "Sorte Estelar", descricao: "Chance dobrada de ícones de bônus aparecerem.", icone: "🌟", preco: 3, nivel: 0, nivelMax: 8, efeito: 2.0, tipo: "global", subtipo: "bonusicon_freq", requisito: "bonusIconBoost", x: 950, y: 550 },
-    bonusIconBoost3: { nome: "Constelação da Sorte", descricao: "Ícones de bônus podem aparecer em cascata.", icone: "🌌", preco: 4, nivel: 0, nivelMax: 5, efeito: 0.15, tipo: "global", subtipo: "bonusicon_cascata", requisito: "bonusIconBoost2", x: 850, y: 450 },
-    multiplicadorClique: { nome: "Clique Poderoso", descricao: "Cliques no Claudinho rendem 50% mais.", icone: "👆", preco: 2, nivel: 0, nivelMax: 10, efeito: 0.50, tipo: "global", subtipo: "clique", requisito: "prodGlobal1", x: 1450, y: 1050 },
-    multiplicadorClique2: { nome: "Toque Mágico", descricao: "Cliques têm 10% de chance de serem críticos (3x valor).", icone: "✨", preco: 3, nivel: 0, nivelMax: 8, efeito: 0.10, tipo: "global", subtipo: "clique_critico", requisito: "multiplicadorClique", x: 1550, y: 1150 },
-    multiplicadorClique3: { nome: "Combo de Cliques", descricao: "Cliques consecutivos ganham bônus cumulativo.", icone: "🔥", preco: 4, nivel: 0, nivelMax: 6, efeito: 0.05, tipo: "global", subtipo: "clique_combo", requisito: "multiplicadorClique2", x: 1650, y: 1250 },
-    htmlBoost: { nome: "HTML Acelerado", descricao: "Aumenta a produção de HTML em 25%.", icone: "🌐", preco: 1, nivel: 0, nivelMax: 10, efeito: 0.25, tipo: "linguagem-especifica", linguagem: "html", subtipo: "rendimento", requisito: "prodGlobal1", x: 1450, y: 450 },
-    htmlTimeBoost: { nome: "HTML Otimizado", descricao: "Reduz o tempo de HTML em 15%.", icone: "⚡", preco: 2, nivel: 0, nivelMax: 8, efeito: 0.15, tipo: "linguagem-especifica", linguagem: "html", subtipo: "tempo", requisito: "htmlBoost", x: 1350, y: 350 },
-    cssBoost: { nome: "CSS Elegante", descricao: "Aumenta a produção de CSS em 25%.", icone: "🎨", preco: 1, nivel: 0, nivelMax: 10, efeito: 0.25, tipo: "linguagem-especifica", linguagem: "css", subtipo: "rendimento", requisito: "htmlBoost", x: 1550, y: 350 },
-    cssTimeBoost: { nome: "CSS Fluido", descricao: "Reduz o tempo de CSS em 15%.", icone: "🌊", preco: 2, nivel: 0, nivelMax: 8, efeito: 0.15, tipo: "linguagem-especifica", linguagem: "css", subtipo: "tempo", requisito: "cssBoost", x: 1650, y: 250 },
-    jsBoost: { nome: "JavaScript Dinâmico", descricao: "Aumenta a produção de JavaScript em 25%.", icone: "⚙️", preco: 2, nivel: 0, nivelMax: 10, efeito: 0.25, tipo: "linguagem-especifica", linguagem: "js", subtipo: "rendimento", requisito: "cssBoost", x: 1250, y: 250 },
-    jsTimeBoost: { nome: "JavaScript Compilado", descricao: "Reduz o tempo de JavaScript em 15%.", icone: "🚀", preco: 3, nivel: 0, nivelMax: 8, efeito: 0.15, tipo: "linguagem-especifica", linguagem: "js", subtipo: "tempo", requisito: "jsBoost", x: 1150, y: 150 },
-    pythonBoost: { nome: "Python Turbo", descricao: "Aumenta a produção de Python em 25%.", icone: "🐍", preco: 2, nivel: 0, nivelMax: 10, efeito: 0.25, tipo: "linguagem-especifica", linguagem: "python", subtipo: "rendimento", requisito: "jsBoost", x: 750, y: 250 },
-    pythonTimeBoost: { nome: "Python Otimizado", descricao: "Reduz o tempo de Python em 15%.", icone: "⚡", preco: 3, nivel: 0, nivelMax: 8, efeito: 0.15, tipo: "linguagem-especifica", linguagem: "python", subtipo: "tempo", requisito: "pythonBoost", x: 650, y: 150 },
-    javaBoost: { nome: "Java Enterprise", descricao: "Aumenta a produção de Java em 25%.", icone: "☕", preco: 3, nivel: 0, nivelMax: 10, efeito: 0.25, tipo: "linguagem-especifica", linguagem: "java", subtipo: "rendimento", requisito: "pythonBoost", x: 550, y: 50 },
-    javaTimeBoost: { nome: "Java JIT", descricao: "Reduz o tempo de Java em 15%.", icone: "⚡", preco: 4, nivel: 0, nivelMax: 8, efeito: 0.15, tipo: "linguagem-especifica", linguagem: "java", subtipo: "tempo", requisito: "javaBoost", x: 450, y: 150 },
-    cppBoost: { nome: "C++ Performance", descricao: "Aumenta a produção de C++ em 25%.", icone: "⚡", preco: 4, nivel: 0, nivelMax: 10, efeito: 0.25, tipo: "linguagem-especifica", linguagem: "cpp", subtipo: "rendimento", requisito: "javaBoost", x: 350, y: 50 },
-    cppTimeBoost: { nome: "C++ Compilado", descricao: "Reduz o tempo de C++ em 15%.", icone: "🚀", preco: 5, nivel: 0, nivelMax: 8, efeito: 0.15, tipo: "linguagem-especifica", linguagem: "cpp", subtipo: "tempo", requisito: "cppBoost", x: 250, y: 50 },
-    offlineProgress: { nome: "Progresso Offline", descricao: "Ganha 10% da produção normal quando offline.", icone: "⏰", preco: 5, nivel: 0, nivelMax: 5, efeito: 0.10, tipo: "global", subtipo: "offline", requisito: "prodGlobal4", x: 1950, y: 250 },
-    criticalMultiplier: { nome: "Multiplicador Crítico", descricao: "Produções críticas valem 25% mais por nível.", icone: "💎", preco: 4, nivel: 0, nivelMax: 6, efeito: 0.25, tipo: "global", subtipo: "critico", requisito: "prodGlobal3", x: 1750, y: 150 },
-    efficiencyMaster: { nome: "Mestre da Eficiência", descricao: "Reduz todos os custos em 2% e aumenta produção em 3%.", icone: "🎓", preco: 6, nivel: 0, nivelMax: 4, efeito: { custo: 0.02, prod: 0.03 }, tipo: "global", subtipo: "mestre", requisito: "criticalMultiplier", x: 1850, y: 50 }
-};
+const prestigeUpgradesDataTemplate = (() => {
+    const CENTER = { x: 1500, y: 1200 };
+    const BASE_DIST = 350;      // distância do centro para o primeiro nível
+    const STEP_DIST = 100;      // incremento por nível
+
+    // Lista de todos os ramos (nomes base, sem o número)
+    // Ordene como quiser; a ordem define os ângulos (sentido horário)
+    const ramos = [
+        'speed', 'reward', 'discount', 'prestigeMult',
+        'html', 'python', 'java', 'c', 'ts',
+        'flutter', 'rust', 'cobol', 'assembly', 'templeos'
+    ];
+    const totalRamos = ramos.length;
+    const anguloStep = 360 / totalRamos;
+
+    // Função para calcular posição radial
+    function point(angleDeg, level) {
+        const dist = BASE_DIST + (level - 1) * STEP_DIST;
+        const rad = angleDeg * Math.PI / 180;
+        return {
+            x: CENTER.x + Math.cos(rad) * dist,
+            y: CENTER.y + Math.sin(rad) * dist
+        };
+    }
+
+    const template = {
+        // Upgrade tutorial central
+        tutorial: {
+            nome: "🌱 Despertar da Ascensão",
+            descricao: "Desbloqueia todos os caminhos da árvore.",
+            icone: "🌱", preco: 1, nivel: 0, nivelMax: 1, efeito: null,
+            tipo: "global", subtipo: "tutorial", requisito: null,
+            x: CENTER.x, y: CENTER.y
+        }
+    };
+
+    // Dicionários para nomes e ícones das linguagens
+    const langIcons = {
+        html: '🌐', python: '🐍', java: '☕', c: '⚙️', ts: '🔷',
+        flutter: '📱', rust: '🦀', cobol: '🏛️', assembly: '🔧', templeos: '✨'
+    };
+    const langNames = {
+        html: 'HTML', python: 'Python', java: 'Java', c: 'C', ts: 'TypeScript',
+        flutter: 'Flutter', rust: 'Rust', cobol: 'COBOL', assembly: 'Assembly', templeos: 'TempleOS'
+    };
+
+    // Gera upgrades para cada ramo
+    ramos.forEach((base, idx) => {
+        const angle = idx * anguloStep;
+
+        if (base === 'speed') {
+            for (let i = 1; i <= 5; i++) {
+                const pos = point(angle, i);
+                template[`speed${i}`] = {
+                    nome: `⚡ Fluidez Cósmica ${i}`,
+                    descricao: `Reduz o tempo de todas as linguagens em ${5 * i}%.`,
+                    icone: "⚡", preco: 2 + i, nivel: 0, nivelMax: 5, efeito: 0.05,
+                    tipo: "global", subtipo: "tempo", requisito: i === 1 ? "tutorial" : `speed${i - 1}`,
+                    x: pos.x, y: pos.y
+                };
+            }
+        }
+        else if (base === 'reward') {
+            for (let i = 1; i <= 5; i++) {
+                const pos = point(angle, i);
+                template[`reward${i}`] = {
+                    nome: `💰 Produtividade Estelar ${i}`,
+                    descricao: `Aumenta o ganho de todas as linguagens em ${5 * i}%.`,
+                    icone: "💰", preco: 2 + i, nivel: 0, nivelMax: 5, efeito: 0.05,
+                    tipo: "global", subtipo: "rendimento", requisito: i === 1 ? "tutorial" : `reward${i - 1}`,
+                    x: pos.x, y: pos.y
+                };
+            }
+        }
+        else if (base === 'discount') {
+            for (let i = 1; i <= 5; i++) {
+                const pos = point(angle, i);
+                template[`discount${i}`] = {
+                    nome: `🏷️ Negociação Galáctica ${i}`,
+                    descricao: `Reduz o custo de linguagens e upgrades em ${2 * i}%.`,
+                    icone: "🏷️", preco: 2 + i, nivel: 0, nivelMax: 5, efeito: 0.02,
+                    tipo: "global", subtipo: "preco", requisito: i === 1 ? "tutorial" : `discount${i - 1}`,
+                    x: pos.x, y: pos.y
+                };
+            }
+        }
+        else if (base === 'prestigeMult') {
+            for (let i = 1; i <= 5; i++) {
+                const pos = point(angle, i);
+                template[`prestigeMult${i}`] = {
+                    nome: `⭐ Essência da Ascensão ${i}`,
+                    descricao: `Cada ponto de ascensão vale ${i * 10}% a mais (1% → ${1 + i * 0.1}%).`,
+                    icone: "⭐", preco: 3 + i, nivel: 0, nivelMax: 5, efeito: 0.1,
+                    tipo: "global", subtipo: "prestige_multiplier", requisito: i === 1 ? "tutorial" : `prestigeMult${i - 1}`,
+                    x: pos.x, y: pos.y
+                };
+            }
+        }
+        else if (langIcons[base]) {
+            // É uma linguagem
+            for (let i = 1; i <= 5; i++) {
+                const pos = point(angle, i);
+                const id = `${base}Boost${i}`;
+                template[id] = {
+                    nome: `${langIcons[base]} ${langNames[base]} Avançado ${i}`,
+                    descricao: `Aumenta o ganho de ${langNames[base]} em ${10 * i}%.`,
+                    icone: langIcons[base], preco: 2 + i, nivel: 0, nivelMax: 5, efeito: 0.10,
+                    tipo: "linguagem-especifica", linguagem: base, subtipo: "rendimento",
+                    requisito: i === 1 ? "tutorial" : `${base}Boost${i - 1}`,
+                    x: pos.x, y: pos.y
+                };
+            }
+        }
+    });
+
+    return template;
+})();
 
 // ------------------------
 // INICIALIZAÇÃO DOS DADOS
@@ -672,7 +754,7 @@ function calcularRecompensaAtual(id) {
     }
 
     // 2. ⭐ Bônus de ascensão (totalPrestigeEarned %) – aplicado SEMPRE, desde a 1ª unidade
-    recompensa *= (1 + totalPrestigeEarned / 100);
+    recompensa *= (1 + (totalPrestigeEarned * (0.01 * prestigeBonusMultiplier)));
 
     // 3. Upgrades de prestígio (efeitos de rendimento, multiplicador, etc.)
     for (const up of Object.values(prestigeUpgradesData)) {
@@ -727,6 +809,8 @@ function calcularTempoAtual(id) {
     const data = linguagensData[id];
     if (!data) return data.tempo;
     let tempo = data.tempo;
+
+    // 1. Upgrades normais (globais)
     for (const up of Object.values(upgradesData)) {
         if (up.nivel > 0 && up.tipo === 'global') {
             const efeito = normalizarEfeitoParaMultiploDe5(up.efeito);
@@ -737,6 +821,8 @@ function calcularTempoAtual(id) {
             }
         }
     }
+
+    // 2. Upgrades específicos de linguagem (lingUpgradesData)
     for (const up of Object.values(lingUpgradesData)) {
         if (up.linguagemId === id && up.nivel > 0) {
             const efeito = normalizarEfeitoParaMultiploDe5(up.efeito);
@@ -745,7 +831,19 @@ function calcularTempoAtual(id) {
             }
         }
     }
+
+    // 3. Upgrades de prestígio (árvore de habilidades) – NOVO!
+    for (const up of Object.values(prestigeUpgradesData)) {
+        if (up.nivel > 0 && up.subtipo === 'tempo') {
+            // Efeito acumulativo por nível (ex: cada nível 5% → 0.05 * nivel)
+            const efeito = normalizarEfeitoParaMultiploDe5(up.efeito * up.nivel);
+            tempo *= (1 - efeito);
+        }
+    }
+
+    // 4. Bônus temporário (ícone)
     tempo /= bonusSpeedMultiplier;
+
     tempo = Math.max(0.1, tempo);
     tempo = Math.round(tempo * 10) / 10;
     calculoCache.tempo.set(id, tempo);
@@ -817,6 +915,7 @@ function completarProducao(id) {
     totalMoneyEarned = arredondar(totalMoneyEarned + recompensa);
     prestigeProgress = arredondar(prestigeProgress + recompensa);
     if (moneyEl) moneyEl.textContent = "$" + formatarDinheiro(money);
+    atualizarVisibilidadeLinguagens();
 
     verificarProgressoAscensao();
 
@@ -1048,6 +1147,7 @@ function atualizarTodosUpgrades() {
     }
 
     if (upgradesDisponiveis.size === 0) {
+        esconderTooltipUpgrade();               // <-- adicione esta linha
         if (noUpgradesMessage) noUpgradesMessage.style.display = 'block';
         lista.innerHTML = '';
         elementosUpgrades.clear();
@@ -1228,7 +1328,6 @@ function comprarUpgrade(id) {
     atualizarTodosUpgrades();
     atualizarEstatisticas();
     atualizarInterfaceLinguagens();
-    mostrarFeedback(`✅ ${upgrade.nome} comprado!`, 'success');
     return true;
 }
 
@@ -1262,7 +1361,6 @@ function comprarLingUpgrade(id) {
     atualizarTodosUpgrades();
     atualizarInterfaceLinguagens();
     atualizarEstatisticas();
-    mostrarFeedback(`✅ ${upgrade.nome} comprado!`, 'success');
     return true;
 }
 
@@ -1270,6 +1368,7 @@ function comprarLingUpgrade(id) {
 // COMPRA DE LINGUAGENS
 // ------------------------
 function comprarLinguagemMultipla(id, quantidade) {
+    atualizarVisibilidadeLinguagens();
     const data = linguagensData[id];
     if (!data) return false;
     const precoTotal = calcularPrecoUnitario(id, quantidade);
@@ -1295,7 +1394,6 @@ function comprarLinguagemMultipla(id, quantidade) {
                 img.style.opacity = "1";
             }
         }
-        mostrarFeedback(`🔓 Linguagem ${id.toUpperCase()} desbloqueada!`, 'success');
     }
 
     const countEl = document.querySelector(`.ling[data-id="${id}"] .compra-count`);
@@ -1350,7 +1448,7 @@ function atualizarInterfaceLinguagens() {
 // ------------------------
 function calcularProximoMarco() {
     // Cada vez que a barra enche, o próximo marco aumenta 5%
-    return PRESTIGE_BASE * Math.pow(1.05, totalBarCompletions);
+    return PRESTIGE_BASE * Math.pow(1.01, totalBarCompletions);
 }
 
 function concederPontoAscensao() {
@@ -1364,7 +1462,7 @@ function concederPontoAscensao() {
             prestigePoints += pontos;
             prestigeProgress -= proximoMarco * pontos;
             invalidarCacheCalculos();
-            mostrarFeedback(`⭐ +${pontos} ponto(s) de ascensão! Total: ${prestigePoints}`, 'success');
+
             // Recalcula o próximo marco (já que totalPrestigeEarned mudou)
             // A barra será atualizada na chamada de atualizarDisplayAscensao()
         }
@@ -1381,7 +1479,6 @@ function verificarProgressoAscensao() {
             container.style.display = 'flex';
             container.classList.add('unlocked');
         }
-        mostrarFeedback('⭐ Ascensão desbloqueada!', 'success');
         atualizarReferenciasBotoesAscensao();
     }
     if (!prestigeUnlocked) return;
@@ -1400,7 +1497,6 @@ function verificarProgressoAscensao() {
 
     if (pontosGanhos > 0) {
         pendingPrestigePoints += pontosGanhos;
-        mostrarFeedback(`⭐ Barra completada! +${pontosGanhos} ponto(s) pendente(s). Total pendente: ${pendingPrestigePoints}`, 'success');
     }
 
     atualizarDisplayAscensao();
@@ -1436,32 +1532,43 @@ function tentarAscender() {
 function abrirModalConfirmacaoAscensao(pontosGanhos) {
     const modal = document.getElementById('confirm-ascension-modal');
     if (!modal) return;
+
+    // Pausa o jogo enquanto a modal estiver aberta
     pausarJogo();
 
+    // Atualiza os valores exibidos
     const gainEl = document.getElementById('ascension-points-gain');
     const totalEl = document.getElementById('ascension-points-total');
     if (gainEl) gainEl.textContent = pontosGanhos;
     if (totalEl) totalEl.textContent = prestigePoints;
 
+    // Exibe a modal
     modal.style.display = 'block';
 
+    // Impede que o clique no background feche a modal (remove comportamento padrão)
+    modal.onclick = null; // remove qualquer handler anterior
+
+    // Configura o botão Cancelar
     const cancelBtn = document.getElementById('cancel-ascension-btn');
     if (cancelBtn) {
-        cancelBtn.disabled = false;
-        cancelBtn.style.opacity = '1';
-        cancelBtn.style.cursor = 'pointer';
-        cancelBtn.onclick = () => {
+        // Remove listeners antigos (evita duplicação)
+        const newCancelBtn = cancelBtn.cloneNode(true);
+        cancelBtn.parentNode.replaceChild(newCancelBtn, cancelBtn);
+        newCancelBtn.onclick = () => {
             modal.style.display = 'none';
-            pendingAscensionPoints = 0; // limpa
-            retomarJogo();
+            retomarJogo();      // retoma o jogo apenas no cancelamento
         };
     }
 
+    // Configura o botão Prosseguir
     const proceedBtn = document.getElementById('proceed-ascension-btn');
     if (proceedBtn) {
-        proceedBtn.onclick = () => {
+        const newProceedBtn = proceedBtn.cloneNode(true);
+        proceedBtn.parentNode.replaceChild(newProceedBtn, proceedBtn);
+        newProceedBtn.onclick = () => {
             modal.style.display = 'none';
-            realizarAscensao();          // agora usará pendingAscensionPoints
+            // NÃO chama retomarJogo() aqui – a ascensão vai resetar o jogo e depois abrir a árvore (que manterá o jogo pausado)
+            realizarAscensao();
         };
     }
 }
@@ -1496,12 +1603,58 @@ function realizarAscensao() {
 }
 
 function resetarJogoPreservandoAscensao() {
+    // ===== LIMPEZA COMPLETA DOS BÔNUS =====
+    if (bonusTimeout) {
+        clearTimeout(bonusTimeout);
+        bonusTimeout = null;
+    }
+    if (bonusInterval) {
+        clearInterval(bonusInterval);
+        bonusInterval = null;
+    }
+    // Remove o indicador de bônus da tela
+    const bonusIndicator = document.getElementById('bonus-indicator');
+    if (bonusIndicator) {
+        bonusIndicator.style.display = 'none';
+        bonusIndicator.innerHTML = '';
+    }
+    // Reseta os multiplicadores para os valores padrão
+    bonusSpeedMultiplier = 1;
+    bonusRewardMultiplier = 1;
+    bonusStartTime = null;
+
+    // Esconde e remove qualquer ícone de bônus flutuante
+    const bonusIcon = document.getElementById('bonus-icon');
+    if (bonusIcon) {
+        bonusIcon.classList.remove('visible', 'hiding');
+        bonusIcon.style.display = 'none';
+    }
+    bonusIconVisible = false;
+    if (window.bonusFadeTimeout) {
+        clearTimeout(window.bonusFadeTimeout);
+        window.bonusFadeTimeout = null;
+    }
+    // Impede que um próximo bônus seja agendado durante o reset
+    if (window.nextBonusTimeout) {
+        clearTimeout(window.nextBonusTimeout);
+        window.nextBonusTimeout = null;
+    }
+    nextBonusScheduled = false;
     // Cancela animações e timers (código já existente)
     if (animationFrameId) { cancelAnimationFrame(animationFrameId); animationFrameId = null; }
     if (bonusTimeout) clearTimeout(bonusTimeout);
     if (bonusInterval) clearInterval(bonusInterval);
     if (autoClickInterval) clearInterval(autoClickInterval);
     if (playtimeInterval) clearInterval(playtimeInterval);
+
+    // Reset do multiplicador de bônus de ascensão (opcional, pois será recalculado pelos upgrades)
+    prestigeBonusMultiplier = 1;
+    // recalcula com base nos upgrades que foram preservados
+    for (const u of Object.values(prestigeUpgradesData)) {
+        if (u.subtipo === 'prestige_multiplier' && u.nivel > 0) {
+            prestigeBonusMultiplier += u.efeito * u.nivel;
+        }
+    }
 
     // Limpa produções ativas
     for (const id in activeProductions) delete activeProductions[id];
@@ -1549,6 +1702,7 @@ function resetarJogoPreservandoAscensao() {
 
     // Atualiza interface
     if (moneyEl) moneyEl.textContent = "$0.00";
+    atualizarVisibilidadeLinguagens();
     inicializarInterface();
     atualizarTodosUpgrades();
     atualizarEstatisticas();
@@ -1584,10 +1738,26 @@ function fecharModalConfirmacaoAscensao() {
 function abrirModalArvoreSkills() {
     const modal = document.getElementById('skill-tree-modal');
     if (!modal) return;
+    pausarJogo();
+
     const pontosElement = document.getElementById('skill-tree-points');
     if (pontosElement) pontosElement.textContent = prestigePoints;
+
     renderizarArvoreSkills();
+
+    // Centraliza no upgrade tutorial (1500,1200)
+    const container = document.querySelector('.skill-tree-container');
+    if (container) {
+        setTimeout(() => {
+            const targetX = 1500;
+            const targetY = 1200;
+            container.scrollLeft = targetX - (container.clientWidth / 2);
+            container.scrollTop = targetY - (container.clientHeight / 2);
+        }, 30);
+    }
+
     modal.style.display = 'block';
+    modal.onclick = null;
 }
 
 function fecharModalArvoreSkills() {
@@ -1599,15 +1769,47 @@ function renderizarArvoreSkills() {
     const canvas = document.getElementById('skill-tree-canvas');
     if (!canvas) return;
     canvas.innerHTML = '';
-    for (const [id, upgrade] of Object.entries(prestigeUpgradesData)) {
-        if (upgrade.requisito) {
-            const req = prestigeUpgradesData[upgrade.requisito];
-            if (req) criarConexao(req, upgrade);
+
+    // Determinar quais upgrades serão exibidos (apenas os acessíveis)
+    const upgradesToShow = new Set();
+
+    function shouldShow(upgradeId, up) {
+        if (upgradeId === 'tutorial') return true;
+        if (!up.requisito) return true; // segurança
+        const reqUp = prestigeUpgradesData[up.requisito];
+        return reqUp && reqUp.nivel > 0;
+    }
+
+    let changed = true;
+    while (changed) {
+        changed = false;
+        for (const [id, up] of Object.entries(prestigeUpgradesData)) {
+            if (upgradesToShow.has(id)) continue;
+            if (shouldShow(id, up)) {
+                upgradesToShow.add(id);
+                changed = true;
+            }
         }
     }
+
+    // Conexões apenas entre upgrades mostrados
     for (const [id, upgrade] of Object.entries(prestigeUpgradesData)) {
-        criarNoSkill(id, upgrade);
+        if (!upgradesToShow.has(id)) continue;
+        if (upgrade.requisito) {
+            const req = prestigeUpgradesData[upgrade.requisito];
+            if (req && upgradesToShow.has(upgrade.requisito)) {
+                criarConexao(req, upgrade);
+            }
+        }
     }
+
+    // Criar nós apenas para upgrades mostrados
+    for (const [id, upgrade] of Object.entries(prestigeUpgradesData)) {
+        if (upgradesToShow.has(id)) {
+            criarNoSkill(id, upgrade);
+        }
+    }
+
     implementarArrastarCanvas(canvas);
     implementarZoomCanvas();
 }
@@ -1687,17 +1889,28 @@ function comprarPrestigeUpgrade(id) {
     if (!up || up.nivel >= up.nivelMax || prestigePoints < up.preco) return;
     prestigePoints -= up.preco;
     up.nivel++;
-    invalidarCacheCalculos();  // <--- LINHA ADICIONADA
+    invalidarCacheCalculos();
 
-    // resto do código (ajustar timers, auto-click, atualizar interface)
+    // Aplica efeitos específicos
     if (up.subtipo === 'tempo' || up.subtipo === 'ambos') {
         for (const lang in activeProductions) ajustarTimerParaUpgrade(lang);
     }
     if (up.subtipo === 'autoclick') setupAutoClick();
+    if (up.subtipo === 'prestige_multiplier') {
+        // Recalcula o multiplicador de bônus de ascensão
+        let totalBonus = 1;
+        for (const u of Object.values(prestigeUpgradesData)) {
+            if (u.subtipo === 'prestige_multiplier' && u.nivel > 0) {
+                totalBonus += u.efeito * u.nivel;
+            }
+        }
+        prestigeBonusMultiplier = totalBonus;
+    }
+
+    // Atualiza interface
     const skillTreePoints = document.getElementById('skill-tree-points');
     if (skillTreePoints) skillTreePoints.textContent = prestigePoints;
     renderizarArvoreSkills();
-    mostrarFeedback(`⭐ Upgrade "${up.nome}" adquirido!`, 'success');
 }
 
 let currentScale = 1.0;
@@ -1809,30 +2022,24 @@ function mostrarBonusIcon() {
     bonusIcon.style.left = Math.random() * maxX + 'px';
     bonusIcon.style.top = Math.random() * maxY + 'px';
     bonusIcon.style.display = 'block';
-    // Remove classes anteriores
     bonusIcon.classList.remove('visible', 'hiding');
-    // Força o reflow para reiniciar a transição
     void bonusIcon.offsetWidth;
-    // Inicia o fade-in (5 segundos)
     bonusIcon.classList.add('visible');
     bonusIconVisible = true;
 
-    // Timer para iniciar o fade-out após 20 segundos (25 total - 5 finais)
     if (window.bonusFadeTimeout) clearTimeout(window.bonusFadeTimeout);
     window.bonusFadeTimeout = setTimeout(() => {
         if (bonusIconVisible) {
-            // Inicia o fade-out
             bonusIcon.classList.remove('visible');
             bonusIcon.classList.add('hiding');
-            // Remove o ícone após o fim do fade-out (5 segundos)
             setTimeout(() => {
                 if (bonusIconVisible) {
                     esconderBonusIcon();
                     agendarProximoBonus();
                 }
-            }, 5000); // 5 segundos de fade-out
+            }, 5000);
         }
-    }, 20000); // 20 segundos visível, depois fade-out de 5 segundos
+    }, 20000);
 }
 
 function esconderBonusIcon() {
@@ -1885,8 +2092,6 @@ function aplicarBonus() {
 
     bonusStartTime = Date.now();
     bonusInterval = setInterval(atualizarBarraBonus, 100);
-    mostrarFeedback(`⭐ Bônus! +$${formatarDinheiro(bonusMoney)}`, 'success');
-    mostrarFeedback(`⚡ Velocidade x${bonusSpeedMultiplier} | 💰 Recompensa x${bonusRewardMultiplier}`, 'success');
 
     for (const id in activeProductions) ajustarTimerParaUpgrade(id);
 
@@ -1900,10 +2105,7 @@ function aplicarBonus() {
         }
         if (bonusInterval) clearInterval(bonusInterval);
         bonusStartTime = null;
-        mostrarFeedback('⏰ Bônus terminou!', 'reset');
         for (const id in activeProductions) ajustarTimerParaUpgrade(id);
-
-        // Agenda o próximo bônus após o término do bônus atual
         agendarProximoBonus();
     }, BONUS_DURATION);
 }
@@ -1925,26 +2127,20 @@ function agendarProximoBonus() {
 }
 
 function ativarSuperBonus() {
-    // Cancela qualquer bônus ativo no momento
     if (bonusTimeout) clearTimeout(bonusTimeout);
     if (bonusInterval) clearInterval(bonusInterval);
 
-    // Define os multiplicadores extremos
     bonusSpeedMultiplier = 100;
     bonusRewardMultiplier = 100;
-    invalidarCacheCalculos();  // Recalcula recompensas e tempos
+    invalidarCacheCalculos();
 
-    // (Opcional) Dá um dinheiro extra como recompensa visual
-    let bonusMoney = somaRecompensasLinguagens() * 15; // 15x o total das linguagens
+    let bonusMoney = somaRecompensasLinguagens() * 15;
     for (const up of Object.values(prestigeUpgradesData)) {
         if (up.nivel > 0 && up.subtipo === 'bonusicon') {
             bonusMoney = Math.ceil(bonusMoney * (1 + up.efeito * up.nivel));
         }
     }
-    mostrarFeedback(`💥 SUPER BÔNUS! +$${formatarDinheiro(bonusMoney)}`, 'success');
-    mostrarFeedback(`⚡ Velocidade x${bonusSpeedMultiplier} | 💰 Recompensa x${bonusRewardMultiplier}`, 'success');
 
-    // Exibe o indicador de bônus na tela
     const bonusIndicator = document.getElementById('bonus-indicator');
     if (bonusIndicator) {
         bonusIndicator.style.display = 'block';
@@ -1961,10 +2157,8 @@ function ativarSuperBonus() {
     bonusStartTime = Date.now();
     bonusInterval = setInterval(atualizarBarraBonus, 100);
 
-    // Ajusta os timers de todas as produções ativas (para refletir a nova velocidade)
     for (const id in activeProductions) ajustarTimerParaUpgrade(id);
 
-    // Duração padrão do bônus (60 segundos)
     bonusTimeout = setTimeout(() => {
         bonusSpeedMultiplier = 1;
         bonusRewardMultiplier = 1;
@@ -1975,7 +2169,6 @@ function ativarSuperBonus() {
         }
         if (bonusInterval) clearInterval(bonusInterval);
         bonusStartTime = null;
-        mostrarFeedback('⏰ Super bônus terminou!', 'reset');
         for (const id in activeProductions) ajustarTimerParaUpgrade(id);
     }, BONUS_DURATION);
 }
@@ -2108,6 +2301,29 @@ function agendarAtualizacaoEstatisticas(agora) {
     }
 }
 
+function atualizarVisibilidadeLinguagens() {
+    for (const [id, data] of Object.entries(linguagensData)) {
+        if (id === 'html') continue; // HTML sempre visível
+        const lingElement = document.querySelector(`.ling[data-id="${id}"]`);
+        if (!lingElement) continue;
+
+        // Se já está desbloqueada ou já foi revelada, mantém visível
+        if (data.desbloqueada || data.revealed) {
+            lingElement.classList.remove('hidden-lang');
+            continue;
+        }
+
+        const precoBase = data.precoBase;
+        const limiar = precoBase * 0.75;
+        if (money >= limiar) {
+            data.revealed = true;      // marca como revelada permanentemente
+            lingElement.classList.remove('hidden-lang');
+        } else {
+            lingElement.classList.add('hidden-lang');
+        }
+    }
+}
+
 // ------------------------
 // MENU, DEBUG E RESET
 // ------------------------
@@ -2151,10 +2367,11 @@ function adicionarDinheiro(quantia) {
     totalMoneyEarned = arredondar(totalMoneyEarned + quantia);
     prestigeProgress = arredondar(prestigeProgress + quantia);
     if (moneyEl) moneyEl.textContent = "$" + formatarDinheiro(money);
+    atualizarVisibilidadeLinguagens();
     verificarProgressoAscensao();
     atualizarEstatisticas();
     atualizarTodosUpgrades();
-    mostrarFeedback(`+$${formatarDinheiro(quantia)} adicionado!`, 'success');
+
 }
 
 function resetarJogo() {
@@ -2200,11 +2417,12 @@ function resetarJogo() {
     startTime = Date.now();
     iniciarTemporizador();
 
+    atualizarVisibilidadeLinguagens();
     inicializarInterface();
     atualizarTodosUpgrades();
     atualizarEstatisticas();
     ajustarAlturaListaUpgrades();
-    mostrarFeedback('✅ Jogo resetado com sucesso!', 'reset');
+
 }
 
 function iniciarTemporizador() {
@@ -2289,7 +2507,7 @@ function inicializarControlesMultiplicador() {
             botoes.forEach(b => b.classList.remove('active'));
             this.classList.add('active');
             atualizarInterfaceLinguagens();
-            mostrarFeedback(`Multiplicador definido para x${multiplicadorCompra}`, 'success');
+
         });
     });
 }
@@ -2336,6 +2554,8 @@ function inicializarInterface() {
         }
     });
 
+    atualizarVisibilidadeLinguagens();
+
     document.querySelectorAll(".buy-btn").forEach(btn => {
         btn.addEventListener("click", (event) => {
             event.stopPropagation();
@@ -2370,6 +2590,7 @@ function inicializarInterface() {
         prestigeProgress += ganhoBase;
         verificarProgressoAscensao();
         if (moneyEl) moneyEl.textContent = "$" + formatarDinheiro(money);
+        atualizarVisibilidadeLinguagens();
         criarPopUpDinheiro(ganhoBase, this, 30);
         agendarAtualizacaoUpgrades(Date.now());
         agendarAtualizacaoEstatisticas(Date.now());
@@ -2452,18 +2673,23 @@ function atualizarReferenciasBotoesAscensao() {
 
     const closeSkillTreeBtn = document.querySelector('.close-skill-tree');
     if (closeSkillTreeBtn) {
-        closeSkillTreeBtn.addEventListener('click', () => {
+        // Remove listeners antigos
+        const newCloseBtn = closeSkillTreeBtn.cloneNode(true);
+        closeSkillTreeBtn.parentNode.replaceChild(newCloseBtn, closeSkillTreeBtn);
+        newCloseBtn.addEventListener('click', () => {
             fecharModalArvoreSkills();
-            retomarJogo();   // agora retoma o jogo
+            retomarJogo();
         });
     }
 
     const skillTreeAscendBtn = document.getElementById('skill-tree-ascend-btn');
     if (skillTreeAscendBtn) {
-        skillTreeAscendBtn.addEventListener('click', () => {
+        const newAscendBtn = skillTreeAscendBtn.cloneNode(true);
+        skillTreeAscendBtn.parentNode.replaceChild(newAscendBtn, skillTreeAscendBtn);
+        newAscendBtn.addEventListener('click', () => {
             fecharModalArvoreSkills();
             retomarJogo();
-            mostrarFeedback('⭐ Upgrades aplicados! Continue progredindo.', 'success');
+
         });
     }
 
@@ -2472,6 +2698,13 @@ function atualizarReferenciasBotoesAscensao() {
 
 function initTooltip() {
     tooltipEl = document.getElementById('custom-tooltip');
+    if (tooltipEl) {
+        tooltipEl.classList.remove('visible');
+        tooltipEl.textContent = '';
+    }
+}
+
+function esconderTooltipUpgrade() {
     if (tooltipEl) {
         tooltipEl.classList.remove('visible');
         tooltipEl.textContent = '';
@@ -2694,9 +2927,22 @@ function setupAuth() {
     });
 
     // Fechar modais clicando fora
+    // Exemplo de ajuste no seu window.onclick existente
     window.onclick = (event) => {
+        const ascModal = document.getElementById('confirm-ascension-modal');
+        const skillModal = document.getElementById('skill-tree-modal');
+
+        // Não fecha os modais de ascensão e árvore ao clicar fora
+        if ((ascModal && ascModal.style.display === 'block') ||
+            (skillModal && skillModal.style.display === 'block')) {
+            return;
+        }
+
+        // Para outros modais (login, cadastro, etc.), mantém o comportamento padrão
         if (event.target.classList.contains('modal')) {
             event.target.style.display = 'none';
+            // Se algum desses modais tiver pausado o jogo, você pode chamar retomarJogo() aqui
+            // Mas normalmente esses modais não pausam o jogo.
         }
     };
 
@@ -2835,6 +3081,7 @@ function carregarEstadoCompleto(gameData) {
 
     // Atualiza interface
     if (moneyEl) moneyEl.textContent = "$" + formatarDinheiro(money);
+    atualizarVisibilidadeLinguagens();
     atualizarInterfaceLinguagens();
     atualizarTodosUpgrades();
     atualizarEstatisticas();

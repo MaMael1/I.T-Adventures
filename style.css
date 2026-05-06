@@ -11,7 +11,6 @@
 
 html {
     font-size: calc(18px * var(--scale));
-    /* aumentado de 16px para 18px */
 }
 
 html,
@@ -37,7 +36,6 @@ body {
     align-items: center;
     background: linear-gradient(135deg, #2c3e50, #34495e);
     padding: 1rem 2rem;
-    /* aumentado */
     border-bottom: 0.2rem solid #2c3e50;
     width: 100%;
     box-sizing: border-box;
@@ -97,14 +95,19 @@ body {
 /* ===================== TOP ROW ===================== */
 .top-row {
     display: flex;
+    flex-wrap: nowrap;
+    /* força os dois elementos a ficarem lado a lado */
     gap: 1rem;
-    flex-wrap: wrap;
+    width: 100%;
 }
 
+/* Estilos base comuns para a caixa de dinheiro e a barra de ascensão */
 .caixa,
 .ascension-progress-bar {
-    flex: 1;
+    flex: 1 1 0;
+    /* divide igualmente o espaço disponível */
     min-width: 0;
+    /* permite encolher o conteúdo se necessário */
     border: 0.25rem solid #2c3e50;
     border-radius: 1.25rem;
     padding: 0.6rem 1.2rem;
@@ -114,18 +117,95 @@ body {
     overflow: hidden;
 }
 
-.caixa {
-    border: 0.25rem solid #2c3e50;
-    border-radius: 1.25rem;
-    padding: 0.6rem 1.2rem;
-    font-size: 1.2rem;
-    text-align: center;
-    flex: 1 1 12rem;
-    background: white;
+/* Ajustes específicos para a barra de ascensão (mantém o fundo escuro e o texto branco) */
+.ascension-progress-bar {
+    background: linear-gradient(135deg, #8b3a2f, #6b2c24);
+    cursor: pointer;
     transition: all 0.3s ease;
+    box-shadow: 0 0.3rem 0.8rem rgba(0, 0, 0, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-/* ===================== LINGUAGENS (SEM SCROLL) ===================== */
+/* Texto sobre a barra (pontos de ascensão) */
+.ascension-points-overlay {
+    position: relative;
+    z-index: 2;
+    color: white;
+    font-weight: bold;
+    font-size: 0.9rem;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 0 0.5rem;
+    text-shadow: 0 0.2rem 0.5rem rgba(0, 0, 0, 0.5);
+    animation: ascensionPulse 1s ease-in-out infinite;
+}
+
+/* Barra de progresso interna */
+.ascension-bar-fill {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0%;
+    height: 100%;
+    background: linear-gradient(90deg, #e74c3c, #c0392b);
+    transition: width 0.4s cubic-bezier(0.22, 0.9, 0.36, 1);
+    z-index: 1;
+    border-radius: 0.4rem;
+}
+
+/* Animações */
+@keyframes ascensionPulse {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.05);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+.ascension-progress-bar:hover {
+    background: linear-gradient(135deg, #a94432, #8b3a2f);
+    transform: translateY(-0.1rem);
+    box-shadow: 0 0.5rem 1.2rem rgba(231, 76, 60, 0.5);
+}
+
+.ascension-progress-bar:active {
+    transform: scale(0.95);
+}
+
+.ascension-progress-bar.pode-ascender {
+    box-shadow: 0 0 20px gold;
+    animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.02);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+/* ===================== LINGUAGENS ===================== */
+.ling.hidden-lang {
+    display: none;
+}
+
 .linguagens {
     flex: 1;
     min-height: 0;
@@ -428,11 +508,6 @@ body {
     overflow: hidden;
     text-overflow: ellipsis;
     transition: all 0.3s ease;
-}
-
-.upgrade-btn-row.purchased {
-    background: #95a5a6;
-    cursor: not-allowed;
 }
 
 .upgrade-btn-row:disabled {
@@ -1603,12 +1678,11 @@ body {
 .skill-tree-canvas {
     position: relative;
     width: 5000px;
-    height: 3000px;
+    height: 5000px;
     transform-origin: 0 0;
     transition: transform 0.05s ease;
     cursor: grab;
     user-select: none;
-    overflow: visible;
     pointer-events: none;
 }
 
@@ -1644,6 +1718,8 @@ body {
     transition: all 0.3s ease;
     pointer-events: auto;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    z-index: 2;
+    background: linear-gradient(135deg, #34495e, #2c3e50);
 }
 
 .skill-node:hover {
@@ -1780,13 +1856,11 @@ body {
     transition: all 0.3s ease;
 }
 
-/* Efeito hover */
 .hamburger-btn:hover {
     background: #2980b9;
     transform: scale(1.02);
 }
 
-/* Estado ativo (sidebar aberta) */
 .hamburger-btn.active span:nth-child(1) {
     transform: rotate(45deg) translate(0.45rem, 0.45rem);
 }
@@ -1911,104 +1985,4 @@ body {
     opacity: 1;
     visibility: visible;
     pointer-events: auto;
-}
-
-/* ===================== ASCENSION PROGRESS BAR (INVISIBLE BUTTON) ===================== */
-.ascension-progress-bar {
-    height: auto;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 0.3rem 0.8rem rgba(0, 0, 0, 0.3);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: linear-gradient(135deg, #8b3a2f, #6b2c24);
-}
-
-.ascension-progress-bar:hover {
-    background: linear-gradient(135deg, #a94432, #8b3a2f);
-    transform: translateY(-0.1rem);
-    box-shadow: 0 0.5rem 1.2rem rgba(231, 76, 60, 0.5);
-}
-
-.ascension-progress-bar:active {
-    transform: scale(0.95);
-}
-
-.ascension-bar-fill {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 0%;
-    height: 100%;
-    background: linear-gradient(90deg, #e74c3c, #c0392b);
-    transition: width 0.4s cubic-bezier(0.22, 0.9, 0.36, 1);
-    z-index: 1;
-    border-radius: 0.4rem;
-}
-
-.ascension-progress-bar.unlocked .ascension-bar-fill {
-    animation: ascensionUnlockGlide 0.8s ease;
-}
-
-@keyframes ascensionUnlockGlide {
-    0% {
-        width: 0%;
-        box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.5);
-    }
-
-    50% {
-        box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.8);
-    }
-
-    100% {
-        box-shadow: none;
-    }
-}
-
-.ascension-points-overlay {
-    position: relative;
-    z-index: 2;
-    color: white;
-    font-weight: bold;
-    font-size: 0.9rem;
-    text-align: center;
-    white-space: nowrap;
-    overflow: hidden;
-    padding: 0 0.5rem;
-    text-shadow: 0 0.2rem 0.5rem rgba(0, 0, 0, 0.5);
-    animation: ascensionPulse 1s ease-in-out infinite;
-}
-
-@keyframes ascensionPulse {
-    0% {
-        transform: scale(1);
-    }
-
-    50% {
-        transform: scale(1.05);
-    }
-
-    100% {
-        transform: scale(1);
-    }
-}
-
-.ascension-progress-bar.pode-ascender {
-    box-shadow: 0 0 20px gold;
-    animation: pulse 1s infinite;
-}
-
-@keyframes pulse {
-    0% {
-        transform: scale(1);
-    }
-
-    50% {
-        transform: scale(1.02);
-    }
-
-    100% {
-        transform: scale(1);
-    }
 }
